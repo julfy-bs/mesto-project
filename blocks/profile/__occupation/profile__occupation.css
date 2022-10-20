@@ -1,0 +1,14 @@
+.profile__occupation {
+  margin: 14px 0 0;
+  text-align: center;
+  color: var(--color-white);
+}
+
+@media (min-width: 880px) {
+  .profile__occupation {
+    margin-top: 16px;
+    font-size: 18px;
+    line-height: 1.22;
+    text-align: start;
+  }
+}

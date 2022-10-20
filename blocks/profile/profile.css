@@ -1,0 +1,16 @@
+.profile {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 36px;
+}
+
+@media (min-width: 880px) {
+  .profile {
+    column-gap: 30px;
+    row-gap: 0;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+}

@@ -1,0 +1,13 @@
+.footer {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 48px var(--page-side-padding) 36px;
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (min-width: 880px) {
+  .footer {
+    padding: 67px var(--page-side-padding) 60px;
+  }
+}

@@ -1,0 +1,17 @@
+.form__button {
+  width: 100%;
+  min-height: 46px;
+  background: var(--color-black);
+  color: var(--color-white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  padding: 0;
+  transition: opacity .5s ease;
+}
+
+.form__button:hover {
+  cursor: pointer;
+  opacity: .8;
+}

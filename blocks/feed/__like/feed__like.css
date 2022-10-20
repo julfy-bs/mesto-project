@@ -1,0 +1,5 @@
+.feed__like {
+  width: 29px;
+  height: 29px;
+  background: var(--color-white) url('../../../images/feed-like.svg') no-repeat center;
+}

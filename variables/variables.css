@@ -1,0 +1,52 @@
+:root,
+:before,
+:after {
+  /* Color */
+  --color-black: #000;
+  --color-white: #fff;
+  --color-gray-dark: #545454;
+  --color-stroke: rgba(84, 84, 84, .7);
+
+  /* Font */
+  --font-family-base: 'Inter', 'Arial', sans-serif;
+
+  /* Page */
+  --page-side-padding: 19px;
+  /* Section */
+  /* Profile */
+  /* Add */
+  --profile-btn-add-size: 16px;
+  /* Edit */
+  --profile-btn-edit-size: 18px;
+  --profile-btn-edit-absolute-right: 10px;
+  --profile-icon-edit-size: 8px;
+  /* Feed */
+  --feed-item-max-width: 282px;
+  /* Popup */
+  --popup-close-size: 20px;
+  --popup-close-absolute-top: 16px;
+  --popup-close-absolute-right: 0;
+
+}
+
+@media (min-width: 880px) {
+  :root,
+  :before,
+  :after {
+    /* Page */
+    --page-side-padding: 0;
+    /* Section */
+
+    /* Profile */
+    /* Add */
+    --profile-btn-add-size: 22px;
+    /* Edit */
+    --profile-btn-edit-size: 24px;
+    --profile-btn-edit-absolute-right: 18px;
+    --profile-icon-edit-size: 10px;
+    /* Popup */
+    --popup-close-size: 32px;
+    --popup-close-absolute-top: 8px;
+    --popup-close-absolute-right: 8px;
+  }
+}
