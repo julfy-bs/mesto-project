@@ -19,6 +19,5 @@
 @media (min-width: 880px) {
   .profile__edit {
     right: calc((var(--profile-btn-edit-size) + var(--profile-btn-edit-absolute-right)) * -1);
-
   }
 }
