@@ -1,100 +1,113 @@
 <!DOCTYPE html>
 <html lang="ru">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
-    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-    <title>Проект Место</title>
-    <link rel="stylesheet" href="./pages/index.css" />
-  </head>
-  <body class="page">
-    <header class="header">
-      <img src="./images/logo-white.svg" alt="Логотип Место Россия" class="logo" />
-    </header>
-    <main class="page__content">
-      <section class="profile">
-        <img src="./images/profile-image.jpg" alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar" />
-        <div class="profile__info">
-          <h1 class="profile__name">Жак-Ив Кусто</h1>
-          <button class="button profile__edit" type="button" aria-label="Редактировать профиль"></button>
-          <p class="profile__occupation">Исследователь океана</p>
-        </div>
-        <button class="button profile__add" type="button" aria-label="Добавить пост"></button>
-      </section>
-      <section class="feed" aria-label="Лента фотографий.">
-        <ul class="feed__list">
-          <li>
-            <article class="card">
-              <img src="./images/feed-karachayevsk.jpg" alt="Сентинский храм в окрестностях города Карачаевск. На фоне виднеются зеленые горные леса на склонах Кавказа." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Карачаевск</h2>
-                <button class="button card__like card__like_active" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="card">
-              <img src="./images/feed-elbrus.jpg" alt="Вид на бескрайние поля Приэльбрусья на закате. На дальнем плане виднеется гора Эльбрус." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Гора Эльбрус</h2>
-                <button class="button card__like" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="card">
-              <img src="./images/feed-dombay.jpg" alt="Вершина западной части главного хребта Большого Кавказа выглядывает из-за густого осеннего леса." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Домбай</h2>
-                <button class="button card__like" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="card">
-              <img src="./images/feed-karachayevsk.jpg" alt="Сентинский храм в окрестностях города Карачаевск. На фоне виднеются зеленые горные леса на склонах Кавказа." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Карачаевск</h2>
-                <button class="button card__like" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="card">
-              <img src="./images/feed-elbrus.jpg" alt="Вид на бескрайние поля Приэльбрусья на закате. На дальнем плане виднеется гора Эльбрус." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Гора Эльбрус</h2>
-                <button class="button card__like" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-          <li>
-            <article class="card">
-              <img src="./images/feed-dombay.jpg" alt="Вершина западной части главного хребта Большого Кавказа выглядывает из-за густого осеннего леса." class="card__image" />
-              <div class="card__footer">
-                <h2 class="card__title">Домбай</h2>
-                <button class="button card__like" type="button" aria-label="Понравилось"></button>
-              </div>
-            </article>
-          </li>
-        </ul>
-      </section>
-      <div class="popup">
-        <div class="popup__wrapper">
-          <button class="button popup__close" type="button" aria-label="Закрыть"></button>
-          <h2 class="popup__title">Редактировать профиль</h2>
-          <form action="index.html" method="post" name="profile" class="form">
-            <input type="text" name="name" required placeholder="Введите имя" value="" class="form__input" />
-            <input name="occupation" placeholder="Введите род занятий" required value="" type="text" class="form__input" />
-            <input type="submit" value="Сохранить" class="form__button" />
-          </form>
-        </div>
-      </div>
-    </main>
-    <footer class="footer">
-      <a href="https://julfy-bs.github.io/portfolio/" target="_blank" class="link footer__copyright">
-        &copy; 2020 Mesto Russia
-      </a>
-    </footer>
-  </body>
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <title>Проект Место</title>
+  <link rel="stylesheet" href="./pages/index.css"/>
+</head>
+<body class="page">
+<header class="header">
+  <img src="./images/logo-white.svg" alt="Логотип Место Россия" class="logo"/>
+</header>
+<main class="page__content">
+  <section class="profile">
+    <img src="./images/profile-image.jpg" alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar"/>
+    <div class="profile__info">
+      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <button class="button profile__edit" type="button" aria-label="Редактировать профиль"></button>
+      <p class="profile__occupation">Исследователь океана</p>
+    </div>
+    <button class="button profile__add" type="button" aria-label="Добавить пост"></button>
+  </section>
+  <section class="feed" aria-label="Лента фотографий.">
+    <ul class="feed__list">
+      <li>
+        <article class="card">
+          <img src="./images/feed-karachayevsk.jpg"
+               alt="Сентинский храм в окрестностях города Карачаевск. На фоне виднеются зеленые горные леса на склонах Кавказа."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Карачаевск</h2>
+            <button class="button card__like card__like_active" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="card">
+          <img src="./images/feed-elbrus.jpg"
+               alt="Вид на бескрайние поля Приэльбрусья на закате. На дальнем плане виднеется гора Эльбрус."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Гора Эльбрус</h2>
+            <button class="button card__like" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="card">
+          <img src="./images/feed-dombay.jpg"
+               alt="Вершина западной части главного хребта Большого Кавказа выглядывает из-за густого осеннего леса."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Домбай</h2>
+            <button class="button card__like" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="card">
+          <img src="./images/feed-karachayevsk.jpg"
+               alt="Сентинский храм в окрестностях города Карачаевск. На фоне виднеются зеленые горные леса на склонах Кавказа."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Карачаевск</h2>
+            <button class="button card__like" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="card">
+          <img src="./images/feed-elbrus.jpg"
+               alt="Вид на бескрайние поля Приэльбрусья на закате. На дальнем плане виднеется гора Эльбрус."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Гора Эльбрус</h2>
+            <button class="button card__like" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+      <li>
+        <article class="card">
+          <img src="./images/feed-dombay.jpg"
+               alt="Вершина западной части главного хребта Большого Кавказа выглядывает из-за густого осеннего леса."
+               class="card__image"/>
+          <div class="card__footer">
+            <h2 class="card__title">Домбай</h2>
+            <button class="button card__like" type="button" aria-label="Понравилось"></button>
+          </div>
+        </article>
+      </li>
+    </ul>
+  </section>
+  <div class="popup">
+    <div class="popup__wrapper">
+      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <form action="index.html" method="post" name="profile" class="form">
+        <input type="text" name="name" required placeholder="Введите имя" value="" class="form__input"/>
+        <input name="occupation" placeholder="Введите род занятий" required value="" type="text" class="form__input"/>
+        <input type="submit" value="Сохранить" class="form__button"/>
+      </form>
+    </div>
+  </div>
+</main>
+<footer class="footer">
+  <a href="https://julfy-bs.github.io/portfolio/" target="_blank" class="link footer__copyright">
+    &copy; 2020 Mesto Russia
+  </a>
+</footer>
+</body>
 </html>
