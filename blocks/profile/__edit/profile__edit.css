@@ -1,23 +1,23 @@
 .profile__edit {
-  /* position */
-  position: absolute;
-  right: calc((var(--profile-btn-edit-size) + var(--profile-btn-edit-absolute-right)) * -1);
-  bottom: 50%;
-  transform: translateY(50%);
   /* display */
   display: flex;
   justify-content: center;
   align-items: center;
-  align-self: center;
   /* size */
   width: var(--profile-btn-edit-size);
   height: var(--profile-btn-edit-size);
   /* style */
   border: 1px solid var(--color-white);
+  background: transparent url('../../../images/profile-edit-mobile.svg') no-repeat center;
+}
+
+.profile__edit:hover {
+  cursor: pointer;
+  opacity: 0.6;
 }
 
 @media (min-width: 880px) {
   .profile__edit {
-    right: calc((var(--profile-btn-edit-size) + var(--profile-btn-edit-absolute-right)) * -1);
+    background-image: url('../../../images/profile-edit.svg');
   }
 }

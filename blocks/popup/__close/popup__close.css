@@ -10,23 +10,17 @@
   align-items: center;
 }
 
-.popup__close:before,
 .popup__close:after {
-  position: absolute;
-  top: 50%;
-  right: 0;
   content: '';
-  height: 2px;
+  background: url('../../../images/popup-close.svg') no-repeat center / cover;
+  height: var(--popup-close-size);
   width: var(--popup-close-size);
-  background-color: var(--color-white);
+  transition: opacity .5s ease;
 }
 
-.popup__close:before {
-  transform: rotate(45deg);
-}
-
-.popup__close:after {
-  transform: rotate(-45deg);
+.popup__close:hover:after {
+  opacity: .6;
+  cursor: pointer;
 }
 
 @media (min-width: 880px) {

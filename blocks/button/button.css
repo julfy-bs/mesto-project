@@ -4,8 +4,3 @@
   padding: 0;
   transition: opacity .5s ease;
 }
-
-.button:hover {
-  cursor: pointer;
-  opacity: 0.6;
-}

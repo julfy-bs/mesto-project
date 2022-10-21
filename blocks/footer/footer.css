@@ -4,6 +4,7 @@
   padding: 48px var(--page-side-padding) 36px;
   display: flex;
   justify-content: space-between;
+  flex-shrink: 0;
 }
 
 @media (min-width: 880px) {

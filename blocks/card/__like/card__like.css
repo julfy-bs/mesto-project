@@ -1,5 +1,10 @@
-.feed__like {
+.card__like {
   width: 29px;
   height: 29px;
   background: var(--color-white) url('../../../images/feed-like.svg') no-repeat center;
+}
+
+.card__like:hover {
+  opacity: .5;
+  cursor: pointer;
 }

@@ -1,6 +1,4 @@
-:root,
-:before,
-:after {
+:root {
   /* Color */
   --color-black: #000;
   --color-white: #fff;
@@ -18,8 +16,6 @@
   --profile-btn-add-size: 16px;
   /* Edit */
   --profile-btn-edit-size: 18px;
-  --profile-btn-edit-absolute-right: 10px;
-  --profile-icon-edit-size: 8px;
   /* Feed */
   --feed-item-max-width: 282px;
   /* Popup */
@@ -30,9 +26,7 @@
 }
 
 @media (min-width: 880px) {
-  :root,
-  :before,
-  :after {
+  :root {
     /* Page */
     --page-side-padding: 0;
     /* Section */
@@ -42,8 +36,6 @@
     --profile-btn-add-size: 22px;
     /* Edit */
     --profile-btn-edit-size: 24px;
-    --profile-btn-edit-absolute-right: 18px;
-    --profile-icon-edit-size: 10px;
     /* Popup */
     --popup-close-size: 32px;
     --popup-close-absolute-top: 8px;

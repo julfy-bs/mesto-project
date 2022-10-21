@@ -1,19 +1,28 @@
 .profile__name {
   /* size */
   margin: 0;
+  max-width: 189px;
   /* font */
   font-weight: 500;
   font-size: 27px;
   line-height: 1.22;
   /* style */
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  grid-column-start: 2;
+  grid-column-end: 3;
 }
 
 @media (min-width: 880px) {
   .profile__name {
+    max-width: 294px;
     font-size: 42px;
     line-height: 1.14;
     text-align: start;
+    grid-column-start: 1;
+    grid-column-end: 2;
   }
 }
 

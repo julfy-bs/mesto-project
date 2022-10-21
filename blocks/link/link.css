@@ -2,8 +2,3 @@
   text-decoration: none;
   transition: opacity .25s ease;
 }
-
-.link:hover {
-  cursor: pointer;
-  opacity: 0.5;
-}

@@ -3,6 +3,7 @@
   width: 100%;
   padding: 0 27px 32px;
   border-bottom: 1px solid var(--color-stroke);
+  display: flex;
 }
 
 @media (min-width: 880px) {
