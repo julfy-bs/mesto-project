@@ -1,0 +1,13 @@
+.profile__info {
+  display: grid;
+  align-items: center;
+  gap: 14px 10px;
+  grid-template-columns: var(--profile-btn-edit-size) 1fr var(--profile-btn-edit-size);
+}
+
+@media (min-width: 880px) {
+  .profile__info {
+    gap: 16px 18px;
+    grid-template-columns: 1fr var(--profile-btn-edit-size);
+  }
+}
