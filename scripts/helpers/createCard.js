@@ -5,9 +5,8 @@ export const createCard = (card) => {
     `
     <li>
         <article class="card">
-          <!-- Как быть с альт текстом для картинок, которые добавляет пользователь? -->
           <img src="${card.image}"
-               alt=""
+               alt="${card.name}"
                class="card__image"/>
           <button class="button card__delete" type="button" aria-label="Удалить"></button>
           <div class="card__footer">
