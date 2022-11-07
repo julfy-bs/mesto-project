@@ -92,13 +92,13 @@
       </li>
     </ul>
   </section>
-  <div class="popup">
-    <div class="popup__wrapper">
-      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
-      <h2 class="popup__title">Редактировать профиль</h2>
+  <div class="popup-edit">
+    <div class="popup-edit__wrapper">
+      <button class="button popup-edit__close" type="button" aria-label="Закрыть"></button>
+      <h2 class="popup-edit__title">Редактировать профиль</h2>
       <form action="index.html" method="post" name="profile" class="form">
-        <input type="text" name="name" required placeholder="Введите имя" value="" class="form__input"/>
-        <input name="occupation" placeholder="Введите род занятий" required value="" type="text" class="form__input"/>
+        <input type="text" name="name" required placeholder="Введите имя" value="123" class="form__input"/>
+        <input name="occupation" placeholder="Введите род занятий" required type="text" class="form__input"/>
         <input type="submit" value="Сохранить" class="form__button"/>
       </form>
     </div>
@@ -109,5 +109,6 @@
     &copy; 2020 Mesto Russia
   </a>
 </footer>
+<script type="module" src="./scripts/index.js"></script>
 </body>
 </html>
