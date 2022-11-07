@@ -11,7 +11,7 @@ export const popupEdit = () => {
   const nameContent = document.querySelector('.profile__name');
   const occupationContent = document.querySelector('.profile__occupation');
 
-  editButton.addEventListener('click', () => {
+  const editButtonListener = () => {
     openPopup(popupEdit);
     nameInput.value = nameContent.textContent;
     occupationInput.value = occupationContent.textContent;
@@ -22,16 +22,18 @@ export const popupEdit = () => {
       Нужно ли вообще ограничивать действие фокуса внутри модального окна?
     */
     nameInput.focus();
-  });
-
-  popupForm.addEventListener('submit', (e) => {
+  };
+  const popupFormListener = (e) => {
     e.preventDefault();
     nameContent.textContent = nameInput.value;
     occupationContent.textContent = occupationInput.value;
     closePopup(popupEdit);
-  });
-
-  popupEdit.addEventListener('click', (e) => {
+  };
+  const popupEditListener = (e) => {
     if (e.target === popupEdit || e.target === popupClose) closePopup(popupEdit);
-  });
+  };
+
+  editButton.addEventListener('click', editButtonListener);
+  popupForm.addEventListener('submit', popupFormListener);
+  popupEdit.addEventListener('click', popupEditListener);
 };
