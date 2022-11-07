@@ -1,3 +1,3 @@
-export const closePopup = (target, className) => {
-  target.classList.remove(className);
+export const closePopup = (target) => {
+  target.classList.remove('popup_active');
 }

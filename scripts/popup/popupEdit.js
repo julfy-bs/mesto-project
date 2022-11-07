@@ -2,31 +2,36 @@ import { closePopup } from '../helpers/closePopup.js';
 import { openPopup } from '../helpers/openPopup.js';
 
 export const popupEdit = () => {
-  const profileEditButton = document.querySelector('.profile__edit');
+  const editButton = document.querySelector('.profile__edit');
   const popupEdit = document.querySelector('.popup-edit');
-  const closeButton = popupEdit.querySelector('.popup-edit__close');
-  const profileEditNameInput = popupEdit.querySelector('[name=\'name\']');
-  const profileEditOccupationInput = popupEdit.querySelector('[name=\'occupation\']');
-  const profileEditNameTemplate = document.querySelector('.profile__name');
-  const profileEditOccupationTemplate = document.querySelector('.profile__occupation');
-  const popupEditForm = popupEdit.querySelector('.form');
+  const popupClose = popupEdit.querySelector('.popup__close');
+  const popupForm = popupEdit.querySelector('.form');
+  const nameInput = popupForm.querySelector('[name=\'name\']');
+  const occupationInput = popupForm.querySelector('[name=\'occupation\']');
+  const nameContent = document.querySelector('.profile__name');
+  const occupationContent = document.querySelector('.profile__occupation');
 
-  profileEditButton.addEventListener('click', () => {
-    openPopup(popupEdit, 'popup-edit_active');
-    profileEditNameInput.value = profileEditNameTemplate.textContent;
-    profileEditOccupationInput.value = profileEditOccupationTemplate.textContent;
-    // Если focus() - не оптимальное решение, то как исправить баг, что при открытии модального окна при нажатии на 'Tab' фокус работает в первую очередь по всей странице, а не внутри модального окна. Нужно ли вообще ограничивать действие фокуса внутри модального окна?
-    profileEditNameInput.focus();
+  editButton.addEventListener('click', () => {
+    openPopup(popupEdit);
+    nameInput.value = nameContent.textContent;
+    occupationInput.value = occupationContent.textContent;
+    /*
+      Если focus() - не оптимальное решение, то как исправить баг,
+      что при открытии модального окна при нажатии на 'Tab' фокус работает,
+      в первую очередь по всей странице, а не внутри модального окна.
+      Нужно ли вообще ограничивать действие фокуса внутри модального окна?
+    */
+    nameInput.focus();
   });
 
-  popupEditForm.addEventListener('submit', (e) => {
+  popupForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    profileEditNameTemplate.textContent = profileEditNameInput.value;
-    profileEditOccupationTemplate.textContent = profileEditOccupationInput.value;
-    closePopup(popupEdit, 'popup-edit_active');
+    nameContent.textContent = nameInput.value;
+    occupationContent.textContent = occupationInput.value;
+    closePopup(popupEdit);
   });
 
   popupEdit.addEventListener('click', (e) => {
-    if (e.target === popupEdit || e.target === closeButton) closePopup(popupEdit, 'popup-edit_active');
+    if (e.target === popupEdit || e.target === popupClose) closePopup(popupEdit);
   });
 };

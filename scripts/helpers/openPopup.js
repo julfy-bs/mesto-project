@@ -1,3 +1,3 @@
-export const openPopup = (target, className) => {
-  target.classList.add(className);
+export const openPopup = (target) => {
+  target.classList.add('popup_active');
 }

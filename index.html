@@ -92,14 +92,25 @@
       </li>
     </ul>
   </section>
-  <div class="popup-edit">
-    <div class="popup-edit__wrapper">
-      <button class="button popup-edit__close" type="button" aria-label="Закрыть"></button>
-      <h2 class="popup-edit__title">Редактировать профиль</h2>
+  <div class="popup popup-edit">
+    <div class="popup__wrapper">
+      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <h2 class="popup__title">Редактировать профиль</h2>
       <form action="index.html" method="post" name="profile" class="form">
-        <input type="text" name="name" required placeholder="Введите имя" value="123" class="form__input"/>
+        <input type="text" name="name" required placeholder="Введите имя" value="" class="form__input"/>
         <input name="occupation" placeholder="Введите род занятий" required type="text" class="form__input"/>
         <input type="submit" value="Сохранить" class="form__button"/>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup-add">
+    <div class="popup__wrapper">
+      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <h2 class="popup__title">Новое место</h2>
+      <form action="index.html" method="post" name="profile" class="form">
+        <input type="text" name="title" required placeholder="Название" value="" class="form__input"/>
+        <input name="link" placeholder="Ссылка на картинку" required type="text" class="form__input"/>
+        <input type="submit" value="Создать" class="form__button"/>
       </form>
     </div>
   </div>
