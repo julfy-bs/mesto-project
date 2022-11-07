@@ -1,4 +1,4 @@
-.popup__wrapper {
+.popup-edit__wrapper {
   min-width: 282px;
   position: relative;
   box-sizing: border-box;
@@ -10,7 +10,7 @@
 }
 
 @media (min-width: 880px) {
-  .popup__wrapper {
+  .popup-edit__wrapper {
     min-width: 430px;
     padding: 34px 36px 37px;
   }
