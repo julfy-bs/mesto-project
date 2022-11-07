@@ -1,12 +1,13 @@
 export const createCard = (card) => {
   const cardsWrapper = document.querySelector('.feed__list');
 
-  cardsWrapper.insertAdjacentHTML('beforeend',
-`
+  cardsWrapper.insertAdjacentHTML('afterbegin',
+    `
     <li>
         <article class="card">
-          <img src="${ card.image }"
-               alt="Сентинский храм в окрестностях города Карачаевск. На фоне виднеются зеленые горные леса на склонах Кавказа."
+          <!-- Как быть с альт текстом для картинок, которые добавляет пользователь? -->
+          <img src="${card.image}"
+               alt=""
                class="card__image"/>
           <div class="card__footer">
             <h2 class="card__title">${card.name}</h2>
@@ -14,6 +15,5 @@ export const createCard = (card) => {
           </div>
         </article>
       </li>
-  `)
-
-}
+  `);
+};
