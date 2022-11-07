@@ -1,16 +1,21 @@
 # Проект: Место
 ***
-"Место Россия" - учебный проект в виде ленты с фотографиями. С подключением JavaScript сайт станет интерактивным. 
+"Место Россия" - учебный проект в виде ленты с фотографиями. С подключением JavaScript сайт станет интерактивным.
 
 Работа выполнена на курсе [Web+][yandex-practicum-web-plus] от [Yandex Практикум][yandex-practicum-url] в соответствии со всеми пунктами [стандартов Яндекс.Практикума по оформлению HTML и CSS кода][yandex-styleguide].
 
-Чеклист для проверки проекта можно найти по [ссылке][mesto-checklist].
+### Чеклисты для проверки проекта:
+- [первый месяц работы над проектом;][mesto-checklist-1].
+- [второй месяц работы над проектом;][mesto-checklist-2].
 
-[Ссылка на макет в Figma][mesto-figma].
+### Макеты Figma:
+- [первый месяц работы над проектом;][mesto-figma-1];
+- [второй месяц работы над проектом;][mesto-figma-2];
 
 ### При разработке использовались технологии:
 - [HTML5][html]
 - [CSS3][css]
+- [JavaScript][js]
 - [BEM][bem]
 - [normalize.css][normalize-css]
 - [TinyPNG][tiny-png]
@@ -38,12 +43,15 @@ git clone git@github.com:julfy-bs/mesto-project.git
 [author-portfolio]: https://julfy-bs.github.io/portfolio/
 
 [//]: # 'Переменные для проекта mesto'
-[mesto-checklist]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-3.pdf
-[mesto-figma]: https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1
+[mesto-checklist-1]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-3.pdf
+[mesto-checklist-2]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-4.pdf
+[mesto-figma-1]: https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1
+[mesto-figma-2]: https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0%3A1
 
 [//]: # 'Переменные используемых технологий'
 [html]: https://html5.org/
 [css]: https://www.w3.org/Style/CSS/Overview.en.html
+[js]: https://www.javascript.com/
 [bem]: https://ru.bem.info/methodology/
 [normalize-css]: https://necolas.github.io/normalize.css/
 [markup-validator]: https://validator.w3.org/
