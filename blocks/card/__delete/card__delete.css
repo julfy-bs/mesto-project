@@ -1,0 +1,14 @@
+.card__delete {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 24px;
+  height: 24px;
+  background: url('../../../images/feed-delete.svg') no-repeat center;
+}
+
+.card__delete:hover {
+  opacity: .6;
+  cursor: pointer;
+}
