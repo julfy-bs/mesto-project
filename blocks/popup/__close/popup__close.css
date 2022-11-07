@@ -1,4 +1,4 @@
-.popup-edit__close {
+.popup__close {
   box-sizing: border-box;
   position: absolute;
   top: calc((var(--popup-close-size) + var(--popup-close-absolute-top)) * -1);
@@ -10,7 +10,7 @@
   align-items: center;
 }
 
-.popup-edit__close:after {
+.popup__close:after {
   content: '';
   background: url('../../../images/popup-close.svg') no-repeat center / cover;
   height: var(--popup-close-size);
@@ -18,13 +18,13 @@
   transition: opacity .5s ease;
 }
 
-.popup-edit__close:hover:after {
+.popup__close:hover:after {
   opacity: .6;
   cursor: pointer;
 }
 
 @media (min-width: 880px) {
-  .popup-edit__close {
+  .popup__close {
     top: calc((var(--popup-close-size) + var(--popup-close-absolute-top)) * -1);
     right: calc((var(--popup-close-size) + var(--popup-close-absolute-right)) * -1);
   }
