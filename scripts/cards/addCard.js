@@ -1,5 +1,5 @@
-import { cardsArray } from './cardsArray.js';
+import { initialArray } from './initialArray.js';
 
 export const addCard = (card) => {
-  cardsArray.push(card);
+  initialArray.push(card);
 }
