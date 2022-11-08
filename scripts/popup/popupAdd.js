@@ -1,7 +1,7 @@
 import { openPopup } from '../helpers/openPopup.js';
 import { closePopup } from '../helpers/closePopup.js';
-import { addCard } from '../cards/addCard.js';
-import { createCard } from '../helpers/createCard.js';
+import Card from '../cards/Card.js';
+import { addCard } from '../helpers/addCard.js';
 
 export const popupAdd = () => {
   const addButton = document.querySelector('.profile__add');
@@ -13,17 +13,18 @@ export const popupAdd = () => {
 
   const addButtonListener = () => {
     openPopup(popupAdd);
-    titleInput.focus();
   };
   const popupFormListener = (e) => {
     e.preventDefault();
     const card = {
-      name: titleInput.value,
+      title: titleInput.value,
       image: linkInput.value
     };
+    new Card(card);
     addCard(card);
-    createCard(card);
     closePopup(popupAdd);
+    titleInput.value = '';
+    linkInput.value = '';
   };
   const popupAddListener = (e) => {
     if (e.target === popupAdd || e.target === popupClose) closePopup(popupAdd);

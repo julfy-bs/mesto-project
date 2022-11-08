@@ -5,7 +5,8 @@
   right: 20px;
   width: 24px;
   height: 24px;
-  background: url('../../../images/feed-delete.svg') no-repeat center;
+  border-radius: 5px;
+  background: url('../../../images/feed-delete.svg') no-repeat center / 18px 19px;
 }
 
 .card__delete:hover {

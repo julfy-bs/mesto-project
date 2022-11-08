@@ -1,20 +1,23 @@
 import { openPopup } from '../helpers/openPopup.js';
 import { closePopup } from '../helpers/closePopup.js';
 
-export const popupPhoto = () => {
-  const photoArray = document.querySelectorAll('.card__image')
-  const popupPhoto = document.querySelector('.popup_type_photo');
-  const popupClose = popupPhoto.querySelector('.popup__close');
-
-  const photoArrayListener = (item) => {
-    item.addEventListener('click', () => {
-      openPopup(popupPhoto)
-    })
-  }
-  const popupPhotoListener = (e) => {
-    if (e.target === popupPhoto || e.target === popupClose) closePopup(popupPhoto);
+export const popupPhoto = (image, title) => {
+  const popup = {
+    photo: document.querySelector('.popup_type_photo'),
+    close: document.querySelector('.popup__close'),
+    image: document.querySelector('.popup__image'),
+    title: document.querySelector('.popup__figcaption')
   };
 
-  photoArray.forEach(item => photoArrayListener(item))
-  popupPhoto.addEventListener('click', popupPhotoListener);
-}
+  const imageListener = () => {
+    openPopup(popup.photo);
+    popup.title.textContent = title.textContent;
+    popup.image.setAttribute('src', image.getAttribute('src'));
+  };
+  const popupPhotoListener = (e) => {
+    if (e.target === popup.photo || e.target === popup.close) closePopup(popup.photo);
+  };
+
+  image.addEventListener('click', imageListener);
+  popup.photo.addEventListener('click', popupPhotoListener);
+};

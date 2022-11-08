@@ -15,13 +15,6 @@ export const popupEdit = () => {
     openPopup(popupEdit);
     nameInput.value = nameContent.textContent;
     occupationInput.value = occupationContent.textContent;
-    /*
-      Если focus() - не оптимальное решение, то как исправить баг,
-      что при открытии модального окна при нажатии на 'Tab' фокус работает,
-      в первую очередь по всей странице, а не внутри модального окна.
-      Нужно ли вообще ограничивать действие фокуса внутри модального окна?
-    */
-    nameInput.focus();
   };
   const popupFormListener = (e) => {
     e.preventDefault();
