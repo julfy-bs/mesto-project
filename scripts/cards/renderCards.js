@@ -1,6 +1,6 @@
-import { createCard } from '../helpers/createCard.js';
 import { initialArray } from './initialArray.js';
+import Card from './Card.js';
 
 export const renderCards = () => {
-  initialArray.forEach(item => createCard(item))
+  initialArray.forEach(card => new Card(card))
 }
