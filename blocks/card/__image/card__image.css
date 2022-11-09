@@ -5,4 +5,10 @@
   object-fit: cover;
   object-position: center;
   filter: brightness(85%);
+  transition: filter .5s ease;
+}
+
+.card__image:hover {
+  cursor: pointer;
+  filter: brightness(100%);
 }
