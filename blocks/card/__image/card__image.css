@@ -1,14 +1,18 @@
 .card__image {
   display: block;
-  width: 100%;
+  filter: brightness(85%);
   height: 282px;
   object-fit: cover;
   object-position: center;
-  filter: brightness(85%);
   transition: filter .5s ease;
+  width: 100%;
 }
 
 .card__image:hover {
   cursor: pointer;
+  filter: brightness(100%);
+}
+
+.card__delete:hover ~ .card__image {
   filter: brightness(100%);
 }

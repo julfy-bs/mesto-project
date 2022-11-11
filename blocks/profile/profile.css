@@ -1,17 +1,17 @@
 .profile {
-  width: 100%;
-  display: flex;
   align-items: center;
+  display: flex;
   flex-direction: column;
   row-gap: 26px;
+  width: 100%;
 }
 
 @media (min-width: 880px) {
   .profile {
+    align-items: center;
     column-gap: 30px;
-    row-gap: 0;
     flex-direction: row;
     justify-content: flex-start;
-    align-items: center;
+    row-gap: 0;
   }
 }
