@@ -1,187 +1,129 @@
 import { initialArray } from './initialArray.js';
 
-const addCard = (card) => {
-  initialArray.push(card);
-}
+const popupPhoto = document.querySelector('.popup_type_photo');
+const popupCloseButton = popupPhoto.querySelector('.popup__close');
+const popupImage = popupPhoto.querySelector('.popup__image');
+const popupTitle = popupPhoto.querySelector('.popup__figcaption');
+const cardsWrapper = document.querySelector('.feed__list');
+const cardTemplate = document.querySelector('#card').content.querySelector('.feed__item');
+const popupProfileOpenButton = document.querySelector('.profile__edit');
+const popupProfile = document.querySelector('.popup-edit');
+const popupProfileCloseButton = popupProfile.querySelector('.popup__close');
+const popupProfileForm = popupProfile.querySelector('.form');
+const popupProfileNameInput = popupProfileForm.querySelector('[name=\'name\']');
+const popupProfileOccupationInput = popupProfileForm.querySelector('[name=\'occupation\']');
+const profileNameContent = document.querySelector('.profile__name');
+const profileOccupationContent = document.querySelector('.profile__occupation');
+const popupCardOpenButton = document.querySelector('.profile__add');
+const popupCard = document.querySelector('.popup-add');
+const popupCardCloseButton = popupCard.querySelector('.popup__close');
+const popupCardForm = popupCard.querySelector('.form');
+const popupCardTitleInput = popupCardForm.querySelector('[name=\'title\']');
+const popupCardLinkInput = popupCardForm.querySelector('[name=\'link\']');
 
-const closePopup = (target) => {
-  target.classList.remove('popup_active');
-}
-
-const openPopup = (target) => {
-  target.classList.add('popup_active');
-}
-
-const popupPhoto = (image, title) => {
-  const popup = {
-    photo: document.querySelector('.popup_type_photo'),
-    close: document.querySelector('.popup__close'),
-    image: document.querySelector('.popup__image'),
-    title: document.querySelector('.popup__figcaption')
-  };
-
-  const imageListener = () => {
-    openPopup(popup.photo);
-    popup.title.textContent = title.textContent;
-    popup.image.setAttribute('src', image.getAttribute('src'));
-  };
-  const popupPhotoListener = (e) => {
-    if (e.target === popup.photo || e.target === popup.close) closePopup(popup.photo);
-  };
-
-  image.addEventListener('click', imageListener);
-  popup.photo.addEventListener('click', popupPhotoListener);
+const closePopup = (popup) => {
+  popup.classList.remove('popup_active');
 };
 
-class Card {
-  constructor(card) {
-    this.id = Date.now();
-    this.title = card.title;
-    this.image = card.image;
+const openPopup = (popup) => {
+  popup.classList.add('popup_active');
+};
 
-    try {
-      this.createTemplate();
-      this.cardElements = this.findListenerTargets();
-      this.addListeners();
-    } catch (e) {
-      console.error(`Ошибка ${e.name} при создании карточки: ${e.message}`);
+const addCard = (card) => {
+  cardsWrapper.prepend(card);
+};
+
+const addCardPhotoPopup = (title, image) => {
+  image.addEventListener('click', () => {
+    openPopup(popupPhoto);
+    popupTitle.textContent = title.textContent;
+    popupImage.setAttribute('src', image.getAttribute('src'));
+  });
+  popupPhoto.addEventListener('click', (e) => {
+    if (e.target === popupPhoto || e.target === popupCloseButton) closePopup(popupPhoto);
+  });
+};
+
+const addCardLike = (likeButton) => {
+  likeButton.addEventListener('click', () => {
+    likeButton.classList.toggle('card__like_active');
+    if (likeButton.classList.contains('card__like_active')) {
+      likeButton.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
+    } else {
+      likeButton.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
     }
-  }
+  });
+};
 
-  createTemplate() {
-    const cardsWrapper = document.querySelector('.feed__list');
-    const cardTemplate = `
-    <li class="feed__item" data-id="${this.id}">
-      <article class="card">
-        <img src="${this.image}"
-             alt="${this.title}"
-             class="card__image"/>
-        <button class="button card__delete" type="button" aria-label="Удалить"></button>
-        <div class="card__footer">
-          <h2 class="card__title">${this.title}</h2>
-          <button class="button card__like" type="button" aria-label="Добавить отметку &#34;Понравилось&#34;"></button>
-        </div>
-      </article>
-    </li>
-  `;
-    cardsWrapper.insertAdjacentHTML('afterbegin', cardTemplate);
-  }
+const deleteCard = (deleteButton, card) => {
+  deleteButton.addEventListener('click', () => {
+    card.remove();
+  });
+};
 
-  findListenerTargets() {
-    return {
-      card: document.querySelector(`[data-id="${this.id}"]`),
-      image: document.querySelector(`[data-id="${this.id}"]`).querySelector('.card__image'),
-      title: document.querySelector(`[data-id="${this.id}"]`).querySelector('.card__title'),
-      delete: document.querySelector(`[data-id="${this.id}"]`).querySelector('.card__delete'),
-      like: document.querySelector(`[data-id="${this.id}"]`).querySelector('.card__like')
-    };
-  }
+const createCard = (title, image, template) => {
+  const cardClone = template.cloneNode(true);
+  const cardCloneImage = cardClone.querySelector('.card__image');
+  const cardCloneTitle = cardClone.querySelector('.card__title');
+  const cardCloneLikeButton = cardClone.querySelector('.card__like');
+  const cardCloneDeleteButton = cardClone.querySelector('.card__delete');
 
-  likeCard() {
-    const likeButton = this.cardElements.like;
-    const likeButtonListener = () => {
-      likeButton.classList.toggle('card__like_active');
-      if (likeButton.classList.contains('card__like_active')) {
-        likeButton.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
-      } else {
-        likeButton.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
-      }
-    }
+  cardCloneTitle.textContent = title;
+  cardCloneImage.setAttribute('src', image);
 
-    likeButton.addEventListener('click', likeButtonListener);
-  };
+  addCardPhotoPopup(cardCloneTitle, cardCloneImage);
+  addCardLike(cardCloneLikeButton);
+  deleteCard(cardCloneDeleteButton, cardClone);
 
-  deleteCard() {
-    const deleteButton = this.cardElements.delete;
-    const card = this.cardElements.card;
-    const deleteButtonListener = () => {
-      card.remove();
-    }
-
-    deleteButton.addEventListener('click', deleteButtonListener);
-  };
-
-  openPhoto() {
-    const image = this.cardElements.image;
-    const title = this.cardElements.title;
-
-    popupPhoto(image, title)
-  }
-
-  addListeners() {
-    this.likeCard();
-    this.deleteCard();
-    this.openPhoto();
-  }
-}
+  return cardClone;
+};
 
 const renderCards = () => {
-  initialArray.forEach(card => new Card(card))
-}
-
-const popupEdit = () => {
-  const editButton = document.querySelector('.profile__edit');
-  const popupEdit = document.querySelector('.popup-edit');
-  const popupClose = popupEdit.querySelector('.popup__close');
-  const popupForm = popupEdit.querySelector('.form');
-  const nameInput = popupForm.querySelector('[name=\'name\']');
-  const occupationInput = popupForm.querySelector('[name=\'occupation\']');
-  const nameContent = document.querySelector('.profile__name');
-  const occupationContent = document.querySelector('.profile__occupation');
-
-  const editButtonListener = () => {
-    openPopup(popupEdit);
-    nameInput.value = nameContent.textContent;
-    occupationInput.value = occupationContent.textContent;
-  };
-  const popupFormListener = (e) => {
-    e.preventDefault();
-    nameContent.textContent = nameInput.value;
-    occupationContent.textContent = occupationInput.value;
-    closePopup(popupEdit);
-  };
-  const popupEditListener = (e) => {
-    if (e.target === popupEdit || e.target === popupClose) closePopup(popupEdit);
-  };
-
-  editButton.addEventListener('click', editButtonListener);
-  popupForm.addEventListener('submit', popupFormListener);
-  popupEdit.addEventListener('click', popupEditListener);
+  initialArray.forEach(card => {
+    const cardClone = createCard(card.title, card.image, cardTemplate);
+    addCard(cardClone);
+  });
 };
 
-const popupAdd = () => {
-  const addButton = document.querySelector('.profile__add');
-  const popupAdd = document.querySelector('.popup-add');
-  const popupClose = popupAdd.querySelector('.popup__close');
-  const popupForm = popupAdd.querySelector('.form');
-  const titleInput = popupForm.querySelector('[name=\'title\']');
-  const linkInput = popupForm.querySelector('[name=\'link\']');
+const addPopupProfile = () => {
+  popupProfileOpenButton.addEventListener('click', () => {
+    openPopup(popupProfile);
+    popupProfileNameInput.value = profileNameContent.textContent;
+    popupProfileOccupationInput.value = profileOccupationContent.textContent;
+  });
+  popupProfileForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    profileNameContent.textContent = popupProfileNameInput.value;
+    profileOccupationContent.textContent = popupProfileOccupationInput.value;
+    closePopup(popupProfile);
+  });
+  popupProfile.addEventListener('click', (e) => {
+    if (e.target === popupProfile || e.target === popupProfileCloseButton) closePopup(popupProfile);
+  });
+};
 
-  const addButtonListener = () => {
-    openPopup(popupAdd);
-  };
-  const popupFormListener = (e) => {
+const addPopupCard = () => {
+  popupCardOpenButton.addEventListener('click', () => {
+    openPopup(popupCard);
+  });
+  popupCardForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const card = {
-      title: titleInput.value,
-      image: linkInput.value
+      title: popupCardTitleInput.value,
+      image: popupCardLinkInput.value
     };
-    new Card(card);
-    addCard(card);
-    closePopup(popupAdd);
-    titleInput.value = '';
-    linkInput.value = '';
-  };
-  const popupAddListener = (e) => {
-    if (e.target === popupAdd || e.target === popupClose) closePopup(popupAdd);
-  };
-
-  addButton.addEventListener('click', addButtonListener);
-  popupForm.addEventListener('submit', popupFormListener);
-  popupAdd.addEventListener('click', popupAddListener);
+    const cardClone = createCard(card.title, card.image, cardTemplate);
+    addCard(cardClone);
+    closePopup(popupCard);
+    popupCardTitleInput.value = '';
+    popupCardLinkInput.value = '';
+  });
+  popupCard.addEventListener('click', (e) => {
+    if (e.target === popupCard || e.target === popupCardCloseButton) closePopup(popupCard);
+  });
 };
 
 
 renderCards();
-popupEdit();
-popupAdd();
+addPopupProfile();
+addPopupCard();

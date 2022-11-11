@@ -1,6 +1,6 @@
 .popup__figcaption {
-  display: inline-flex;
   color: var(--color-white);
+  display: inline-flex;
   font-size: 12px;
   line-height: 1.25;
 }

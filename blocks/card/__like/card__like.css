@@ -1,11 +1,11 @@
 .card__like {
-  width: 29px;
-  height: 29px;
-  border-radius: 5px;
   background: url('../../../images/feed-like.svg') no-repeat center;
+  border-radius: 5px;
+  height: 29px;
+  width: 29px;
 }
 
 .card__like:hover {
-  opacity: .5;
   cursor: pointer;
+  opacity: .5;
 }

@@ -1,6 +1,6 @@
 .profile__info {
-  display: grid;
   align-items: center;
+  display: grid;
   gap: 14px 10px;
   grid-template-columns: var(--profile-btn-edit-size) 1fr var(--profile-btn-edit-size);
 }

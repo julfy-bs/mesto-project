@@ -1,14 +1,11 @@
 .profile__edit {
-  /* display */
-  display: flex;
-  justify-content: center;
   align-items: center;
-  /* size */
-  width: var(--profile-btn-edit-size);
-  height: var(--profile-btn-edit-size);
-  /* style */
-  border: 1px solid var(--color-white);
   background: transparent url('../../../images/profile-edit.svg') no-repeat center / 8px;
+  border: 1px solid var(--color-white);
+  display: flex;
+  height: var(--profile-btn-edit-size);
+  justify-content: center;
+  width: var(--profile-btn-edit-size);
 }
 
 .profile__edit:hover {

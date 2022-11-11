@@ -1,21 +1,21 @@
 .profile__occupation {
-  margin: 0;
-  text-align: center;
   color: var(--color-white);
+  grid-column-end: 4;
+  grid-column-start: 1;
+  margin: 0;
+  max-width: 282px;
   overflow: hidden;
+  text-align: center;
   text-overflow: ellipsis;
   white-space: nowrap;
-  max-width: 282px;
-  grid-column-start: 1;
-  grid-column-end: 4;
 }
 
 @media (min-width: 880px) {
   .profile__occupation {
     font-size: 18px;
-    line-height: 1.22;
-    text-align: start;
-    max-width: 336px;
     grid-column-end: 3;
+    line-height: 1.22;
+    max-width: 336px;
+    text-align: start;
   }
 }
