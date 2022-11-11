@@ -1,6 +1,6 @@
 .popup__wrapper_type_photo {
-  border-radius: 0;
   background-color: transparent;
-  padding: 0;
+  border-radius: 0;
   min-width: auto;
+  padding: 0;
 }
