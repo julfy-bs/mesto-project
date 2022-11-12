@@ -38,9 +38,7 @@ const addCardPhotoPopup = (title, image) => {
     openPopup(popupPhoto);
     popupTitle.textContent = title.textContent;
     popupImage.setAttribute('src', image.getAttribute('src'));
-  });
-  popupPhoto.addEventListener('click', (e) => {
-    if (e.target === popupPhoto || e.target === popupCloseButton) closePopup(popupPhoto);
+    popupImage.setAttribute('alt', image.getAttribute('alt'));
   });
 };
 
@@ -70,6 +68,7 @@ const createCard = (title, image, template) => {
 
   cardCloneTitle.textContent = title;
   cardCloneImage.setAttribute('src', image);
+  cardCloneImage.setAttribute('alt', title);
 
   addCardPhotoPopup(cardCloneTitle, cardCloneImage);
   addCardLike(cardCloneLikeButton);
@@ -78,52 +77,42 @@ const createCard = (title, image, template) => {
   return cardClone;
 };
 
-const renderCards = () => {
-  initialArray.forEach(card => {
-    const cardClone = createCard(card.title, card.image, cardTemplate);
-    addCard(cardClone);
-  });
-};
+popupPhoto.addEventListener('click', (e) => {
+  if (e.target === popupPhoto || e.target === popupCloseButton) closePopup(popupPhoto);
+});
+popupProfileOpenButton.addEventListener('click', () => {
+  openPopup(popupProfile);
+  popupProfileNameInput.value = profileNameContent.textContent;
+  popupProfileOccupationInput.value = profileOccupationContent.textContent;
+});
+popupProfileForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  profileNameContent.textContent = popupProfileNameInput.value;
+  profileOccupationContent.textContent = popupProfileOccupationInput.value;
+  closePopup(popupProfile);
+});
+popupProfile.addEventListener('click', (e) => {
+  if (e.target === popupProfile || e.target === popupProfileCloseButton) closePopup(popupProfile);
+});
+popupCardOpenButton.addEventListener('click', () => {
+  openPopup(popupCard);
+});
+popupCardForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const card = {
+    title: popupCardTitleInput.value, image: popupCardLinkInput.value
+  };
+  const cardClone = createCard(card.title, card.image, cardTemplate);
+  addCard(cardClone);
+  closePopup(popupCard);
+  popupCardTitleInput.value = '';
+  popupCardLinkInput.value = '';
+});
+popupCard.addEventListener('click', (e) => {
+  if (e.target === popupCard || e.target === popupCardCloseButton) closePopup(popupCard);
+});
 
-const addPopupProfile = () => {
-  popupProfileOpenButton.addEventListener('click', () => {
-    openPopup(popupProfile);
-    popupProfileNameInput.value = profileNameContent.textContent;
-    popupProfileOccupationInput.value = profileOccupationContent.textContent;
-  });
-  popupProfileForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    profileNameContent.textContent = popupProfileNameInput.value;
-    profileOccupationContent.textContent = popupProfileOccupationInput.value;
-    closePopup(popupProfile);
-  });
-  popupProfile.addEventListener('click', (e) => {
-    if (e.target === popupProfile || e.target === popupProfileCloseButton) closePopup(popupProfile);
-  });
-};
-
-const addPopupCard = () => {
-  popupCardOpenButton.addEventListener('click', () => {
-    openPopup(popupCard);
-  });
-  popupCardForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const card = {
-      title: popupCardTitleInput.value,
-      image: popupCardLinkInput.value
-    };
-    const cardClone = createCard(card.title, card.image, cardTemplate);
-    addCard(cardClone);
-    closePopup(popupCard);
-    popupCardTitleInput.value = '';
-    popupCardLinkInput.value = '';
-  });
-  popupCard.addEventListener('click', (e) => {
-    if (e.target === popupCard || e.target === popupCardCloseButton) closePopup(popupCard);
-  });
-};
-
-
-renderCards();
-addPopupProfile();
-addPopupCard();
+initialArray.forEach(card => {
+  const cardClone = createCard(card.title, card.image, cardTemplate);
+  addCard(cardClone);
+});
