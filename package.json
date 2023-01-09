@@ -1,0 +1,19 @@
+{
+  "name": "mesto-project",
+  "version": "1.0.0",
+  "description": "Проект \"Место Россия\" - учебный проект в виде ленты с фотографиями. Работа выполнена на курсе Web+ от Yandex Практикум.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julfy-bs/mesto-project.git"
+  },
+  "author": "Bogdan Sutuzhko <julfy-bs@yandex.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julfy-bs/mesto-project/issues"
+  },
+  "homepage": "https://github.com/julfy-bs/mesto-project#readme"
+}
