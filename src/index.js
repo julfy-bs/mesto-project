@@ -1,5 +1,4 @@
 import { initialArray } from './scripts/initialArray.js';
-import './pages/index.css';
 
 const popupPhoto = document.querySelector('.popup_type_photo');
 const popupCloseButton = popupPhoto.querySelector('.popup__close');
