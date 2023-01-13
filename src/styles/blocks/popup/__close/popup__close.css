@@ -11,7 +11,7 @@
 }
 
 .popup__close:after {
-  background: url('../../../images/popup-close.svg') no-repeat center / cover;
+  background: url('../../../../images/popup-close.svg') no-repeat center / cover;
   content: '';
   height: var(--popup-close-size);
   transition: opacity .5s ease;
