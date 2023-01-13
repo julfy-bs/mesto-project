@@ -1,5 +1,5 @@
 .profile__add {
-  background: transparent url('../../../images/profile-add.svg') no-repeat center / 16px;
+  background: transparent url('../../../../images/profile-add.svg') no-repeat center / 16px;
   border: 2px solid var(--color-white);
   border-radius: 2px;
   color: var(--color-white);
