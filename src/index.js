@@ -1,8 +1,8 @@
-import { initialArray } from './scripts/initialArray.js';
+import { initialArray } from './components/initialArray.js';
+import { closePopup, openPopup } from './components/popup.js';
 import './styles/pages/index.css';
 
 const popupPhoto = document.querySelector('.popup_type_photo');
-const popupCloseButton = popupPhoto.querySelector('.popup__close');
 const popupImage = popupPhoto.querySelector('.popup__image');
 const popupTitle = popupPhoto.querySelector('.popup__figcaption');
 const cardsWrapper = document.querySelector('.feed__list');
@@ -21,14 +21,6 @@ const popupCardCloseButton = popupCard.querySelector('.popup__close');
 const popupCardForm = popupCard.querySelector('.form');
 const popupCardTitleInput = popupCardForm.querySelector('[name=\'title\']');
 const popupCardLinkInput = popupCardForm.querySelector('[name=\'link\']');
-
-const closePopup = (popup) => {
-  popup.classList.remove('popup_active');
-};
-
-const openPopup = (popup) => {
-  popup.classList.add('popup_active');
-};
 
 const addCard = (card) => {
   cardsWrapper.prepend(card);
@@ -78,23 +70,23 @@ const createCard = (title, image, template) => {
   return cardClone;
 };
 
-popupPhoto.addEventListener('click', (e) => {
-  if (e.target === popupPhoto || e.target === popupCloseButton) closePopup(popupPhoto);
-});
 popupProfileOpenButton.addEventListener('click', () => {
   openPopup(popupProfile);
   popupProfileNameInput.value = profileNameContent.textContent;
   popupProfileOccupationInput.value = profileOccupationContent.textContent;
 });
+
 popupProfileForm.addEventListener('submit', (e) => {
   e.preventDefault();
   profileNameContent.textContent = popupProfileNameInput.value;
   profileOccupationContent.textContent = popupProfileOccupationInput.value;
   closePopup(popupProfile);
 });
+
 popupProfile.addEventListener('click', (e) => {
   if (e.target === popupProfile || e.target === popupProfileCloseButton) closePopup(popupProfile);
 });
+
 popupCardOpenButton.addEventListener('click', () => {
   openPopup(popupCard);
 });
@@ -109,6 +101,7 @@ popupCardForm.addEventListener('submit', (e) => {
   popupCardTitleInput.value = '';
   popupCardLinkInput.value = '';
 });
+
 popupCard.addEventListener('click', (e) => {
   if (e.target === popupCard || e.target === popupCardCloseButton) closePopup(popupCard);
 });
