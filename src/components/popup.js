@@ -1,13 +1,11 @@
-const POPUP_ACTIVE_CLASS = 'popup_active';
-const POPUP_ANIMATION_DURATION = 200;
-const KEY_ESCAPE = 'Escape';
+import { KEY, POPUP } from './enum.js';
 
 const addPopupActiveClass = (el) => {
-  el.classList.add(POPUP_ACTIVE_CLASS);
+  el.classList.add(POPUP.ACTIVE_CLASS);
 };
 
 const removePopupActiveClass = (el) => {
-  el.classList.remove(POPUP_ACTIVE_CLASS);
+  el.classList.remove(POPUP.ACTIVE_CLASS);
 };
 
 const removeListenerHandler = (target) => {
@@ -22,15 +20,18 @@ export const closePopup = (el) => {
 };
 
 const handlePopupMouseEvent = (e) => {
-  const closeCondition = e.target.classList.contains('popup') || e.target.classList.contains('popup__close');
+  const popup = e.target.closest('.popup');
+  const closeCondition = e.target.classList.contains(POPUP.CLASSNAME)
+    || e.target.classList.contains(POPUP.CLOSE_CLASSNAME);
   if (closeCondition) {
-    closePopup(e.target);
+    closePopup(popup);
   }
 };
 
 const handlePopupKeyboardEvent = (e) => {
-  if (e.key === KEY_ESCAPE) {
-    closePopup(e.target);
+  const popup = e.target.closest('.popup');
+  if (e.key === KEY.ESCAPE) {
+    closePopup(popup);
   }
 };
 
@@ -38,5 +39,5 @@ export const openPopup = (el) => {
   addPopupActiveClass(el);
   el.addEventListener('keydown', handlePopupKeyboardEvent);
   el.addEventListener('click', handlePopupMouseEvent);
-  setTimeout(() => el.focus(), POPUP_ANIMATION_DURATION);
+  setTimeout(() => el.focus(), POPUP.ANIMATION_DURATION);
 };

@@ -1,27 +1,11 @@
 import { openPopup } from './popup.js';
+import { POPUP, CARD } from './enum.js';
 
-/* ENUM START */
-const CARD = {
-  TEMPLATE: '#card',
-  ITEM: '.feed__item',
-  ITEM_CLASSNAME: 'feed__item',
-  ARTICLE: '.card',
-  IMAGE: '.card__image',
-  TITLE: '.card__title',
-  LIKE: '.card__like',
-  DELETE: '.card__delete',
-  WRAPPER: '.feed__list',
-  LIKE_ACTIVE: 'card__like_active',
-  POPUP: '.popup_type_photo',
-  POPUP_IMAGE: '.popup__image',
-  POPUP_TITLE: '.popup__figcaption'
-}
-/* ENUM END */
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
-const popupPhoto = document.querySelector(CARD.POPUP);
-const popupImage = popupPhoto.querySelector(CARD.POPUP_IMAGE);
-const popupTitle = popupPhoto.querySelector(CARD.POPUP_TITLE);
+const popupPhoto = document.querySelector(POPUP.PHOTO);
+const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
+const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
 
 const toggleLike = (el) => {
   const isLiked = el.classList.contains(CARD.LIKE_ACTIVE);
@@ -36,29 +20,29 @@ const toggleLike = (el) => {
 const handleLikeButtonListener = (e) => toggleLike(e.target);
 
 const handleDeleteButtonListener = (e) => {
-  const cardItem = e.target.parentNode.parentNode
+  const cardItem = e.target.closest(CARD.ITEM);
   if (cardItem.classList.contains(CARD.ITEM_CLASSNAME)) cardItem.remove();
-}
+};
 
 const handlePhotoOverlayListener = (e) => {
   const cardImage = e.target;
-  const cardTitle = cardImage.parentNode.querySelector(CARD.TITLE)
+  const cardTitle = cardImage.parentNode.querySelector(CARD.TITLE);
 
   openPopup(popupPhoto);
 
   popupTitle.textContent = cardTitle.textContent;
   popupImage.setAttribute('src', cardImage.getAttribute('src'));
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
-}
+};
 
 const setCardName = (el, title) => {
   el.textContent = title;
-}
+};
 
 const setCardImage = (el, title, image) => {
   el.setAttribute('src', image);
   el.setAttribute('alt', title);
-}
+};
 
 export const createCard = (title, image) => {
   const cardItem = cardTemplate.cloneNode(true);
@@ -78,6 +62,6 @@ export const createCard = (title, image) => {
   return cardItem;
 };
 
-export const addCard = (card) => {
+export const prependCard = (card) => {
   cardsWrapper.prepend(card);
 };
