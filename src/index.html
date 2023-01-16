@@ -2,75 +2,76 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"/>
-  <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+  <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        name="viewport"/>
+  <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
   <title>Проект Место</title>
 </head>
 <body class="page">
 <header class="header">
-  <img src="<%=require('./images/logo-white.svg')%>" alt="Логотип Место Россия" class="logo"/>
+  <img alt="Логотип Место Россия" class="logo" src="<%=require('./images/logo-white.svg')%>"/>
 </header>
 <main class="page__content">
   <section class="profile">
-    <img src="<%=require('./images/profile-image.jpg')%>" alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar"/>
+    <img alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar"
+         src="<%=require('./images/profile-image.jpg')%>"/>
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
-      <button class="button profile__edit" type="button" aria-label="Редактировать профиль"></button>
+      <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
       <p class="profile__occupation">Исследователь океана</p>
     </div>
-    <button class="button profile__add" type="button" aria-label="Добавить пост"></button>
+    <button aria-label="Добавить пост" class="button profile__add" type="button"></button>
   </section>
-  <section class="feed" aria-label="Лента фотографий.">
+  <section aria-label="Лента фотографий." class="feed">
     <ul class="feed__list"></ul>
   </section>
-  <div tabindex="-1" class="popup popup-edit">
+  <div class="popup popup-edit" tabindex="-1">
     <div class="popup__wrapper">
-      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form action="index.html" method="post" name="profile" class="form">
-        <input type="text" name="name" required placeholder="Введите имя" value="" class="form__input"/>
-        <input name="occupation" placeholder="Введите род занятий" required type="text" class="form__input"/>
-        <input type="submit" value="Сохранить" class="form__button"/>
+      <form action="index.html" class="form" method="post" name="profile">
+        <input class="form__input" name="name" placeholder="Введите имя" required type="text" value=""/>
+        <input class="form__input" name="occupation" placeholder="Введите род занятий" required type="text"/>
+        <input class="form__button" type="submit" value="Сохранить"/>
       </form>
     </div>
   </div>
-  <div tabindex="-1" class="popup popup-add">
+  <div class="popup popup-add" tabindex="-1">
     <div class="popup__wrapper">
-      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form action="index.html" method="post" name="card" class="form">
-        <input type="text" name="title" required placeholder="Название" value="" class="form__input"/>
-        <input name="link" placeholder="Ссылка на картинку" required type="text" class="form__input"/>
-        <input type="submit" value="Создать" class="form__button"/>
+      <form action="index.html" class="form" method="post" name="card">
+        <input class="form__input" name="title" placeholder="Название" required type="text" value=""/>
+        <input class="form__input" name="link" placeholder="Ссылка на картинку" required type="text"/>
+        <input class="form__button" type="submit" value="Создать"/>
       </form>
     </div>
   </div>
-  <div tabindex="-1" class="popup popup_type_photo">
+  <div class="popup popup_type_photo" tabindex="-1">
     <div class="popup__wrapper popup__wrapper_type_photo">
-      <button class="button popup__close" type="button" aria-label="Закрыть"></button>
+      <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <figure class="popup__figure">
-        <img src="" alt="" class="popup__image">
+        <img alt="" class="popup__image" src="">
         <figcaption class="popup__figcaption"></figcaption>
       </figure>
     </div>
   </div>
 </main>
 <footer class="footer">
-  <a href="https://julfy-bs.github.io/portfolio/" target="_blank" class="link footer__copyright">
+  <a class="link footer__copyright" href="https://julfy-bs.github.io/portfolio/" target="_blank">
     &copy; 2020 Mesto Russia
   </a>
 </footer>
 <template id="card">
   <li class="feed__item">
-    <article class="card">
-      <button class="button card__delete" type="button" aria-label="Удалить"></button>
-      <img src=""
-           alt=""
-           class="card__image"/>
+    <article class="card" tabindex="0">
+      <button tabindex="-2" aria-label="Удалить" class="button card__delete" type="button"></button>
+      <img alt=""
+           class="card__image"
+           src=""/>
       <div class="card__footer">
         <h2 class="card__title"></h2>
-        <button class="button card__like" type="button" aria-label="Добавить отметку &#34;Понравилось&#34;"></button>
+        <button tabindex="-1" aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like" type="button"></button>
       </div>
     </article>
   </li>
