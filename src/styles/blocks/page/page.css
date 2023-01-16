@@ -8,10 +8,10 @@
   font-family: var(--font-family-base);
   font-size: 14px;
   font-weight: 400;
-  height: 100vh;
   line-height: 1.21;
   margin: 0 auto;
   max-width: 880px;
+  min-height: 100vh;
   min-width: 320px;
   padding-top: 28px;
   text-align: center;
