@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns="http://www.w3.org/1999/html">
 <head>
   <meta charset="UTF-8"/>
   <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
         name="viewport"/>
   <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
-  <title>Проект Место</title>
+  <title>Место Россия</title>
 </head>
 <body class="page">
 <header class="header">
@@ -29,10 +29,26 @@
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form action="index.html" class="form" method="post" name="profile">
-        <input class="form__input" name="name" placeholder="Введите имя" required type="text" value=""/>
-        <input class="form__input" name="occupation" placeholder="Введите род занятий" required type="text"/>
-        <input class="form__button" type="submit" value="Сохранить"/>
+      <form action="index.html" class="form" method="post" name="profile" novalidate>
+        <label class="form__label">
+          <input class="form__input"
+                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 maxlength="40"
+                 minlength="2" name="name" pattern="[a-zA-Zа-яА-ЯёЁ\-]+( [a-zA-Zа-яА-ЯёЁ\-]+)*"
+                 placeholder="Введите имя" required
+                 type="text"/>
+          <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
+        </label>
+        <label class="form__label">
+          <input autocomplete="off" class="form__input"
+                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 maxlength="200"
+                 minlength="2" name="occupation"
+                 pattern="[a-zA-Zа-яА-ЯёЁ\-]+( [a-zA-Zа-яА-ЯёЁ\-]+)*" placeholder="Введите род занятий" required
+                 type="text"/>
+          <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
+        </label>
+        <button class="form__button" type="submit">Сохранить</button>
       </form>
     </div>
   </div>
@@ -40,10 +56,25 @@
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form action="index.html" class="form" method="post" name="card">
-        <input class="form__input" name="title" placeholder="Название" required type="text" value=""/>
-        <input class="form__input" name="link" placeholder="Ссылка на картинку" required type="text"/>
-        <input class="form__button" type="submit" value="Создать"/>
+      <form action="index.html" class="form" method="post" name="card" novalidate>
+        <label class="form__label">
+          <input class="form__input"
+                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 maxlength="30"
+                 minlength="2" name="title"
+                 pattern="[a-zA-Zа-яА-ЯёЁ]+([\s|\-][a-zA-Zа-яА-ЯёЁ]+)*"
+                 placeholder="Название"
+                 required
+                 type="text"/>
+          <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
+        </label>
+        <label class="form__label">
+          <input class="form__input"
+                 name="link" placeholder="Ссылка на картинку" required
+                 type="url"/>
+          <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
+        </label>
+        <button class="form__button" type="submit">Создать</button>
       </form>
     </div>
   </div>
@@ -65,13 +96,14 @@
 <template id="card">
   <li class="feed__item">
     <article class="card" tabindex="0">
-      <button tabindex="-2" aria-label="Удалить" class="button card__delete" type="button"></button>
+      <button aria-label="Удалить" class="button card__delete" tabindex="-2" type="button"></button>
       <img alt=""
            class="card__image"
            src=""/>
       <div class="card__footer">
         <h2 class="card__title"></h2>
-        <button tabindex="-1" aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like" type="button"></button>
+        <button aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like" tabindex="-1"
+                type="button"></button>
       </div>
     </article>
   </li>
