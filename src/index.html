@@ -32,19 +32,19 @@
       <form action="index.html" class="form" method="post" name="profile" novalidate>
         <label class="form__label">
           <input class="form__input"
-                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 data-invalid-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
                  maxlength="40"
-                 minlength="2" name="name" pattern="[a-zA-Zа-яА-ЯёЁ\-]+( [a-zA-Zа-яА-ЯёЁ\-]+)*"
+                 minlength="2" name="name" pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
                  placeholder="Введите имя" required
                  type="text"/>
           <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
         </label>
         <label class="form__label">
           <input autocomplete="off" class="form__input"
-                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 data-invalid-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
                  maxlength="200"
                  minlength="2" name="occupation"
-                 pattern="[a-zA-Zа-яА-ЯёЁ\-]+( [a-zA-Zа-яА-ЯёЁ\-]+)*" placeholder="Введите род занятий" required
+                 pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+" placeholder="Введите род занятий" required
                  type="text"/>
           <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
         </label>
@@ -59,10 +59,10 @@
       <form action="index.html" class="form" method="post" name="card" novalidate>
         <label class="form__label">
           <input class="form__input"
-                 data-invalid-message="Разрешены только латинские и кириллические буквы. Слова могут быть разделены пробелом или дефисом."
+                 data-invalid-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
                  maxlength="30"
                  minlength="2" name="title"
-                 pattern="[a-zA-Zа-яА-ЯёЁ]+([\s|\-][a-zA-Zа-яА-ЯёЁ]+)*"
+                 pattern="[a-zA-Zа-яА-ЯёЁ\s\-]+"
                  placeholder="Название"
                  required
                  type="text"/>
