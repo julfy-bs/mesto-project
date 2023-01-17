@@ -1,8 +1,18 @@
-export const KEY = {
+const KEY = {
   ESCAPE: 'Escape'
 };
 
-export const PROFILE = {
+const VALIDATION = {
+  FORM_SELECTOR: '.form',
+  INPUT_SELECTOR: '.form__input',
+  BUTTON_SELECTOR: '.form__button',
+  ERROR_SELECTOR: '.form__error',
+  INPUT_ERROR_CLASS: 'form__input_type_error',
+  BUTTON_DISABLED_CLASS: 'form__button_type_disabled',
+  ERROR_ACTIVE_CLASS: 'form__error_active'
+};
+
+const PROFILE = {
   FORM: '.form',
   INPUT_NAME: '[name="name"]',
   INPUT_OCCUPATION: '[name="occupation"]',
@@ -12,7 +22,7 @@ export const PROFILE = {
   BUTTON_ADD: '.profile__add',
 };
 
-export const POPUP = {
+const POPUP = {
   CLASSNAME: 'popup',
   CLOSE_CLASSNAME: 'popup__close',
   ACTIVE_CLASS: 'popup_active',
@@ -27,7 +37,7 @@ export const POPUP = {
   INPUT_LINK: '[name="link"]'
 };
 
-export const CARD = {
+const CARD = {
   WRAPPER: '.feed__list',
   TEMPLATE: '#card',
   ITEM: '.feed__item',
@@ -38,4 +48,12 @@ export const CARD = {
   LIKE: '.card__like',
   LIKE_ACTIVE: 'card__like_active',
   DELETE: '.card__delete'
+};
+
+export {
+  CARD,
+  KEY,
+  POPUP,
+  PROFILE,
+  VALIDATION
 };

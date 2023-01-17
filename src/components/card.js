@@ -44,7 +44,7 @@ const setCardImage = (el, title, image) => {
   el.setAttribute('alt', title);
 };
 
-export const createCard = (title, image) => {
+const createCard = (title, image) => {
   const cardItem = cardTemplate.cloneNode(true);
   const card = cardItem.querySelector(CARD.ARTICLE);
   const cardImage = card.querySelector(CARD.IMAGE);
@@ -62,6 +62,11 @@ export const createCard = (title, image) => {
   return cardItem;
 };
 
-export const prependCard = (card) => {
+const prependCard = (card) => {
   cardsWrapper.prepend(card);
 };
+
+export {
+  createCard,
+  prependCard
+}

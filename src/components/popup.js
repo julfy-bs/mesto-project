@@ -14,7 +14,7 @@ const removeListenerHandler = (target) => {
   el.removeEventListener('mousedown', handlePopupMouseEvent);
 };
 
-export const closePopup = (el) => {
+const closePopup = (el) => {
   removePopupActiveClass(el);
   removeListenerHandler(el);
 };
@@ -35,9 +35,14 @@ const handlePopupKeyboardEvent = (e) => {
   }
 };
 
-export const openPopup = (el) => {
+const openPopup = (el) => {
   addPopupActiveClass(el);
   el.addEventListener('keydown', handlePopupKeyboardEvent);
   el.addEventListener('click', handlePopupMouseEvent);
   setTimeout(() => el.focus(), POPUP.ANIMATION_DURATION);
 };
+
+export {
+  closePopup,
+  openPopup
+}

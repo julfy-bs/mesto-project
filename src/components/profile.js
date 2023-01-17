@@ -53,9 +53,13 @@ const handleCloseAddProfileListener = (e) => {
   popupCardForm.reset();
 };
 
-export const addProfileListeners = () => {
+const addProfileListeners = () => {
   popupCardOpenButton.addEventListener('click', handleOpenAddProfileListener);
   popupCardForm.addEventListener('submit', handleCloseAddProfileListener);
   popupProfileOpenButton.addEventListener('click', handleOpenProfileListener);
   popupProfileForm.addEventListener('submit', handleCloseProfileListener);
 };
+
+export {
+  addProfileListeners
+}
