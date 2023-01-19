@@ -14,14 +14,14 @@ const hideInputError = (formElement, inputElement, errorElement, inputErrorClass
 
 const checkInputValidity = (formElement, inputElement, errorClass, inputErrorClass, errorActiveClass) => {
   const errorElement = inputElement.parentNode.querySelector(errorClass);
-  if(inputElement.validity.patternMismatch) {
-    inputElement.setCustomValidity(inputElement.dataset.invalidMessage)
-  }
-  if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, errorElement, inputElement.validationMessage, inputErrorClass, errorActiveClass);
-  } else {
-    hideInputError(formElement, inputElement, errorElement, inputErrorClass, errorActiveClass);
-  }
+
+  inputElement.validity.patternMismatch
+    ? inputElement.setCustomValidity(inputElement.dataset.invalidMessage)
+    : inputElement.setCustomValidity('');
+
+  !inputElement.validity.valid
+    ? showInputError(formElement, inputElement, errorElement, inputElement.validationMessage, inputErrorClass, errorActiveClass)
+    : hideInputError(formElement, inputElement, errorElement, inputErrorClass, errorActiveClass);
 };
 
 const hasInvalidInput = (inputsList) => {
@@ -51,6 +51,7 @@ const setFormEventListeners = (formElement, inputSelector, buttonSelector, error
   formElement.addEventListener('submit', () => {
     toggleButtonState(inputsList, buttonElement, buttonInactiveClass);
   });
+  /* При открытии попапа редактирования профиля кнопка неактивна. Это баг или фича? С одной стороны, сохранять нужно только новое значение, а с другой - инпуты ведь валидны, но сохранить нельзя. */
 };
 
 const enableValidation = (validationConfig) => {
