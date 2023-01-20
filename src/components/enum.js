@@ -14,6 +14,8 @@ const VALIDATION = {
 
 const PROFILE = {
   FORM: '.form',
+  FORM_PROFILE: 'profile',
+  FORM_CARD: 'card',
   INPUT_NAME: '[name="name"]',
   INPUT_OCCUPATION: '[name="occupation"]',
   CONTENT_NAME: '.profile__name',

@@ -8,7 +8,7 @@ const removePopupActiveClass = (el) => {
   el.classList.remove(POPUP.ACTIVE_CLASS);
 };
 
-const removeListenerHandler = (target) => {
+const removeListeners = (target) => {
   const el = target.closest('.popup');
   el.removeEventListener('keydown', handlePopupKeyboardEvent);
   el.removeEventListener('mousedown', handlePopupMouseEvent);
@@ -16,7 +16,7 @@ const removeListenerHandler = (target) => {
 
 const closePopup = (el) => {
   removePopupActiveClass(el);
-  removeListenerHandler(el);
+  removeListeners(el);
 };
 
 const handlePopupMouseEvent = (e) => {
@@ -29,8 +29,8 @@ const handlePopupMouseEvent = (e) => {
 };
 
 const handlePopupKeyboardEvent = (e) => {
-  const popup = e.target.closest('.popup');
   if (e.key === KEY.ESCAPE) {
+    const popup = e.target.closest('.popup');
     closePopup(popup);
   }
 };
@@ -45,4 +45,4 @@ const openPopup = (el) => {
 export {
   closePopup,
   openPopup
-}
+};

@@ -8,7 +8,7 @@
   position: relative;
 }
 
-@media (min-width: 880px) {
+@media (min-width: 480px) {
   .popup__wrapper {
     min-width: 430px;
     padding: 34px 36px 37px;

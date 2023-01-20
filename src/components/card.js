@@ -17,19 +17,14 @@ const toggleLike = (el) => {
   }
 };
 
-const handleLikeButtonListener = (e) => toggleLike(e.target);
+const handleLikeButton = (element) => toggleLike(element);
 
-const handleDeleteButtonListener = (e) => {
-  const cardItem = e.target.closest(CARD.ITEM);
+const handleDeleteButton = (cardItem) => {
   if (cardItem.classList.contains(CARD.ITEM_CLASSNAME)) cardItem.remove();
 };
 
-const handlePhotoOverlayListener = (e) => {
-  const cardImage = e.target;
-  const cardTitle = cardImage.parentNode.querySelector(CARD.TITLE);
-
+const handlePhotoOverlay = (cardImage, cardTitle) => {
   openPopup(popupPhoto);
-
   popupTitle.textContent = cardTitle.textContent;
   popupImage.setAttribute('src', cardImage.getAttribute('src'));
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
@@ -55,9 +50,9 @@ const createCard = (title, image) => {
   setCardName(cardTitle, title);
   setCardImage(cardImage, title, image);
 
-  cardLike.addEventListener('click', handleLikeButtonListener);
-  cardDelete.addEventListener('click', handleDeleteButtonListener);
-  cardImage.addEventListener('click', handlePhotoOverlayListener);
+  cardLike.addEventListener('click', () => handleLikeButton(cardLike));
+  cardDelete.addEventListener('click', () => handleDeleteButton(cardItem));
+  cardImage.addEventListener('click', () => handlePhotoOverlay(cardImage, cardTitle));
 
   return cardItem;
 };
