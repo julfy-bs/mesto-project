@@ -1,19 +1,19 @@
 import { closePopup, openPopup } from './popup.js';
 import { createCard, prependCard } from './card.js';
-import { PROFILE, POPUP, VALIDATION } from './enum.js';
-import { toggleButtonState } from './utils.js';
+import { PROFILE, POPUP } from './enum.js';
 
-
-const popupProfileForm = document.forms[PROFILE.FORM_PROFILE];
-const popupProfileNameInput = popupProfileForm.querySelector(PROFILE.INPUT_NAME);
+const profilePopup = document.querySelector(POPUP.PROFILE);
 const profileNameContent = document.querySelector(PROFILE.CONTENT_NAME);
-const popupProfileOccupationInput = popupProfileForm.querySelector(PROFILE.INPUT_OCCUPATION);
 const profileOccupationContent = document.querySelector(PROFILE.CONTENT_OCCUPATION);
-const popupProfileOpenButton = document.querySelector(PROFILE.BUTTON_EDIT);
-const popupCardOpenButton = document.querySelector(PROFILE.BUTTON_ADD);
-const popupCardForm = document.forms[PROFILE.FORM_CARD];
-const popupCardTitleInput = popupCardForm.querySelector(POPUP.INPUT_TITLE);
-const popupCardLinkInput = popupCardForm.querySelector(POPUP.INPUT_LINK);
+const profilePopupOpenButton = document.querySelector(PROFILE.BUTTON_EDIT);
+const profilePopupForm = document.forms[PROFILE.FORM_PROFILE];
+const profilePopupNameInput = profilePopupForm.querySelector(PROFILE.INPUT_NAME);
+const profilePopupOccupationInput = profilePopupForm.querySelector(PROFILE.INPUT_OCCUPATION);
+const cardPopup = document.querySelector(POPUP.CARD);
+const cardPopupOpenButton = document.querySelector(PROFILE.BUTTON_ADD);
+const cardPopupForm = document.forms[PROFILE.FORM_CARD];
+const cardPopupTitleInput = cardPopupForm.querySelector(POPUP.INPUT_TITLE);
+const cardPopupLinkInput = cardPopupForm.querySelector(POPUP.INPUT_LINK);
 
 const setForm = (el, title) => {
   el.value = title.textContent;
@@ -24,48 +24,39 @@ const setProfile = (el, title) => {
 };
 
 const handleOpenProfile = () => {
-  const popupProfile = document.querySelector(POPUP.EDIT);
-  openPopup(popupProfile);
-  setForm(popupProfileNameInput, profileNameContent);
-  setForm(popupProfileOccupationInput, profileOccupationContent);
+  openPopup(profilePopup);
+  setForm(profilePopupNameInput, profileNameContent);
+  setForm(profilePopupOccupationInput, profileOccupationContent);
 };
 
 const handleProfileFormSubmit = (e) => {
   e.preventDefault();
-  setProfile(profileNameContent, popupProfileNameInput);
-  setProfile(profileOccupationContent, popupProfileOccupationInput);
-  const popup = e.target.closest('.popup')
-  closePopup(popup);
+  setProfile(profileNameContent, profilePopupNameInput);
+  setProfile(profileOccupationContent, profilePopupOccupationInput);
+  closePopup(profilePopup);
 };
 
 const handleCardPopupOpenButton = () => {
-  const popupCard = document.querySelector(POPUP.ADD);
-  openPopup(popupCard);
+  openPopup(cardPopup);
 };
 
 const handleCardFormSubmit = (e) => {
   e.preventDefault();
-
   const card = {
-    title: popupCardTitleInput.value,
-    image: popupCardLinkInput.value
+    title: cardPopupTitleInput.value,
+    image: cardPopupLinkInput.value
   };
   const cardClone = createCard(card.title, card.image);
   prependCard(cardClone);
-  const popup = e.target.closest('.popup')
-  closePopup(popup);
-
-  popupCardForm.reset();
-  const cardInputsList = Array.from(popupCardForm.querySelectorAll(VALIDATION.INPUT_SELECTOR));
-  const cardSubmitButton = popupCardForm.querySelector(VALIDATION.BUTTON_SELECTOR);
-  toggleButtonState(cardInputsList, cardSubmitButton, VALIDATION.BUTTON_DISABLED_CLASS);
+  closePopup(cardPopup);
+  cardPopupForm.reset();
 };
 
 const addProfileListeners = () => {
-  popupCardOpenButton.addEventListener('click', () => handleCardPopupOpenButton());
-  popupCardForm.addEventListener('submit', (e) => handleCardFormSubmit(e));
-  popupProfileOpenButton.addEventListener('click', () => handleOpenProfile());
-  popupProfileForm.addEventListener('submit', (e) => handleProfileFormSubmit(e));
+  cardPopupOpenButton.addEventListener('click', () => handleCardPopupOpenButton());
+  cardPopupForm.addEventListener('submit', (e) => handleCardFormSubmit(e));
+  profilePopupOpenButton.addEventListener('click', () => handleOpenProfile());
+  profilePopupForm.addEventListener('submit', (e) => handleProfileFormSubmit(e));
 };
 
 export {
