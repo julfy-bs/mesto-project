@@ -1,3 +1,5 @@
+import { toggleButtonState } from './utils.js';
+
 const showInputError = (formElement, inputElement, errorElement, errorMessage, inputErrorClass, errorActiveClass) => {
   errorElement.textContent = errorMessage;
   errorElement.classList.add(errorActiveClass);
@@ -24,20 +26,6 @@ const checkInputValidity = (formElement, inputElement, errorClass, inputErrorCla
     : hideInputError(formElement, inputElement, errorElement, inputErrorClass, errorActiveClass);
 };
 
-const hasInvalidInput = (inputsList) => {
-  return inputsList.some(inputElement => !inputElement.validity.valid);
-};
-
-const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
-  if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add(inactiveButtonClass);
-    buttonElement.setAttribute('disabled', 'disabled');
-  } else {
-    buttonElement.classList.remove(inactiveButtonClass);
-    buttonElement.removeAttribute('disabled', 'disabled');
-  }
-};
-
 const setFormEventListeners = (formElement, inputSelector, buttonSelector, errorSelector, inputErrorClass, buttonInactiveClass, errorActiveClass) => {
   const inputsList = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(buttonSelector);
@@ -48,10 +36,6 @@ const setFormEventListeners = (formElement, inputSelector, buttonSelector, error
       toggleButtonState(inputsList, buttonElement, buttonInactiveClass);
     });
   });
-  formElement.addEventListener('submit', () => {
-    toggleButtonState(inputsList, buttonElement, buttonInactiveClass);
-  });
-  /* При открытии попапа редактирования профиля кнопка неактивна. Это баг или фича? С одной стороны, сохранять нужно только новое значение, а с другой - инпуты ведь валидны, но сохранить нельзя. */
 };
 
 const enableValidation = (validationConfig) => {
