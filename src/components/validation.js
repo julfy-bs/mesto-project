@@ -1,5 +1,3 @@
-import { toggleButtonState } from './utils.js';
-
 const showInputError = (formElement, inputElement, errorElement, errorMessage, inputErrorClass, errorActiveClass) => {
   errorElement.textContent = errorMessage;
   errorElement.classList.add(errorActiveClass);
@@ -26,6 +24,21 @@ const checkInputValidity = (formElement, inputElement, errorClass, inputErrorCla
     : hideInputError(formElement, inputElement, errorElement, inputErrorClass, errorActiveClass);
 };
 
+// Совет по выносу логики блокировки кнопки в функцию взаимодействия с закрытием попапа дал наставник со словами "подстраивать код под логику, а не наоборот. 😊"
+const hasInvalidInput = (inputsList) => {
+  return inputsList.some(inputElement => !inputElement.validity.valid);
+};
+
+const toggleButtonState = (inputList, buttonElement, inactiveButtonClass) => {
+  if (hasInvalidInput(inputList)) {
+    buttonElement.classList.add(inactiveButtonClass);
+    buttonElement.setAttribute('disabled', 'disabled');
+  } else {
+    buttonElement.classList.remove(inactiveButtonClass);
+    buttonElement.removeAttribute('disabled', 'disabled');
+  }
+};
+
 const setFormEventListeners = (formElement, inputSelector, buttonSelector, errorSelector, inputErrorClass, buttonInactiveClass, errorActiveClass) => {
   const inputsList = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(buttonSelector);
@@ -35,6 +48,9 @@ const setFormEventListeners = (formElement, inputSelector, buttonSelector, error
       checkInputValidity(formElement, inputElement, errorSelector, inputErrorClass, errorActiveClass);
       toggleButtonState(inputsList, buttonElement, buttonInactiveClass);
     });
+  });
+  formElement.addEventListener('reset', () => {
+    setTimeout(() => toggleButtonState(inputsList, buttonElement, buttonInactiveClass), 0);
   });
 };
 

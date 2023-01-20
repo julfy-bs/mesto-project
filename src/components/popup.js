@@ -38,7 +38,7 @@ const handlePopupKeyboardEvent = (e) => {
 const openPopup = (el) => {
   addPopupActiveClass(el);
   el.addEventListener('keydown', handlePopupKeyboardEvent);
-  el.addEventListener('click', handlePopupMouseEvent);
+  el.addEventListener('mousedown', handlePopupMouseEvent);
   setTimeout(() => el.focus(), POPUP.ANIMATION_DURATION);
 };
 
