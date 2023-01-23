@@ -13,8 +13,10 @@
 </header>
 <main class="page__content">
   <section class="profile">
-    <img alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar"
-         src="<%=require('./images/profile-image.jpg')%>"/>
+    <div class="profile__avatar">
+      <img alt="Пожилой мужчина в красной шапке улыбается." class="profile__image"
+           src="<%=require('./images/profile-image.jpg')%>"/>
+    </div>
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
@@ -102,8 +104,9 @@
            src=""/>
       <div class="card__footer">
         <h2 class="card__title"></h2>
-        <button aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like" tabindex="-1"
+        <button aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like-button" tabindex="-1"
                 type="button"></button>
+        <span class="card__like-number">0</span>
       </div>
     </article>
   </li>

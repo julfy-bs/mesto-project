@@ -24,7 +24,6 @@ const checkInputValidity = (formElement, inputElement, errorClass, inputErrorCla
     : hideInputError(formElement, inputElement, errorElement, inputErrorClass, errorActiveClass);
 };
 
-// Совет по выносу логики блокировки кнопки в функцию взаимодействия с закрытием попапа дал наставник со словами "подстраивать код под логику, а не наоборот. 😊"
 const hasInvalidInput = (inputsList) => {
   return inputsList.some(inputElement => !inputElement.validity.valid);
 };

@@ -1,9 +1,15 @@
 import './styles/pages/index.css';
 import { initialArray } from './components/initialArray.js';
-import { VALIDATION } from './components/enum.js';
+import { VALIDATION, PROFILE } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
-import { addProfileListeners } from './components/profile.js';
+import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
+import { getUser, getCards } from './components/api.js';
+
+const profileAvatar = document.querySelector(PROFILE.CONTENT_AVATAR);
+const profileName = document.querySelector(PROFILE.CONTENT_NAME);
+const profileOccupation = document.querySelector(PROFILE.CONTENT_OCCUPATION);
+let userId;
 
 addProfileListeners();
 
@@ -17,9 +23,31 @@ enableValidation({
   errorActiveClass: VALIDATION.ERROR_ACTIVE_CLASS
 });
 
+/* TODO:
+1. loader
+* */
 
 
-initialArray.forEach(card => {
-  const cardClone = createCard(card.title, card.image);
-  prependCard(cardClone);
+// initialArray.forEach(card => {
+//   const cardClone = createCard(card.title, card.image);
+//   prependCard(cardClone);
+// });
+
+document.addEventListener('DOMContentLoaded', () => {
+  getUser()
+    .then((user) => {
+      setProfileAvatar(user.avatar);
+      setProfileName(user.name);
+      setProfileOccupation(user.about);
+      userId = user._id;
+    });
+  getCards()
+    .then((cards) => {
+      cards
+        .reverse()
+        .forEach(card => {
+          const cardClone = createCard(card, userId);
+          prependCard(cardClone);
+        });
+    });
 });
