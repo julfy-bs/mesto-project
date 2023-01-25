@@ -1,12 +1,14 @@
 import { openPopup } from './popup.js';
 import { POPUP, CARD } from './enum.js';
-import { removeCard, toggleCardLike } from './api.js';
+import { addCardLike, deleteCardLike, removeCard } from './api.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
 const popupPhoto = document.querySelector(POPUP.PHOTO);
 const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
+let hasOwnerLike;
+const cards = [];
 
 const addLikeActiveClass = (el) => {
   el.classList.add(CARD.LIKE_BUTTON_ACTIVE);
@@ -19,44 +21,100 @@ const removeLikeActiveClass = (el) => {
 };
 
 const toggleLike = (el, hasActiveClass) => {
-  !hasActiveClass
-    ? addLikeActiveClass(el)
-    : removeLikeActiveClass(el);
+  switch (hasActiveClass) {
+    case true:
+      removeLikeActiveClass(el);
+      break;
+    case false:
+      addLikeActiveClass(el);
+      break;
+  }
+};
+
+const checkLikeButtonActiveClass = (el) => {
+  return el.classList.contains(CARD.LIKE_BUTTON_ACTIVE);
 };
 
 const setCardLikes = (button, number, value = 0) => {
-  if (value === 0) {
-    button.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
-    number.textContent = '';
-  } else {
-    button.classList.add(CARD.LIKE_BUTTON_IS_LIKED);
-    number.textContent = value;
+  if (typeof value !== 'number') console.error('Значение количества лайков карточки должно быть числом');
+  switch (value) {
+    case 0:
+      button.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
+      number.textContent = '';
+      break;
+    default:
+      button.classList.add(CARD.LIKE_BUTTON_IS_LIKED);
+      number.textContent = value;
+      break;
   }
 };
 
-const checkOwnersLike = (likesArray, userId) => {
-  let result;
-  if (likesArray.length === 0) {
-    result = false;
-  }
-  if (likesArray.length > 0) {
-    result = likesArray.some(like => like._id === userId);
-  }
-  console.log(result, likesArray);
-  return result;
+const getCardLikes = (el) => {
+  return Number(el.textContent);
 };
 
-const handleLikeButton = (button, number, id, hasOwnerLike, userId) => {
-  toggleCardLike(id, hasOwnerLike)
-    .then((res) => {
-      let value = +number.textContent;
-      const hasActiveClass = button.classList.contains(CARD.LIKE_BUTTON_ACTIVE);
-      hasActiveClass ? value-- : value++;
-      toggleLike(button, hasActiveClass);
-      setCardLikes(button, number, value);
-      checkOwnersLike(res.likes, userId);
-    })
-    .catch((error) => console.error(`Ошибка ${error.status} лайка карточки: ${error.statusText}`));
+const increaseCardLikes = (button, number, value) => {
+  const increasedValue = value + 1;
+  typeof value !== 'number'
+    ? console.error('Значение количества лайков карточки должно быть числом')
+    : setCardLikes(button, number, increasedValue);
+};
+
+const decreaseCardLikes = (button, number, value) => {
+  const decreasedValue = value - 1;
+  typeof value !== 'number'
+    ? console.error('Значение количества лайков карточки должно быть числом')
+    : setCardLikes(button, number, decreasedValue);
+};
+
+const updateOwnersLike = (likesArray, userId) => {
+  switch (likesArray.length) {
+    case 0:
+      hasOwnerLike = false;
+      // console.log(hasOwnerLike, likesArray.length);
+      break;
+    default:
+      hasOwnerLike = likesArray.some(like => like._id === userId);
+      // console.log(hasOwnerLike, likesArray.length);
+      break;
+  }
+  likesArray;
+};
+
+const findCurrentCard = (id) => {
+  return cards.find(card => card._id === id);
+};
+
+const handleLikeButton = (button, number, id, initialLikes, userId) => {
+  const current = findCurrentCard(id);
+  updateOwnersLike(current.likes, userId);
+  switch (hasOwnerLike) {
+    case true:
+      deleteCardLike(id)
+        .then((res) => {
+          updateOwnersLike(res.likes, userId);
+          /*
+            Понимаю, что решение перезаписывать исходный массив не лучшее, но я не понимаю как еще можно хранить информацию каждой карточки без ооп.
+            +
+            Не получается исправить баг: при множественном нажатии на лайк, состояние лайка не всегда отправляется на сервер.
+          */
+          current.likes = res.likes;
+        })
+        .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`));
+      break;
+    case false:
+      addCardLike(id)
+        .then((res) => {
+          updateOwnersLike(res.likes, userId);
+          current.likes = res.likes;
+        })
+        .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`));
+      break;
+  }
+  const value = getCardLikes(number);
+  const hasActiveClass = checkLikeButtonActiveClass(button);
+  hasActiveClass ? decreaseCardLikes(button, number, value) : increaseCardLikes(button, number, value);
+  toggleLike(button, hasActiveClass);
 };
 
 const handleDeleteButton = (cardItem, cardId) => {
@@ -89,17 +147,20 @@ const createCard = (card, userId) => {
   const cardLikeNumber = cardArticle.querySelector(CARD.LIKE_NUMBER);
   const cardLikeButton = cardArticle.querySelector(CARD.LIKE_BUTTON);
   const cardDelete = cardArticle.querySelector(CARD.DELETE);
-  const likesCount = card.likes.length > 0 ? card.likes.length : 0;
-  let hasOwnerLike = checkOwnersLike(card.likes, userId);
+  const cardLikesDefaultValue = 0;
+  const likesCount = card.likes.length > 0 ? card.likes.length : cardLikesDefaultValue;
 
+  cards.push(card);
 
-
+  updateOwnersLike(card.likes, userId);
   setCardName(cardTitle, card.name);
   setCardImage(cardImage, card.name, card.link);
   setCardLikes(cardLikeButton, cardLikeNumber, likesCount);
-  hasOwnerLike ? addLikeActiveClass(cardLikeButton) : removeLikeActiveClass(cardLikeButton);
+  hasOwnerLike
+    ? addLikeActiveClass(cardLikeButton)
+    : removeLikeActiveClass(cardLikeButton);
 
-  cardLikeButton.addEventListener('click', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, hasOwnerLike, userId));
+  cardLikeButton.addEventListener('click', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
 
   card.owner._id === userId
     ? cardDelete.addEventListener('click', () => handleDeleteButton(cardItem, card._id))

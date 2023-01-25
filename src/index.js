@@ -9,7 +9,7 @@ import { getUser, getCards } from './components/api.js';
 const profileAvatar = document.querySelector(PROFILE.CONTENT_AVATAR);
 const profileName = document.querySelector(PROFILE.CONTENT_NAME);
 const profileOccupation = document.querySelector(PROFILE.CONTENT_OCCUPATION);
-let userId;
+let userId = localStorage.getItem('userId') || null;
 
 addProfileListeners();
 
@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
       setProfileName(user.name);
       setProfileOccupation(user.about);
       userId = user._id;
+      localStorage.setItem('userId', userId);
     });
   getCards()
     .then((cards) => {

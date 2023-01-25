@@ -14,7 +14,7 @@ const getJson = (res) => {
 };
 
 const logJson = (res) => {
-  console.log(res);
+  // console.log(res);
   return res;
 };
 
@@ -35,7 +35,7 @@ const updateUser = ({ name, about }) => {
       name,
       about
     })
-  }).then((res) => getJson(res)).then(logJson);
+  }).then((res) => getJson(res));
 };
 
 const addCard = ({ name, link }) => {
@@ -46,21 +46,28 @@ const addCard = ({ name, link }) => {
       name,
       link
     })
-  }).then((res) => getJson(res)).then(logJson);
+  }).then((res) => getJson(res));
 };
 
 const removeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
-  }).then((res) => getJson(res)).then(logJson);
+  }).then((res) => getJson(res));
 };
 
-const toggleCardLike = (cardId, hasOwnerLike) => {
+const deleteCardLike = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: hasOwnerLike ? 'DELETE' : 'PUT',
+    method: 'DELETE',
     headers: config.headers
-  }).then((res) => getJson(res)).then(logJson);
+  }).then((res) => getJson(res));
+};
+
+const addCardLike = (cardId) => {
+  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
+    method: 'PUT',
+    headers: config.headers
+  }).then((res) => getJson(res));
 };
 
 export {
@@ -69,5 +76,6 @@ export {
   updateUser,
   addCard,
   removeCard,
-  toggleCardLike
+  deleteCardLike,
+  addCardLike
 };
