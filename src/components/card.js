@@ -1,9 +1,11 @@
-import { openPopup } from './popup.js';
+import { closePopup, openPopup } from './popup.js';
 import { POPUP, CARD } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
+const popupDelete = document.querySelector(POPUP.DELETE);
+const popupDeleteForm = popupDelete.querySelector(POPUP.FORM);
 const popupPhoto = document.querySelector(POPUP.PHOTO);
 const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
@@ -117,10 +119,17 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
   toggleLike(button, hasActiveClass);
 };
 
-const handleDeleteButton = (cardItem, cardId) => {
+const handleDeleteButton = () => {
+  openPopup(popupDelete);
+};
+
+const handleDeleteForm = (e, cardDeleteButton, cardId) => {
+  e.preventDefault();
+  const cardElement = cardDeleteButton.closest(CARD.ITEM);
   removeCard(cardId)
-    .then(() => cardItem.remove())
-    .catch((error) => console.error(`Ошибка ${error.status} лайка карточки: ${error.statusText}`));
+    .then(() => cardElement.remove())
+    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`));
+  closePopup(popupDelete);
 };
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
@@ -163,7 +172,10 @@ const createCard = (card, userId) => {
   cardLikeButton.addEventListener('click', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
 
   card.owner._id === userId
-    ? cardDelete.addEventListener('click', () => handleDeleteButton(cardItem, card._id))
+    ? cardDelete.addEventListener('click', () => {
+      handleDeleteButton();
+      popupDeleteForm.addEventListener('submit', (e) => handleDeleteForm(e, cardDelete, card._id));
+    })
     : cardDelete.remove();
 
   cardImage.addEventListener('click', () => handlePhotoOverlay(cardImage, cardTitle));

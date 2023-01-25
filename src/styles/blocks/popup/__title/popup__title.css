@@ -13,4 +13,8 @@
     line-height: 1.2;
     margin: 0 0 47px;
   }
+
+  .popup_type_delete .popup__title {
+    margin-bottom: 30px;
+  }
 }

@@ -69,10 +69,11 @@ const handleCardFormSubmit = (e) => {
   };
   addCard(card)
     .then((card) => {
-      const cardClone = createCard(card.name, card.link);
+      const cardClone = createCard(card, card.owner._id);
       prependCard(cardClone);
     })
     .catch((error) => {
+      console.log(error);
       console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`);
     });
   closePopup(cardPopup);

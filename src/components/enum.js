@@ -33,6 +33,7 @@ const POPUP = {
   PROFILE: '.popup_type_edit',
   CARD: '.popup_type_add',
   PHOTO: '.popup_type_photo',
+  DELETE: '.popup_type_delete',
   IMAGE: '.popup__image',
   TITLE: '.popup__figcaption',
   FORM: '.form',
