@@ -20,6 +20,7 @@ const PROFILE = {
   INPUT_OCCUPATION: '[name="occupation"]',
   CONTENT_NAME: '.profile__name',
   CONTENT_OCCUPATION: '.profile__occupation',
+  CONTENT_AVATAR: '.profile__image',
   BUTTON_EDIT: '.profile__edit',
   BUTTON_ADD: '.profile__add',
 };
@@ -47,8 +48,10 @@ const CARD = {
   ARTICLE: '.card',
   IMAGE: '.card__image',
   TITLE: '.card__title',
-  LIKE: '.card__like',
-  LIKE_ACTIVE: 'card__like_active',
+  LIKE_BUTTON: '.card__like-button',
+  LIKE_NUMBER: '.card__like-number',
+  LIKE_BUTTON_ACTIVE: 'card__like-button_active',
+  LIKE_BUTTON_IS_LIKED: 'card__like-button_liked_true',
   DELETE: '.card__delete'
 };
 
