@@ -1,7 +1,8 @@
 .card__image {
+  aspect-ratio: 1;
   display: block;
   filter: brightness(85%);
-  height: 282px;
+  min-height: 282px;
   object-fit: cover;
   object-position: center;
   transition: filter .5s ease;
