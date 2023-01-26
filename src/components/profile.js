@@ -1,4 +1,4 @@
-import { closePopup, openPopup } from './popup.js';
+import { changeButtonText, closePopup, openPopup } from './popup.js';
 import { createCard, prependCard } from './card.js';
 import { PROFILE, POPUP } from './enum.js';
 import { updateUser, addCard, updateUserAvatar } from './api.js';
@@ -38,19 +38,22 @@ const setProfileOccupation = (occupation) => {
   profileOccupation.textContent = occupation;
 };
 
-const handleOpenAvatar = (e) => {
+const handleOpenAvatar = () => {
   openPopup(avatarPopup);
 };
 
 const handleAvatarFormSubmit = (e) => {
   e.preventDefault();
+  changeButtonText(avatarPopupForm);
   const avatar = avatarPopupLinkInput.value;
   updateUserAvatar(avatar)
     .then((res) => {
       setProfileAvatar(res.avatar);
     })
+    .catch((error) => console.error(`Ошибка ${error.status} изменения аватара пользователя: ${error.statusText}`))
     .finally(() => {
       avatarPopupForm.reset();
+      changeButtonText(avatarPopupForm, POPUP.BUTTON_TEXT_SAVE);
       closePopup(avatarPopup);
     });
 };
@@ -62,6 +65,7 @@ const handleOpenProfile = () => {
 
 const handleProfileFormSubmit = (e) => {
   e.preventDefault();
+  changeButtonText(profilePopupForm);
   setProfileName(profilePopupNameInput.value);
   setProfileOccupation(profilePopupOccupationInput.value);
   const user = { name: profilePopupNameInput.value, about: profilePopupOccupationInput.value };
@@ -70,12 +74,12 @@ const handleProfileFormSubmit = (e) => {
       setProfileName(user.name);
       setProfileOccupation(user.about);
     })
-    .catch((error) => {
-      console.error(
-        `Ошибка ${error.status} редактирования профиля: ${error.statusText}`
-      );
+    .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`))
+    .finally(() => {
+      profilePopupForm.reset();
+      changeButtonText(profilePopupForm, POPUP.BUTTON_TEXT_SAVE);
+      closePopup(profilePopup);
     });
-  closePopup(profilePopup);
 };
 
 const handleCardPopupOpenButton = () => {
@@ -84,6 +88,7 @@ const handleCardPopupOpenButton = () => {
 
 const handleCardFormSubmit = (e) => {
   e.preventDefault();
+  changeButtonText(cardPopupForm);
   const card = {
     name: cardPopupTitleInput.value,
     link: cardPopupLinkInput.value
@@ -96,9 +101,12 @@ const handleCardFormSubmit = (e) => {
     .catch((error) => {
       console.log(error);
       console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`);
+    })
+    .finally(() => {
+      cardPopupForm.reset();
+      changeButtonText(cardPopupForm, POPUP.BUTTON_TEXT_CREATE);
+      closePopup(cardPopup);
     });
-  closePopup(cardPopup);
-  cardPopupForm.reset();
 };
 
 const addProfileListeners = () => {
@@ -106,7 +114,7 @@ const addProfileListeners = () => {
   cardPopupForm.addEventListener('submit', (e) => handleCardFormSubmit(e));
   profilePopupOpenButton.addEventListener('mousedown', () => handleOpenProfile());
   profilePopupForm.addEventListener('submit', (e) => handleProfileFormSubmit(e));
-  avatarPopupOpenButton.addEventListener('mousedown', (e) => handleOpenAvatar(e));
+  avatarPopupOpenButton.addEventListener('mousedown', () => handleOpenAvatar());
   avatarPopupForm.addEventListener('submit', (e) => handleAvatarFormSubmit(e));
 };
 

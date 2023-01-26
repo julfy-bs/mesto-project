@@ -1,14 +1,10 @@
 import './styles/pages/index.css';
-import { initialArray } from './components/initialArray.js';
-import { VALIDATION, PROFILE } from './components/enum.js';
+import { VALIDATION } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
 import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
 import { getUser, getCards } from './components/api.js';
 
-const profileAvatar = document.querySelector(PROFILE.CONTENT_AVATAR);
-const profileName = document.querySelector(PROFILE.CONTENT_NAME);
-const profileOccupation = document.querySelector(PROFILE.CONTENT_OCCUPATION);
 let userId = localStorage.getItem('userId') || null;
 
 addProfileListeners();
@@ -26,12 +22,6 @@ enableValidation({
 /* TODO:
 1. loader
 * */
-
-
-// initialArray.forEach(card => {
-//   const cardClone = createCard(card.title, card.image);
-//   prependCard(cardClone);
-// });
 
 document.addEventListener('DOMContentLoaded', () => {
   getUser()
