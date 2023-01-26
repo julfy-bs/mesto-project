@@ -8,24 +8,25 @@ const config = {
 
 
 const getJson = (res) => {
+  console.log(res);
   return res.ok
     ? res.json()
-    : Promise.reject({ status: res.status, statusText: res.statusText });
+    : Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
 };
-
-const logJson = (res) => {
-  // console.log(res);
-  return res;
-};
-
 
 const getUser = () => fetch(`${config.baseUrl}/users/me`, {
   headers: config.headers,
-}).then((res) => getJson(res));
+})
+  .then((res) => getJson(res))
+  .catch((error) => console.error(`Ошибка ${error.status} получения информации о пользователе. ${error.statusText}`));
+
 
 const getCards = () => fetch(`${config.baseUrl}/cards`, {
   headers: config.headers,
-}).then((res) => getJson(res)).then(logJson);
+})
+  .then((res) => getJson(res))
+  .catch((error) => console.error(`Ошибка ${error.status} получения информации о карточках. ${error.statusText}`));
+
 
 const updateUser = ({ name, about }) => {
   return fetch(`${config.baseUrl}/users/me`, {
@@ -35,7 +36,9 @@ const updateUser = ({ name, about }) => {
       name,
       about
     })
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} обновления информации пользователя. ${error.statusText}`));
 };
 
 const updateUserAvatar = (avatar) => {
@@ -45,7 +48,9 @@ const updateUserAvatar = (avatar) => {
     body: JSON.stringify({
       avatar
     })
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} обновления аватара пользователя. ${error.statusText}`));
 };
 
 const addCard = ({ name, link }) => {
@@ -56,28 +61,37 @@ const addCard = ({ name, link }) => {
       name,
       link
     })
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} добавления карточки. ${error.statusText}`));
+
 };
 
 const removeCard = (cardId) => {
   return fetch(`${config.baseUrl}/cards/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки. ${error.statusText}`));
 };
 
 const deleteCardLike = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'DELETE',
     headers: config.headers
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки. ${error.statusText}`));
 };
 
 const addCardLike = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
     headers: config.headers,
-  }).then((res) => getJson(res));
+  })
+    .then((res) => getJson(res))
+    .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки. ${error.statusText}`));
 };
 
 export {
