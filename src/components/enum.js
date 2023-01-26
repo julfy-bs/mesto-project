@@ -42,7 +42,10 @@ const POPUP = {
   TITLE: '.popup__figcaption',
   FORM: '.form',
   INPUT_TITLE: '[name="title"]',
-  INPUT_LINK: '[name="link"]'
+  INPUT_LINK: '[name="link"]',
+  BUTTON_TEXT_SAVE: 'Сохранить',
+  BUTTON_TEXT_CREATE: 'Создать',
+  BUTTON_TEXT_SAVING: 'Сохранение...',
 };
 
 const CARD = {

@@ -1,4 +1,4 @@
-import { closePopup, openPopup } from './popup.js';
+import { changeButtonText, closePopup, openPopup } from './popup.js';
 import { POPUP, CARD } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 
@@ -73,14 +73,11 @@ const updateOwnersLike = (likesArray, userId) => {
   switch (likesArray.length) {
     case 0:
       hasOwnerLike = false;
-      // console.log(hasOwnerLike, likesArray.length);
       break;
     default:
       hasOwnerLike = likesArray.some(like => like._id === userId);
-      // console.log(hasOwnerLike, likesArray.length);
       break;
   }
-  likesArray;
 };
 
 const findCurrentCard = (id) => {
@@ -125,11 +122,16 @@ const handleDeleteButton = () => {
 
 const handleDeleteForm = (e, cardDeleteButton, cardId) => {
   e.preventDefault();
+  changeButtonText(popupDeleteForm);
   const cardElement = cardDeleteButton.closest(CARD.ITEM);
   removeCard(cardId)
     .then(() => cardElement.remove())
-    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`));
-  closePopup(popupDelete);
+    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
+    .finally(() => {
+      popupDeleteForm.reset();
+      changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
+      closePopup(popupDelete);
+    });
 };
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
