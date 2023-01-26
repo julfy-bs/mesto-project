@@ -1,4 +1,4 @@
-import { KEY, POPUP } from './enum.js';
+import { KEY, POPUP, VALIDATION } from './enum.js';
 
 const addPopupActiveClass = (el) => {
   el.classList.add(POPUP.ACTIVE_CLASS);
@@ -23,9 +23,7 @@ const handlePopupMouseEvent = (e) => {
   const popup = e.target.closest('.popup');
   const closeCondition = e.target.classList.contains(POPUP.CLASSNAME)
     || e.target.classList.contains(POPUP.CLOSE_CLASSNAME);
-  if (closeCondition) {
-    closePopup(popup);
-  }
+  if (closeCondition) closePopup(popup);
 };
 
 const handlePopupKeyboardEvent = (e) => {
@@ -42,7 +40,15 @@ const openPopup = (el) => {
   setTimeout(() => el.focus(), POPUP.ANIMATION_DURATION);
 };
 
+const changeButtonText = (form, text = POPUP.BUTTON_TEXT_SAVING) => {
+  const submitButtonText = form.querySelector(VALIDATION.BUTTON_SELECTOR);
+  submitButtonText.textContent = text;
+  // const loadingEllipsis = button.querySelector();
+  // loadingEllipsis.classList.remove(ellipsisClass);
+}
+
 export {
   closePopup,
-  openPopup
+  openPopup,
+  changeButtonText
 };

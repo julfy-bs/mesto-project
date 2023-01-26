@@ -13,8 +13,10 @@
 </header>
 <main class="page__content">
   <section class="profile">
-    <img alt="Пожилой мужчина в красной шапке улыбается." class="profile__avatar"
-         src="<%=require('./images/profile-image.jpg')%>"/>
+    <div class="profile__avatar">
+      <img alt="Аватар пользователя." class="profile__image"
+           src="<%=require('./images/profile-image.jpg')%>"/>
+    </div>
     <div class="profile__info">
       <h1 class="profile__name">Жак-Ив Кусто</h1>
       <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
@@ -52,6 +54,21 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_type_avatar" tabindex="-1">
+    <div class="popup__wrapper">
+      <button aria-label="Закрыть" class="button popup__close" type="button"></button>
+      <h2 class="popup__title">Обновить аватар</h2>
+      <form action="index.html" class="form" method="post" name="avatar" novalidate>
+        <label class="form__label">
+          <input class="form__input"
+                 name="link" placeholder="Ссылка на картинку" required
+                 type="url"/>
+          <span class="form__error"></span>
+        </label>
+        <button class="form__button" type="submit">Сохранить</button>
+      </form>
+    </div>
+  </div>
   <div class="popup popup_type_add" tabindex="-1">
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
@@ -75,6 +92,15 @@
           <span class="form__error">Текст должен быть не короче 2 символов. Длина текста сейчас: 1 символ.</span>
         </label>
         <button class="form__button" type="submit">Создать</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_delete" tabindex="-1">
+    <div class="popup__wrapper">
+      <button aria-label="Закрыть" class="button popup__close" type="button"></button>
+      <h2 class="popup__title">Вы уверены?</h2>
+      <form action="index.html" class="form" method="post" name="delete" novalidate>
+        <button class="form__button" type="submit">Да</button>
       </form>
     </div>
   </div>
@@ -102,8 +128,9 @@
            src=""/>
       <div class="card__footer">
         <h2 class="card__title"></h2>
-        <button aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like" tabindex="-1"
+        <button aria-label="Добавить отметку &#34;Понравилось&#34;" class="button card__like-button" tabindex="-1"
                 type="button"></button>
+        <span class="card__like-number">0</span>
       </div>
     </article>
   </li>

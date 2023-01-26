@@ -1,26 +1,137 @@
-import { openPopup } from './popup.js';
+import { changeButtonText, closePopup, openPopup } from './popup.js';
 import { POPUP, CARD } from './enum.js';
+import { addCardLike, deleteCardLike, removeCard } from './api.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
+const popupDelete = document.querySelector(POPUP.DELETE);
+const popupDeleteForm = popupDelete.querySelector(POPUP.FORM);
 const popupPhoto = document.querySelector(POPUP.PHOTO);
 const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
+let hasOwnerLike;
+const cards = [];
 
-const toggleLike = (el) => {
-  const isLiked = el.classList.contains(CARD.LIKE_ACTIVE);
-  el.classList.toggle(CARD.LIKE_ACTIVE);
-  if (isLiked) {
-    el.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
-  } else {
-    el.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
+const addLikeActiveClass = (el) => {
+  el.classList.add(CARD.LIKE_BUTTON_ACTIVE);
+  el.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
+};
+
+const removeLikeActiveClass = (el) => {
+  el.classList.remove(CARD.LIKE_BUTTON_ACTIVE);
+  el.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
+};
+
+const toggleLike = (el, hasActiveClass) => {
+  switch (hasActiveClass) {
+    case true:
+      removeLikeActiveClass(el);
+      break;
+    case false:
+      addLikeActiveClass(el);
+      break;
   }
 };
 
-const handleLikeButton = (element) => toggleLike(element);
+const checkLikeButtonActiveClass = (el) => {
+  return el.classList.contains(CARD.LIKE_BUTTON_ACTIVE);
+};
 
-const handleDeleteButton = (cardItem) => {
-  if (cardItem.classList.contains(CARD.ITEM_CLASSNAME)) cardItem.remove();
+const setCardLikes = (button, number, value = 0) => {
+  if (typeof value !== 'number') console.error('Значение количества лайков карточки должно быть числом');
+  switch (value) {
+    case 0:
+      button.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
+      number.textContent = '';
+      break;
+    default:
+      button.classList.add(CARD.LIKE_BUTTON_IS_LIKED);
+      number.textContent = value;
+      break;
+  }
+};
+
+const getCardLikes = (el) => {
+  return Number(el.textContent);
+};
+
+const increaseCardLikes = (button, number, value) => {
+  const increasedValue = value + 1;
+  typeof value !== 'number'
+    ? console.error('Значение количества лайков карточки должно быть числом')
+    : setCardLikes(button, number, increasedValue);
+};
+
+const decreaseCardLikes = (button, number, value) => {
+  const decreasedValue = value - 1;
+  typeof value !== 'number'
+    ? console.error('Значение количества лайков карточки должно быть числом')
+    : setCardLikes(button, number, decreasedValue);
+};
+
+const updateOwnersLike = (likesArray, userId) => {
+  switch (likesArray.length) {
+    case 0:
+      hasOwnerLike = false;
+      break;
+    default:
+      hasOwnerLike = likesArray.some(like => like._id === userId);
+      break;
+  }
+};
+
+const findCurrentCard = (id) => {
+  return cards.find(card => card._id === id);
+};
+
+const handleLikeButton = (button, number, id, initialLikes, userId) => {
+  const current = findCurrentCard(id);
+  updateOwnersLike(current.likes, userId);
+  switch (hasOwnerLike) {
+    case true:
+      deleteCardLike(id)
+        .then((res) => {
+          updateOwnersLike(res.likes, userId);
+          /*
+            Понимаю, что решение перезаписывать исходный массив не лучшее, но я не понимаю как еще можно хранить информацию каждой карточки без ооп.
+            +
+            Не получается исправить баг: при множественном нажатии на лайк, состояние лайка не всегда отправляется на сервер.
+          */
+          current.likes = res.likes;
+        })
+        .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`));
+      break;
+    case false:
+      addCardLike(id)
+        .then((res) => {
+          updateOwnersLike(res.likes, userId);
+          current.likes = res.likes;
+        })
+        .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`));
+      break;
+  }
+  const value = getCardLikes(number);
+  const hasActiveClass = checkLikeButtonActiveClass(button);
+  hasActiveClass ? decreaseCardLikes(button, number, value) : increaseCardLikes(button, number, value);
+  toggleLike(button, hasActiveClass);
+};
+
+const handleDeleteButton = () => {
+  openPopup(popupDelete);
+};
+
+const handleDeleteForm = (e, cardDeleteButton, cardId) => {
+  e.preventDefault();
+  changeButtonText(popupDeleteForm);
+  const cardElement = cardDeleteButton.closest(CARD.ITEM);
+  removeCard(cardId)
+    .then(() => cardElement.remove())
+    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
+    .finally(() => {
+      popupDeleteForm.reset();
+      changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
+      closePopup(popupDelete);
+    });
 };
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
@@ -39,19 +150,36 @@ const setCardImage = (el, title, image) => {
   el.setAttribute('alt', title);
 };
 
-const createCard = (title, image) => {
+const createCard = (card, userId) => {
   const cardItem = cardTemplate.cloneNode(true);
-  const card = cardItem.querySelector(CARD.ARTICLE);
-  const cardImage = card.querySelector(CARD.IMAGE);
-  const cardTitle = card.querySelector(CARD.TITLE);
-  const cardLike = card.querySelector(CARD.LIKE);
-  const cardDelete = card.querySelector(CARD.DELETE);
+  const cardArticle = cardItem.querySelector(CARD.ARTICLE);
+  const cardImage = cardArticle.querySelector(CARD.IMAGE);
+  const cardTitle = cardArticle.querySelector(CARD.TITLE);
+  const cardLikeNumber = cardArticle.querySelector(CARD.LIKE_NUMBER);
+  const cardLikeButton = cardArticle.querySelector(CARD.LIKE_BUTTON);
+  const cardDelete = cardArticle.querySelector(CARD.DELETE);
+  const cardLikesDefaultValue = 0;
+  const likesCount = card.likes.length > 0 ? card.likes.length : cardLikesDefaultValue;
 
-  setCardName(cardTitle, title);
-  setCardImage(cardImage, title, image);
+  cards.push(card);
 
-  cardLike.addEventListener('click', () => handleLikeButton(cardLike));
-  cardDelete.addEventListener('click', () => handleDeleteButton(cardItem));
+  updateOwnersLike(card.likes, userId);
+  setCardName(cardTitle, card.name);
+  setCardImage(cardImage, card.name, card.link);
+  setCardLikes(cardLikeButton, cardLikeNumber, likesCount);
+  hasOwnerLike
+    ? addLikeActiveClass(cardLikeButton)
+    : removeLikeActiveClass(cardLikeButton);
+
+  cardLikeButton.addEventListener('click', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
+
+  card.owner._id === userId
+    ? cardDelete.addEventListener('click', () => {
+      handleDeleteButton();
+      popupDeleteForm.addEventListener('submit', (e) => handleDeleteForm(e, cardDelete, card._id));
+    })
+    : cardDelete.remove();
+
   cardImage.addEventListener('click', () => handlePhotoOverlay(cardImage, cardTitle));
 
   return cardItem;
@@ -64,4 +192,4 @@ const prependCard = (card) => {
 export {
   createCard,
   prependCard
-}
+};

@@ -7,6 +7,10 @@
   text-align: start;
 }
 
+.popup_type_delete .popup__title {
+  margin-bottom: 30px;
+}
+
 @media (min-width: 880px) {
   .popup__title {
     font-size: 24px;
