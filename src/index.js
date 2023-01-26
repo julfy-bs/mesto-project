@@ -19,10 +19,6 @@ enableValidation({
   errorActiveClass: VALIDATION.ERROR_ACTIVE_CLASS
 });
 
-/* TODO:
-1. loader
-* */
-
 document.addEventListener('DOMContentLoaded', () => {
   getUser()
     .then((user) => {
