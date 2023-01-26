@@ -16,6 +16,8 @@ const PROFILE = {
   FORM: '.form',
   FORM_PROFILE: 'profile',
   FORM_CARD: 'card',
+  FORM_DELETE: 'delete',
+  FORM_AVATAR: 'avatar',
   INPUT_NAME: '[name="name"]',
   INPUT_OCCUPATION: '[name="occupation"]',
   CONTENT_NAME: '.profile__name',
@@ -23,6 +25,7 @@ const PROFILE = {
   CONTENT_AVATAR: '.profile__image',
   BUTTON_EDIT: '.profile__edit',
   BUTTON_ADD: '.profile__add',
+  AVATAR: '.profile__avatar',
 };
 
 const POPUP = {
@@ -33,6 +36,7 @@ const POPUP = {
   PROFILE: '.popup_type_edit',
   CARD: '.popup_type_add',
   PHOTO: '.popup_type_photo',
+  AVATAR: '.popup_type_avatar',
   DELETE: '.popup_type_delete',
   IMAGE: '.popup__image',
   TITLE: '.popup__figcaption',

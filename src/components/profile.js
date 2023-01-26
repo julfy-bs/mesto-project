@@ -1,8 +1,12 @@
 import { closePopup, openPopup } from './popup.js';
 import { createCard, prependCard } from './card.js';
 import { PROFILE, POPUP } from './enum.js';
-import { updateUser, addCard } from './api.js';
+import { updateUser, addCard, updateUserAvatar } from './api.js';
 
+const avatarPopup = document.querySelector(POPUP.AVATAR);
+const avatarPopupOpenButton = document.querySelector(PROFILE.AVATAR);
+const avatarPopupForm = document.forms[PROFILE.FORM_AVATAR];
+const avatarPopupLinkInput = avatarPopupForm.querySelector(POPUP.INPUT_LINK);
 const profilePopup = document.querySelector(POPUP.PROFILE);
 const profileName = document.querySelector(PROFILE.CONTENT_NAME);
 const profileAvatar = document.querySelector(PROFILE.CONTENT_AVATAR);
@@ -32,6 +36,23 @@ const setProfileName = (name) => {
 
 const setProfileOccupation = (occupation) => {
   profileOccupation.textContent = occupation;
+};
+
+const handleOpenAvatar = (e) => {
+  openPopup(avatarPopup);
+};
+
+const handleAvatarFormSubmit = (e) => {
+  e.preventDefault();
+  const avatar = avatarPopupLinkInput.value;
+  updateUserAvatar(avatar)
+    .then((res) => {
+      setProfileAvatar(res.avatar);
+    })
+    .finally(() => {
+      avatarPopupForm.reset();
+      closePopup(avatarPopup);
+    });
 };
 
 const handleOpenProfile = () => {
@@ -81,10 +102,12 @@ const handleCardFormSubmit = (e) => {
 };
 
 const addProfileListeners = () => {
-  cardPopupOpenButton.addEventListener('click', () => handleCardPopupOpenButton());
+  cardPopupOpenButton.addEventListener('mousedown', () => handleCardPopupOpenButton());
   cardPopupForm.addEventListener('submit', (e) => handleCardFormSubmit(e));
-  profilePopupOpenButton.addEventListener('click', () => handleOpenProfile());
+  profilePopupOpenButton.addEventListener('mousedown', () => handleOpenProfile());
   profilePopupForm.addEventListener('submit', (e) => handleProfileFormSubmit(e));
+  avatarPopupOpenButton.addEventListener('mousedown', (e) => handleOpenAvatar(e));
+  avatarPopupForm.addEventListener('submit', (e) => handleAvatarFormSubmit(e));
 };
 
 export {

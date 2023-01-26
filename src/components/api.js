@@ -38,6 +38,16 @@ const updateUser = ({ name, about }) => {
   }).then((res) => getJson(res));
 };
 
+const updateUserAvatar = (avatar) => {
+  return fetch(`${config.baseUrl}/users/me/avatar`, {
+    method: 'PATCH',
+    headers: config.headers,
+    body: JSON.stringify({
+      avatar
+    })
+  }).then((res) => getJson(res));
+};
+
 const addCard = ({ name, link }) => {
   return fetch(`${config.baseUrl}/cards`, {
     method: 'POST',
@@ -66,7 +76,7 @@ const deleteCardLike = (cardId) => {
 const addCardLike = (cardId) => {
   return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
     method: 'PUT',
-    headers: config.headers
+    headers: config.headers,
   }).then((res) => getJson(res));
 };
 
@@ -77,5 +87,6 @@ export {
   addCard,
   removeCard,
   deleteCardLike,
-  addCardLike
+  addCardLike,
+  updateUserAvatar
 };
