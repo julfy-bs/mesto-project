@@ -1,4 +1,4 @@
-import { changeButtonText, closePopup, openPopup } from './popup.js';
+import { changeButtonText, closePopup, closePopupWithForm, openPopupWithForm } from './popup.js';
 import { createCard, prependCard } from './card.js';
 import { PROFILE, POPUP } from './enum.js';
 import { updateUser, addCard, updateUserAvatar } from './api.js';
@@ -38,10 +38,6 @@ const setProfileOccupation = (occupation) => {
   profileOccupation.textContent = occupation;
 };
 
-const handleOpenAvatar = () => {
-  openPopup(avatarPopup);
-};
-
 const handleAvatarFormSubmit = (e) => {
   e.preventDefault();
   changeButtonText(avatarPopupForm);
@@ -58,9 +54,8 @@ const handleAvatarFormSubmit = (e) => {
     });
 };
 
-const handleOpenProfile = () => {
-  openPopup(profilePopup);
-  setForm();
+const handleOpenAvatar = () => {
+  openPopupWithForm(avatarPopup, (e) => handleAvatarFormSubmit(e));
 };
 
 const handleProfileFormSubmit = (e) => {
@@ -78,12 +73,13 @@ const handleProfileFormSubmit = (e) => {
     .finally(() => {
       profilePopupForm.reset();
       changeButtonText(profilePopupForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopup(profilePopup);
+      closePopupWithForm(profilePopup, (e) => handleProfileFormSubmit(e));
     });
 };
 
-const handleCardPopupOpenButton = () => {
-  openPopup(cardPopup);
+const handleOpenProfile = () => {
+  openPopupWithForm(profilePopup, (e) => handleProfileFormSubmit(e));
+  setForm();
 };
 
 const handleCardFormSubmit = (e) => {
@@ -98,8 +94,26 @@ const handleCardFormSubmit = (e) => {
       const cardClone = createCard(card, card.owner._id);
       prependCard(cardClone);
     })
+    .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`))
+    .finally(() => {
+      cardPopupForm.reset();
+      changeButtonText(cardPopupForm, POPUP.BUTTON_TEXT_CREATE);
+      closePopup(cardPopup);
+    });
+};
+
+const handleCardPopupOpenButton = () => {
+  // openPopupWithForm(cardPopup, (e) => handleCardFormSubmit(e));
+  const card = {
+    name: 'test card',
+    link: 'https://images.unsplash.com/photo-1564858763975-d99de59ee4bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80'
+  };
+  addCard(card)
+    .then((card) => {
+      const cardClone = createCard(card, card.owner._id);
+      prependCard(cardClone);
+    })
     .catch((error) => {
-      console.log(error);
       console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`);
     })
     .finally(() => {
@@ -111,11 +125,8 @@ const handleCardFormSubmit = (e) => {
 
 const addProfileListeners = () => {
   cardPopupOpenButton.addEventListener('mousedown', () => handleCardPopupOpenButton());
-  cardPopupForm.addEventListener('submit', (e) => handleCardFormSubmit(e));
   profilePopupOpenButton.addEventListener('mousedown', () => handleOpenProfile());
-  profilePopupForm.addEventListener('submit', (e) => handleProfileFormSubmit(e));
   avatarPopupOpenButton.addEventListener('mousedown', () => handleOpenAvatar());
-  avatarPopupForm.addEventListener('submit', (e) => handleAvatarFormSubmit(e));
 };
 
 export {

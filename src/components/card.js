@@ -1,4 +1,4 @@
-import { changeButtonText, closePopup, openPopup } from './popup.js';
+import { changeButtonText, closePopupWithForm, openPopup, openPopupWithForm } from './popup.js';
 import { POPUP, CARD } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 
@@ -11,6 +11,16 @@ const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
 let hasOwnerLike;
 const cards = [];
+let deleteCard = null;
+
+const setCardName = (el, title) => {
+  el.textContent = title;
+};
+
+const setCardImage = (el, title, image) => {
+  el.setAttribute('src', image);
+  el.setAttribute('alt', title);
+};
 
 const addLikeActiveClass = (el) => {
   el.classList.add(CARD.LIKE_BUTTON_ACTIVE);
@@ -93,7 +103,7 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
         .then((res) => {
           updateOwnersLike(res.likes, userId);
           /*
-            Понимаю, что решение перезаписывать исходный массив не лучшее, но я не понимаю как еще можно хранить информацию каждой карточки без ооп.
+            Понимаю, что решение мутировать исходный массив не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
             +
             Не получается исправить баг: при множественном нажатии на лайк, состояние лайка не всегда отправляется на сервер.
           */
@@ -116,24 +126,6 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
   toggleLike(button, hasActiveClass);
 };
 
-const handleDeleteButton = () => {
-  openPopup(popupDelete);
-};
-
-const handleDeleteForm = (e, cardDeleteButton, cardId) => {
-  e.preventDefault();
-  changeButtonText(popupDeleteForm);
-  const cardElement = cardDeleteButton.closest(CARD.ITEM);
-  removeCard(cardId)
-    .then(() => cardElement.remove())
-    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
-    .finally(() => {
-      popupDeleteForm.reset();
-      changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopup(popupDelete);
-    });
-};
-
 const handlePhotoOverlay = (cardImage, cardTitle) => {
   openPopup(popupPhoto);
   popupTitle.textContent = cardTitle.textContent;
@@ -141,13 +133,36 @@ const handlePhotoOverlay = (cardImage, cardTitle) => {
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
 };
 
-const setCardName = (el, title) => {
-  el.textContent = title;
+const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
+  photoOverlay.removeEventListener('mouseup', () => handlePhotoOverlay);
+  deleteButton.removeEventListener('mouseup', () => handleDeleteButton);
+  likeButton.removeEventListener('mouseup', () => handleLikeButton);
 };
 
-const setCardImage = (el, title, image) => {
-  el.setAttribute('src', image);
-  el.setAttribute('alt', title);
+const handleDeleteSubmit = (e, button, cardId) => {
+  e.preventDefault();
+  console.warn('TRYING TO DELETE', button, cardId);
+  changeButtonText(popupDeleteForm);
+  const cardElement = button.closest(CARD.ITEM);
+  const cardPhotoOverlay = cardElement.querySelector(CARD.IMAGE);
+  const cardLikeButton = cardElement.querySelector(CARD.LIKE_BUTTON);
+  const cardDeleteButton = button;
+
+  removeCard(cardId)
+    .then(() => cardElement.remove())
+    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
+    .finally(() => {
+      changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
+      closePopupWithForm(popupDelete, (e) => deleteCard(e));
+      popupDeleteForm.removeEventListener('submit', (e) => deleteCard(e));
+      deleteCard = null;
+      removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
+    });
+};
+
+const handleDeleteButton = (button, cardId) => {
+  deleteCard = (e) => handleDeleteSubmit(e, button, cardId);
+  openPopupWithForm(popupDelete, (e) => deleteCard(e));
 };
 
 const createCard = (card, userId) => {
@@ -160,7 +175,6 @@ const createCard = (card, userId) => {
   const cardDelete = cardArticle.querySelector(CARD.DELETE);
   const cardLikesDefaultValue = 0;
   const likesCount = card.likes.length > 0 ? card.likes.length : cardLikesDefaultValue;
-
   cards.push(card);
 
   updateOwnersLike(card.likes, userId);
@@ -171,16 +185,11 @@ const createCard = (card, userId) => {
     ? addLikeActiveClass(cardLikeButton)
     : removeLikeActiveClass(cardLikeButton);
 
-  cardLikeButton.addEventListener('click', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
-
+  cardLikeButton.addEventListener('mouseup', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
+  cardImage.addEventListener('mouseup', () => handlePhotoOverlay(cardImage, cardTitle));
   card.owner._id === userId
-    ? cardDelete.addEventListener('click', () => {
-      handleDeleteButton();
-      popupDeleteForm.addEventListener('submit', (e) => handleDeleteForm(e, cardDelete, card._id));
-    })
+    ? cardDelete.addEventListener('mouseup', () => handleDeleteButton(cardDelete, card._id))
     : cardDelete.remove();
-
-  cardImage.addEventListener('click', () => handlePhotoOverlay(cardImage, cardTitle));
 
   return cardItem;
 };

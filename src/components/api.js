@@ -8,7 +8,6 @@ const config = {
 
 
 const getJson = (res) => {
-  console.log(res);
   return res.ok
     ? res.json()
     : Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);

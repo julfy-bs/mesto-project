@@ -38,3 +38,29 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
+
+// if (EventTarget.prototype.original_addEventListener == null) {
+//   EventTarget.prototype.original_addEventListener = EventTarget.prototype.addEventListener;
+//
+//   function addEventListener_hook(typ, fn, opt) {
+//     console.log('--- add event listener',this.nodeName,typ);
+//     this.all_handlers = this.all_handlers || [];
+//     this.all_handlers.push({typ,fn,opt});
+//     this.original_addEventListener(typ, fn, opt);
+//   }
+//
+//   EventTarget.prototype.addEventListener = addEventListener_hook;
+// }
+//
+// if (EventTarget.prototype.original_removeEventListener == null) {
+//   EventTarget.prototype.original_removeEventListener = EventTarget.prototype.removeEventListener;
+//
+//   function removeEventListener_hook(typ, fn, opt) {
+//     console.log('--- remove event listener',this.nodeName,typ);
+//     this.all_handlers = this.all_handlers || [];
+//     this.all_handlers.push({typ,fn,opt});
+//     this.original_addEventListener(typ, fn, opt);
+//   }
+//
+//   EventTarget.prototype.removeEventListener = removeEventListener_hook;
+// }
