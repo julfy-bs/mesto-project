@@ -94,7 +94,7 @@ const findCurrentCard = (id) => {
   return cards.find(card => card._id === id);
 };
 
-const handleLikeButton = (button, number, id, initialLikes, userId) => {
+function handleLikeButton(button, number, id, initialLikes, userId) {
   const current = findCurrentCard(id);
   updateOwnersLike(current.likes, userId);
   switch (hasOwnerLike) {
@@ -124,22 +124,22 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
   const hasActiveClass = checkLikeButtonActiveClass(button);
   hasActiveClass ? decreaseCardLikes(button, number, value) : increaseCardLikes(button, number, value);
   toggleLike(button, hasActiveClass);
-};
+}
 
-const handlePhotoOverlay = (cardImage, cardTitle) => {
+function handlePhotoOverlay(cardImage, cardTitle) {
   openPopup(popupPhoto);
   popupTitle.textContent = cardTitle.textContent;
   popupImage.setAttribute('src', cardImage.getAttribute('src'));
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
-};
+}
 
-const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
+function removeCardListeners(photoOverlay, deleteButton, likeButton) {
   photoOverlay.removeEventListener('mouseup', () => handlePhotoOverlay);
   deleteButton.removeEventListener('mouseup', () => handleDeleteButton);
   likeButton.removeEventListener('mouseup', () => handleLikeButton);
-};
+}
 
-const handleDeleteSubmit = (e, button, cardId) => {
+function handleDeleteSubmit(e, button, cardId) {
   e.preventDefault();
   console.warn('TRYING TO DELETE', button, cardId);
   changeButtonText(popupDeleteForm);
@@ -153,17 +153,16 @@ const handleDeleteSubmit = (e, button, cardId) => {
     .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
     .finally(() => {
       changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopupWithForm(popupDelete, (e) => deleteCard(e));
-      popupDeleteForm.removeEventListener('submit', (e) => deleteCard(e));
+      closePopupWithForm(popupDelete, deleteCard);
       deleteCard = null;
       removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
     });
-};
+}
 
-const handleDeleteButton = (button, cardId) => {
+function handleDeleteButton(button, cardId) {
   deleteCard = (e) => handleDeleteSubmit(e, button, cardId);
   openPopupWithForm(popupDelete, (e) => deleteCard(e));
-};
+}
 
 const createCard = (card, userId) => {
   const cardItem = cardTemplate.cloneNode(true);
