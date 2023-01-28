@@ -1,6 +1,7 @@
 import { changeButtonText, closePopupWithForm, openPopup, openPopupWithForm } from './popup.js';
 import { POPUP, CARD } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
+import deleteCardService from './deleteCardService.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
@@ -11,7 +12,6 @@ const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
 let hasOwnerLike;
 const cards = [];
-let globalDeleteCard = null;
 
 const setCardName = (el, title) => {
   el.textContent = title;
@@ -134,8 +134,8 @@ const handlePhotoOverlay = (cardImage, cardTitle) => {
 }
 
 const handleDeleteButton = (target, cardId) => {
-  globalDeleteCard = (e) => handleDeleteSubmit(e, target, cardId);
-  openPopupWithForm(popupDelete, (e) => globalDeleteCard(e, target, cardId));
+  deleteCardService.delete = (e) => handleDeleteSubmit(e, target, cardId);
+  openPopupWithForm(popupDelete);
 }
 
 const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
@@ -144,7 +144,7 @@ const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
   likeButton.removeEventListener('mouseup', handleLikeButton);
 }
 
-const handleDeleteSubmit = (e, target, cardId) => {
+function handleDeleteSubmit(e, target, cardId) {
   e.preventDefault();
   console.warn('TRYING TO DELETE', cardId);
   changeButtonText(popupDeleteForm);
@@ -158,8 +158,9 @@ const handleDeleteSubmit = (e, target, cardId) => {
     .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
     .finally(() => {
       changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopupWithForm(popupDelete, globalDeleteCard);
-      globalDeleteCard = null;
+      closePopupWithForm(popupDelete);
+      deleteCardService.delete = null;
+      console.log(deleteCardService.delete);
       removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
     });
 }

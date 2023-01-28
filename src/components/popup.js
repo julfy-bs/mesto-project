@@ -1,4 +1,5 @@
 import { KEY, POPUP, VALIDATION } from './enum.js';
+import deleteCardService from './deleteCardService.js';
 
 const addPopupActiveClass = (popup) => {
   popup.classList.add(POPUP.ACTIVE_CLASS);
@@ -13,10 +14,10 @@ const closePopup = (popup) => {
   removePopupEventListeners(popup);
 };
 
-const closePopupWithForm = (popup, handleSubmit) => {
+const closePopupWithForm = (popup) => {
   closePopup(popup);
   const form = popup.querySelector(POPUP.FORM);
-  form.removeEventListener('submit', handleSubmit);
+  form.removeEventListener('submit', deleteCardService.delete);
   console.log('popup leave');
 };
 
@@ -47,11 +48,11 @@ const changeButtonText = (form, text = POPUP.BUTTON_TEXT_SAVING) => {
   submitButtonText.textContent = text;
 };
 
-const openPopupWithForm = (popup, handleSubmit) => {
+const openPopupWithForm = (popup) => {
   console.log('popup enter');
   openPopup(popup);
   const form = popup.querySelector(POPUP.FORM);
-  form.addEventListener('submit', handleSubmit);
+  form.addEventListener('submit', deleteCardService.delete);
 };
 
 function addPopupEventListeners(popup) {
