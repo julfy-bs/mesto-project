@@ -11,7 +11,7 @@ const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
 let hasOwnerLike;
 const cards = [];
-let deleteCard = null;
+let globalDeleteCard = null;
 
 const setCardName = (el, title) => {
   el.textContent = title;
@@ -94,7 +94,7 @@ const findCurrentCard = (id) => {
   return cards.find(card => card._id === id);
 };
 
-function handleLikeButton(button, number, id, initialLikes, userId) {
+const handleLikeButton = (button, number, id, initialLikes, userId) => {
   const current = findCurrentCard(id);
   updateOwnersLike(current.likes, userId);
   switch (hasOwnerLike) {
@@ -126,42 +126,42 @@ function handleLikeButton(button, number, id, initialLikes, userId) {
   toggleLike(button, hasActiveClass);
 }
 
-function handlePhotoOverlay(cardImage, cardTitle) {
+const handlePhotoOverlay = (cardImage, cardTitle) => {
   openPopup(popupPhoto);
   popupTitle.textContent = cardTitle.textContent;
   popupImage.setAttribute('src', cardImage.getAttribute('src'));
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
 }
 
-function removeCardListeners(photoOverlay, deleteButton, likeButton) {
-  photoOverlay.removeEventListener('mouseup', () => handlePhotoOverlay);
-  deleteButton.removeEventListener('mouseup', () => handleDeleteButton);
-  likeButton.removeEventListener('mouseup', () => handleLikeButton);
+const handleDeleteButton = (target, cardId) => {
+  globalDeleteCard = (e) => handleDeleteSubmit(e, target, cardId);
+  openPopupWithForm(popupDelete, (e) => globalDeleteCard(e, target, cardId));
 }
 
-function handleDeleteSubmit(e, button, cardId) {
+const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
+  photoOverlay.removeEventListener('mouseup', handlePhotoOverlay);
+  deleteButton.removeEventListener('mouseup', handleDeleteButton);
+  likeButton.removeEventListener('mouseup', handleLikeButton);
+}
+
+const handleDeleteSubmit = (e, target, cardId) => {
   e.preventDefault();
-  console.warn('TRYING TO DELETE', button, cardId);
+  console.warn('TRYING TO DELETE', cardId);
   changeButtonText(popupDeleteForm);
-  const cardElement = button.closest(CARD.ITEM);
+  const cardElement = target.closest(CARD.ITEM);
   const cardPhotoOverlay = cardElement.querySelector(CARD.IMAGE);
   const cardLikeButton = cardElement.querySelector(CARD.LIKE_BUTTON);
-  const cardDeleteButton = button;
+  const cardDeleteButton = cardElement.querySelector(CARD.DELETE);
 
   removeCard(cardId)
     .then(() => cardElement.remove())
     .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
     .finally(() => {
       changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopupWithForm(popupDelete, deleteCard);
-      deleteCard = null;
+      closePopupWithForm(popupDelete, globalDeleteCard);
+      globalDeleteCard = null;
       removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
     });
-}
-
-function handleDeleteButton(button, cardId) {
-  deleteCard = (e) => handleDeleteSubmit(e, button, cardId);
-  openPopupWithForm(popupDelete, (e) => deleteCard(e));
 }
 
 const createCard = (card, userId) => {
@@ -187,7 +187,7 @@ const createCard = (card, userId) => {
   cardLikeButton.addEventListener('mouseup', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
   cardImage.addEventListener('mouseup', () => handlePhotoOverlay(cardImage, cardTitle));
   card.owner._id === userId
-    ? cardDelete.addEventListener('mouseup', () => handleDeleteButton(cardDelete, card._id))
+    ? cardDelete.addEventListener('mouseup', ({target}) => handleDeleteButton(target, card._id))
     : cardDelete.remove();
 
   return cardItem;
