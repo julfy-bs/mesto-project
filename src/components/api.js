@@ -1,17 +1,13 @@
-const config = {
-  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-19',
-  headers: {
-    authorization: '0f9e6763-ca59-4d6a-b788-b6c985602524',
-    'Content-Type': 'application/json',
-  },
-};
-
+import { config } from './enum.js';
+import { endLoader } from './loader.js';
 
 const getJson = (res) => {
-  console.log(res);
-  return res.ok
-    ? res.json()
-    : Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
+  if (res.ok) {
+    endLoader();
+    return res.json();
+  } else {
+    return Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
+  }
 };
 
 const getUser = () => fetch(`${config.baseUrl}/users/me`, {

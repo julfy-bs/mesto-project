@@ -5,6 +5,7 @@
   <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
         name="viewport"/>
   <meta content="ie=edge" http-equiv="X-UA-Compatible"/>
+  <link rel="shortcut icon" href="<%=require('./images/logo-white.svg')%>" type="image/x-icon">
   <title>Место Россия</title>
 </head>
 <body class="page">
@@ -13,20 +14,21 @@
 </header>
 <main class="page__content">
   <section class="profile">
-    <div class="profile__avatar">
+    <div class="profile__avatar loader__skeleton">
       <img alt="Аватар пользователя." class="profile__image"
-           src="<%=require('./images/profile-image.jpg')%>"/>
+           src=""/>
     </div>
     <div class="profile__info">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <h1 class="profile__name loader__skeleton loader__skeleton_type_text"></h1>
       <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
-      <p class="profile__occupation">Исследователь океана</p>
+      <p class="profile__occupation loader__skeleton loader__skeleton_type_text"></p>
     </div>
     <button aria-label="Добавить пост" class="button profile__add" type="button"></button>
   </section>
   <section aria-label="Лента фотографий." class="feed">
     <ul class="feed__list"></ul>
   </section>
+  <div class="loader"></div>
   <div class="popup popup_type_edit" tabindex="-1">
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
@@ -100,7 +102,7 @@
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Вы уверены?</h2>
       <form action="index.html" class="form" method="post" name="delete" novalidate>
-        <button class="form__button" type="submit">Да</button>
+        <button class="form__button" type="submit">Удалить</button>
       </form>
     </div>
   </div>
@@ -115,7 +117,7 @@
   </div>
 </main>
 <footer class="footer">
-  <a class="link footer__copyright" href="https://julfy-bs.github.io/portfolio/" target="_blank">
+  <a class="link footer__copyright" href="https://github.com/julfy-bs" target="_blank">
     &copy; 2020 Mesto Russia
   </a>
 </footer>

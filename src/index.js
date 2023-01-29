@@ -1,13 +1,17 @@
 import './styles/pages/index.css';
-import { VALIDATION } from './components/enum.js';
+import { FORM, VALIDATION } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
 import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
 import { getUser, getCards } from './components/api.js';
+import { addDeletePopupSubmitListener } from './components/popup.js';
+import { startLoader } from './components/loader.js';
 
+const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
 
 addProfileListeners();
+addDeletePopupSubmitListener(cardDeletePopupForm);
 
 enableValidation({
   formSelector: VALIDATION.FORM_SELECTOR,
@@ -19,7 +23,9 @@ enableValidation({
   errorActiveClass: VALIDATION.ERROR_ACTIVE_CLASS
 });
 
+
 document.addEventListener('DOMContentLoaded', () => {
+  startLoader();
   getUser()
     .then((user) => {
       setProfileAvatar(user.avatar);

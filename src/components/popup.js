@@ -1,22 +1,17 @@
-import { KEY, POPUP, VALIDATION } from './enum.js';
+import { EVENT, FORM, KEY, POPUP, VALIDATION } from './enum.js';
+import deleteCardService from './deleteCardService.js';
 
-const addPopupActiveClass = (el) => {
-  el.classList.add(POPUP.ACTIVE_CLASS);
+const addPopupActiveClass = (popup) => {
+  popup.classList.add(POPUP.ACTIVE_CLASS);
 };
 
-const removePopupActiveClass = (el) => {
-  el.classList.remove(POPUP.ACTIVE_CLASS);
+const removePopupActiveClass = (popup) => {
+  popup.classList.remove(POPUP.ACTIVE_CLASS);
 };
 
-const removeListeners = (target) => {
-  const el = target.closest('.popup');
-  el.removeEventListener('keydown', handlePopupKeyboardEvent);
-  el.removeEventListener('mousedown', handlePopupMouseEvent);
-};
-
-const closePopup = (el) => {
-  removePopupActiveClass(el);
-  removeListeners(el);
+const closePopup = (popup) => {
+  removePopupActiveClass(popup);
+  removePopupEventListeners(popup);
 };
 
 const handlePopupMouseEvent = (e) => {
@@ -33,22 +28,37 @@ const handlePopupKeyboardEvent = (e) => {
   }
 };
 
-const openPopup = (el) => {
-  addPopupActiveClass(el);
-  el.addEventListener('keydown', handlePopupKeyboardEvent);
-  el.addEventListener('mousedown', handlePopupMouseEvent);
-  setTimeout(() => el.focus(), POPUP.ANIMATION_DURATION);
+const openPopup = (popup) => {
+  addPopupActiveClass(popup);
+  addPopupEventListeners(popup);
+  setTimeout(() => popup.focus(), POPUP.ANIMATION_DURATION);
 };
 
-const changeButtonText = (form, text = POPUP.BUTTON_TEXT_SAVING) => {
+const changeButtonText = (form, text = FORM.BUTTON_TEXT_SAVING) => {
   const submitButtonText = form.querySelector(VALIDATION.BUTTON_SELECTOR);
   submitButtonText.textContent = text;
-  // const loadingEllipsis = button.querySelector();
-  // loadingEllipsis.classList.remove(ellipsisClass);
+};
+
+const addDeletePopupSubmitListener = (form) => {
+  form.addEventListener(EVENT.SUBMIT, (e) => {
+    e.preventDefault();
+    if (typeof deleteCardService.delete === 'function') deleteCardService.delete();
+  });
+};
+
+function addPopupEventListeners(popup) {
+  popup.addEventListener('mousedown', handlePopupMouseEvent);
+  popup.addEventListener('keydown', handlePopupKeyboardEvent);
+}
+
+function removePopupEventListeners(popup) {
+  popup.removeEventListener(EVENT.MOUSEDOWN, handlePopupMouseEvent);
+  popup.removeEventListener(EVENT.KEYDOWN, handlePopupKeyboardEvent);
 }
 
 export {
   closePopup,
   openPopup,
-  changeButtonText
+  changeButtonText,
+  addDeletePopupSubmitListener
 };
