@@ -1,4 +1,4 @@
-import { KEY, POPUP, VALIDATION } from './enum.js';
+import { EVENT, FORM, KEY, POPUP, VALIDATION } from './enum.js';
 import deleteCardService from './deleteCardService.js';
 
 const addPopupActiveClass = (popup) => {
@@ -14,26 +14,17 @@ const closePopup = (popup) => {
   removePopupEventListeners(popup);
 };
 
-const closePopupWithForm = (popup) => {
-  closePopup(popup);
-  const form = popup.querySelector(POPUP.FORM);
-  form.removeEventListener('submit', deleteCardService.delete);
-  console.log('popup leave');
-};
-
 const handlePopupMouseEvent = (e) => {
   const popup = e.target.closest('.popup');
   const closeCondition = e.target.classList.contains(POPUP.CLASSNAME)
     || e.target.classList.contains(POPUP.CLOSE_CLASSNAME);
-  const hasForm = popup.querySelector(POPUP.FORM) !== null;
-  if (closeCondition) (hasForm) ? closePopupWithForm(popup) : closePopup(popup)
+  if (closeCondition) closePopup(popup);
 };
 
 const handlePopupKeyboardEvent = (e) => {
   if (e.key === KEY.ESCAPE) {
     const popup = e.target.closest('.popup');
-    const hasForm = popup.querySelector(POPUP.FORM) !== null;
-    (hasForm) ? closePopupWithForm(popup) : closePopup(popup);
+    closePopup(popup);
   }
 };
 
@@ -43,16 +34,16 @@ const openPopup = (popup) => {
   setTimeout(() => popup.focus(), POPUP.ANIMATION_DURATION);
 };
 
-const changeButtonText = (form, text = POPUP.BUTTON_TEXT_SAVING) => {
+const changeButtonText = (form, text = FORM.BUTTON_TEXT_SAVING) => {
   const submitButtonText = form.querySelector(VALIDATION.BUTTON_SELECTOR);
   submitButtonText.textContent = text;
 };
 
-const openPopupWithForm = (popup) => {
-  console.log('popup enter');
-  openPopup(popup);
-  const form = popup.querySelector(POPUP.FORM);
-  form.addEventListener('submit', deleteCardService.delete);
+const addDeletePopupSubmitListener = (form) => {
+  form.addEventListener(EVENT.SUBMIT, (e) => {
+    e.preventDefault();
+    if (typeof deleteCardService.delete === 'function') deleteCardService.delete();
+  });
 };
 
 function addPopupEventListeners(popup) {
@@ -61,14 +52,13 @@ function addPopupEventListeners(popup) {
 }
 
 function removePopupEventListeners(popup) {
-  popup.removeEventListener('mousedown', handlePopupMouseEvent);
-  popup.removeEventListener('keydown', handlePopupKeyboardEvent);
+  popup.removeEventListener(EVENT.MOUSEDOWN, handlePopupMouseEvent);
+  popup.removeEventListener(EVENT.KEYDOWN, handlePopupKeyboardEvent);
 }
 
 export {
   closePopup,
   openPopup,
   changeButtonText,
-  closePopupWithForm,
-  openPopupWithForm
+  addDeletePopupSubmitListener
 };

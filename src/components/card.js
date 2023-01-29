@@ -1,13 +1,13 @@
-import { changeButtonText, closePopupWithForm, openPopup, openPopupWithForm } from './popup.js';
-import { POPUP, CARD } from './enum.js';
+import { changeButtonText, closePopup, openPopup } from './popup.js';
+import { POPUP, CARD, FORM, EVENT } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 import deleteCardService from './deleteCardService.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
-const popupDelete = document.querySelector(POPUP.DELETE);
-const popupDeleteForm = popupDelete.querySelector(POPUP.FORM);
-const popupPhoto = document.querySelector(POPUP.PHOTO);
+const popupDelete = document.querySelector(POPUP.TYPE_DELETE);
+const popupDeleteForm = document.forms[FORM.NAME_DELETE];
+const popupPhoto = document.querySelector(POPUP.TYPE_PHOTO);
 const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
 let hasOwnerLike;
@@ -97,19 +97,21 @@ const findCurrentCard = (id) => {
 const handleLikeButton = (button, number, id, initialLikes, userId) => {
   const current = findCurrentCard(id);
   updateOwnersLike(current.likes, userId);
+  button.setAttribute('disabled', 'disabled');
   switch (hasOwnerLike) {
     case true:
       deleteCardLike(id)
         .then((res) => {
           updateOwnersLike(res.likes, userId);
           /*
-            Понимаю, что решение мутировать исходный массив не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
+            Понимаю, что решение мутировать исходный массив - не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
             +
             Не получается исправить баг: при множественном нажатии на лайк, состояние лайка не всегда отправляется на сервер.
           */
           current.likes = res.likes;
         })
-        .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`));
+        .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`))
+        .finally(() => button.removeAttribute('disabled', 'disabled'));
       break;
     case false:
       addCardLike(id)
@@ -117,37 +119,36 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
           updateOwnersLike(res.likes, userId);
           current.likes = res.likes;
         })
-        .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`));
+        .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`))
+        .finally(() => button.removeAttribute('disabled', 'disabled'));
       break;
   }
   const value = getCardLikes(number);
   const hasActiveClass = checkLikeButtonActiveClass(button);
   hasActiveClass ? decreaseCardLikes(button, number, value) : increaseCardLikes(button, number, value);
   toggleLike(button, hasActiveClass);
-}
+};
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
   openPopup(popupPhoto);
   popupTitle.textContent = cardTitle.textContent;
   popupImage.setAttribute('src', cardImage.getAttribute('src'));
   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
-}
+};
 
 const handleDeleteButton = (target, cardId) => {
-  deleteCardService.delete = (e) => handleDeleteSubmit(e, target, cardId);
-  openPopupWithForm(popupDelete);
-}
+  deleteCardService.delete = () => handleDeleteSubmit(target, cardId);
+  openPopup(popupDelete);
+};
 
 const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
-  photoOverlay.removeEventListener('mouseup', handlePhotoOverlay);
-  deleteButton.removeEventListener('mouseup', handleDeleteButton);
-  likeButton.removeEventListener('mouseup', handleLikeButton);
-}
+  photoOverlay.removeEventListener(EVENT.MOUSEDOWN, handlePhotoOverlay);
+  deleteButton.removeEventListener(EVENT.MOUSEDOWN, handleDeleteButton);
+  likeButton.removeEventListener(EVENT.MOUSEDOWN, handleLikeButton);
+};
 
-function handleDeleteSubmit(e, target, cardId) {
-  e.preventDefault();
-  console.warn('TRYING TO DELETE', cardId);
-  changeButtonText(popupDeleteForm);
+function handleDeleteSubmit(target, cardId) {
+  changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_DELETING);
   const cardElement = target.closest(CARD.ITEM);
   const cardPhotoOverlay = cardElement.querySelector(CARD.IMAGE);
   const cardLikeButton = cardElement.querySelector(CARD.LIKE_BUTTON);
@@ -157,10 +158,8 @@ function handleDeleteSubmit(e, target, cardId) {
     .then(() => cardElement.remove())
     .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
     .finally(() => {
-      changeButtonText(popupDeleteForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopupWithForm(popupDelete);
-      deleteCardService.delete = null;
-      console.log(deleteCardService.delete);
+      changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_SAVE);
+      closePopup(popupDelete);
       removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
     });
 }
@@ -185,10 +184,10 @@ const createCard = (card, userId) => {
     ? addLikeActiveClass(cardLikeButton)
     : removeLikeActiveClass(cardLikeButton);
 
-  cardLikeButton.addEventListener('mouseup', () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
-  cardImage.addEventListener('mouseup', () => handlePhotoOverlay(cardImage, cardTitle));
+  cardLikeButton.addEventListener(EVENT.MOUSEDOWN, () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
+  cardImage.addEventListener(EVENT.MOUSEDOWN, () => handlePhotoOverlay(cardImage, cardTitle));
   card.owner._id === userId
-    ? cardDelete.addEventListener('mouseup', ({target}) => handleDeleteButton(target, card._id))
+    ? cardDelete.addEventListener(EVENT.MOUSEDOWN, ({ target }) => handleDeleteButton(target, card._id))
     : cardDelete.remove();
 
   return cardItem;

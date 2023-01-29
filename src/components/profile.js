@@ -1,25 +1,25 @@
-import { changeButtonText, closePopup, closePopupWithForm, openPopupWithForm } from './popup.js';
+import { changeButtonText, closePopup, openPopup } from './popup.js';
 import { createCard, prependCard } from './card.js';
-import { PROFILE, POPUP } from './enum.js';
+import { PROFILE, POPUP, FORM, EVENT } from './enum.js';
 import { updateUser, addCard, updateUserAvatar } from './api.js';
 
-const avatarPopup = document.querySelector(POPUP.AVATAR);
+const avatarPopup = document.querySelector(POPUP.TYPE_AVATAR);
 const avatarPopupOpenButton = document.querySelector(PROFILE.AVATAR);
-const avatarPopupForm = document.forms[PROFILE.FORM_AVATAR];
-const avatarPopupLinkInput = avatarPopupForm.querySelector(POPUP.INPUT_LINK);
-const profilePopup = document.querySelector(POPUP.PROFILE);
+const avatarPopupForm = document.forms[FORM.NAME_AVATAR];
+const avatarPopupLinkInput = avatarPopupForm.querySelector(FORM.INPUT_LINK);
+const profilePopup = document.querySelector(POPUP.TYPE_PROFILE);
 const profileName = document.querySelector(PROFILE.CONTENT_NAME);
 const profileAvatar = document.querySelector(PROFILE.CONTENT_AVATAR);
 const profileOccupation = document.querySelector(PROFILE.CONTENT_OCCUPATION);
-const profilePopupOpenButton = document.querySelector(PROFILE.BUTTON_EDIT);
-const profilePopupForm = document.forms[PROFILE.FORM_PROFILE];
-const profilePopupNameInput = profilePopupForm.querySelector(PROFILE.INPUT_NAME);
-const profilePopupOccupationInput = profilePopupForm.querySelector(PROFILE.INPUT_OCCUPATION);
-const cardPopup = document.querySelector(POPUP.CARD);
-const cardPopupOpenButton = document.querySelector(PROFILE.BUTTON_ADD);
-const cardPopupForm = document.forms[PROFILE.FORM_CARD];
-const cardPopupTitleInput = cardPopupForm.querySelector(POPUP.INPUT_TITLE);
-const cardPopupLinkInput = cardPopupForm.querySelector(POPUP.INPUT_LINK);
+const profilePopupOpenButton = document.querySelector(PROFILE.BUTTON_EDIT_PROFILE);
+const profilePopupForm = document.forms[FORM.NAME_PROFILE];
+const profilePopupNameInput = profilePopupForm.querySelector(FORM.INPUT_NAME);
+const profilePopupOccupationInput = profilePopupForm.querySelector(FORM.INPUT_OCCUPATION);
+const cardPopup = document.querySelector(POPUP.TYPE_CARD);
+const cardPopupOpenButton = document.querySelector(PROFILE.BUTTON_ADD_CARD);
+const cardPopupForm = document.forms[FORM.NAME_CARD];
+const cardPopupTitleInput = cardPopupForm.querySelector(FORM.INPUT_TITLE);
+const cardPopupLinkInput = cardPopupForm.querySelector(FORM.INPUT_LINK);
 
 const setForm = () => {
   profilePopupNameInput.value = profileName.textContent;
@@ -49,13 +49,13 @@ const handleAvatarFormSubmit = (e) => {
     .catch((error) => console.error(`Ошибка ${error.status} изменения аватара пользователя: ${error.statusText}`))
     .finally(() => {
       avatarPopupForm.reset();
-      changeButtonText(avatarPopupForm, POPUP.BUTTON_TEXT_SAVE);
+      changeButtonText(avatarPopupForm, FORM.BUTTON_TEXT_SAVE);
       closePopup(avatarPopup);
     });
 };
 
 const handleOpenAvatar = () => {
-  openPopupWithForm(avatarPopup, (e) => handleAvatarFormSubmit(e));
+  openPopup(avatarPopup, (e) => handleAvatarFormSubmit(e));
 };
 
 const handleProfileFormSubmit = (e) => {
@@ -72,13 +72,13 @@ const handleProfileFormSubmit = (e) => {
     .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`))
     .finally(() => {
       profilePopupForm.reset();
-      changeButtonText(profilePopupForm, POPUP.BUTTON_TEXT_SAVE);
-      closePopupWithForm(profilePopup, (e) => handleProfileFormSubmit(e));
+      changeButtonText(profilePopupForm, FORM.BUTTON_TEXT_SAVE);
+      closePopup(profilePopup);
     });
 };
 
 const handleOpenProfile = () => {
-  openPopupWithForm(profilePopup, (e) => handleProfileFormSubmit(e));
+  openPopup(profilePopup);
   setForm();
 };
 
@@ -97,36 +97,22 @@ const handleCardFormSubmit = (e) => {
     .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`))
     .finally(() => {
       cardPopupForm.reset();
-      changeButtonText(cardPopupForm, POPUP.BUTTON_TEXT_CREATE);
+      changeButtonText(cardPopupForm, FORM.BUTTON_TEXT_CREATE);
       closePopup(cardPopup);
     });
 };
 
 const handleCardPopupOpenButton = () => {
-  // openPopupWithForm(cardPopup, (e) => handleCardFormSubmit(e));
-  const card = {
-    name: 'test card',
-    link: 'https://images.unsplash.com/photo-1564858763975-d99de59ee4bb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1742&q=80'
-  };
-  addCard(card)
-    .then((card) => {
-      const cardClone = createCard(card, card.owner._id);
-      prependCard(cardClone);
-    })
-    .catch((error) => {
-      console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`);
-    })
-    .finally(() => {
-      cardPopupForm.reset();
-      changeButtonText(cardPopupForm, POPUP.BUTTON_TEXT_CREATE);
-      closePopup(cardPopup);
-    });
+  openPopup(cardPopup);
 };
 
 const addProfileListeners = () => {
-  cardPopupOpenButton.addEventListener('mousedown', () => handleCardPopupOpenButton());
-  profilePopupOpenButton.addEventListener('mousedown', () => handleOpenProfile());
-  avatarPopupOpenButton.addEventListener('mousedown', () => handleOpenAvatar());
+  cardPopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleCardPopupOpenButton());
+  cardPopupForm.addEventListener(EVENT.SUBMIT, (e) => handleCardFormSubmit(e));
+  profilePopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleOpenProfile());
+  profilePopupForm.addEventListener(EVENT.SUBMIT, (e) => handleProfileFormSubmit(e));
+  avatarPopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleOpenAvatar());
+  avatarPopupForm.addEventListener(EVENT.SUBMIT, (e) => handleAvatarFormSubmit(e));
 };
 
 export {

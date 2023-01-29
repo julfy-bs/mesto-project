@@ -1,30 +1,38 @@
+const config = {
+  baseUrl: 'https://nomoreparties.co/v1/plus-cohort-19',
+  headers: {
+    authorization: '0f9e6763-ca59-4d6a-b788-b6c985602524',
+    'Content-Type': 'application/json',
+  },
+};
+
 const KEY = {
   ESCAPE: 'Escape'
 };
 
+const EVENT = {
+  SUBMIT: 'submit',
+  KEYDOWN: 'keydown',
+  MOUSEDOWN: 'mousedown',
+  MOUSEUP: 'mouseup'
+}
+
 const VALIDATION = {
   FORM_SELECTOR: '.form',
   INPUT_SELECTOR: '.form__input',
-  BUTTON_SELECTOR: '.form__button',
-  ERROR_SELECTOR: '.form__error',
   INPUT_ERROR_CLASS: 'form__input_type_error',
+  BUTTON_SELECTOR: '.form__button',
   BUTTON_DISABLED_CLASS: 'form__button_type_disabled',
+  ERROR_SELECTOR: '.form__error',
   ERROR_ACTIVE_CLASS: 'form__error_active'
 };
 
 const PROFILE = {
-  FORM: '.form',
-  FORM_PROFILE: 'profile',
-  FORM_CARD: 'card',
-  FORM_DELETE: 'delete',
-  FORM_AVATAR: 'avatar',
-  INPUT_NAME: '[name="name"]',
-  INPUT_OCCUPATION: '[name="occupation"]',
   CONTENT_NAME: '.profile__name',
   CONTENT_OCCUPATION: '.profile__occupation',
   CONTENT_AVATAR: '.profile__image',
-  BUTTON_EDIT: '.profile__edit',
-  BUTTON_ADD: '.profile__add',
+  BUTTON_EDIT_PROFILE: '.profile__edit',
+  BUTTON_ADD_CARD: '.profile__add',
   AVATAR: '.profile__avatar',
 };
 
@@ -33,19 +41,29 @@ const POPUP = {
   CLOSE_CLASSNAME: 'popup__close',
   ACTIVE_CLASS: 'popup_active',
   ANIMATION_DURATION: 200,
-  PROFILE: '.popup_type_edit',
-  CARD: '.popup_type_add',
-  PHOTO: '.popup_type_photo',
-  AVATAR: '.popup_type_avatar',
-  DELETE: '.popup_type_delete',
+  TYPE_PROFILE: '.popup_type_edit',
+  TYPE_CARD: '.popup_type_add',
+  TYPE_PHOTO: '.popup_type_photo',
+  TYPE_AVATAR: '.popup_type_avatar',
+  TYPE_DELETE: '.popup_type_delete',
   IMAGE: '.popup__image',
   TITLE: '.popup__figcaption',
-  FORM: '.form',
+};
+
+const FORM = {
+  SELECTOR: '.form',
+  NAME_PROFILE: 'profile',
+  NAME_CARD: 'card',
+  NAME_DELETE: 'delete',
+  NAME_AVATAR: 'avatar',
   INPUT_TITLE: '[name="title"]',
   INPUT_LINK: '[name="link"]',
+  INPUT_NAME: '[name="name"]',
+  INPUT_OCCUPATION: '[name="occupation"]',
   BUTTON_TEXT_SAVE: 'Сохранить',
   BUTTON_TEXT_CREATE: 'Создать',
   BUTTON_TEXT_SAVING: 'Сохранение...',
+  BUTTON_TEXT_DELETING: 'Удаление...',
 };
 
 const CARD = {
@@ -65,8 +83,11 @@ const CARD = {
 
 export {
   CARD,
+  EVENT,
   KEY,
+  FORM,
   POPUP,
   PROFILE,
-  VALIDATION
+  VALIDATION,
+  config
 };

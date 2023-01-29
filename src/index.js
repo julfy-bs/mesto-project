@@ -1,13 +1,16 @@
 import './styles/pages/index.css';
-import { VALIDATION } from './components/enum.js';
+import { FORM, POPUP, VALIDATION } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
 import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
 import { getUser, getCards } from './components/api.js';
+import { addDeletePopupSubmitListener } from './components/popup.js';
 
+const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
 
 addProfileListeners();
+addDeletePopupSubmitListener(cardDeletePopupForm);
 
 enableValidation({
   formSelector: VALIDATION.FORM_SELECTOR,
@@ -38,29 +41,3 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 });
-
-if (EventTarget.prototype.original_addEventListener == null) {
-  EventTarget.prototype.original_addEventListener = EventTarget.prototype.addEventListener;
-
-  function addEventListener_hook(typ, fn, opt) {
-    console.log('--- add event listener',this.nodeName,typ);
-    this.all_handlers = this.all_handlers || [];
-    this.all_handlers.push({typ,fn,opt});
-    this.original_addEventListener(typ, fn, opt);
-  }
-
-  EventTarget.prototype.addEventListener = addEventListener_hook;
-}
-
-if (EventTarget.prototype.original_removeEventListener == null) {
-  EventTarget.prototype.original_removeEventListener = EventTarget.prototype.removeEventListener;
-
-  function removeEventListener_hook(typ, fn, opt) {
-    console.log('--- remove event listener',this.nodeName,typ);
-    this.all_handlers = this.all_handlers || [];
-    this.all_handlers.push({typ,fn,opt});
-    this.original_addEventListener(typ, fn, opt);
-  }
-
-  EventTarget.prototype.removeEventListener = removeEventListener_hook;
-}
