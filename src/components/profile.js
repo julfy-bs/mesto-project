@@ -84,7 +84,7 @@ const handleOpenProfile = () => {
 
 const handleCardFormSubmit = (e) => {
   e.preventDefault();
-  changeButtonText(cardPopupForm);
+  changeButtonText(cardPopupForm, FORM.BUTTON_TEXT_CREATING);
   const card = {
     name: cardPopupTitleInput.value,
     link: cardPopupLinkInput.value
@@ -96,9 +96,9 @@ const handleCardFormSubmit = (e) => {
     })
     .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`))
     .finally(() => {
+      closePopup(cardPopup);
       cardPopupForm.reset();
       changeButtonText(cardPopupForm, FORM.BUTTON_TEXT_CREATE);
-      closePopup(cardPopup);
     });
 };
 

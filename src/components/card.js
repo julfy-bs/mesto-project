@@ -158,9 +158,9 @@ function handleDeleteSubmit(target, cardId) {
     .then(() => cardElement.remove())
     .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
     .finally(() => {
-      changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_SAVE);
       closePopup(popupDelete);
       removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
+      changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_DELETE);
     });
 }
 
