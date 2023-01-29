@@ -6,6 +6,13 @@ const config = {
   },
 };
 
+const LOADER = {
+  SELECTOR: '.loader',
+  ACTIVE_CLASS: 'loader_active',
+  SKELETON: 'loader__skeleton',
+  SKELETON_TEXT: 'loader__skeleton_type_text'
+}
+
 const KEY = {
   ESCAPE: 'Escape'
 };
@@ -88,6 +95,7 @@ export {
   FORM,
   POPUP,
   PROFILE,
+  LOADER,
   VALIDATION,
   config
 };

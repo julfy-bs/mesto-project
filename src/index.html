@@ -13,20 +13,21 @@
 </header>
 <main class="page__content">
   <section class="profile">
-    <div class="profile__avatar">
+    <div class="profile__avatar loader__skeleton">
       <img alt="Аватар пользователя." class="profile__image"
-           src="<%=require('./images/profile-image.jpg')%>"/>
+           src=""/>
     </div>
     <div class="profile__info">
-      <h1 class="profile__name">Жак-Ив Кусто</h1>
+      <h1 class="profile__name loader__skeleton loader__skeleton_type_text"></h1>
       <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
-      <p class="profile__occupation">Исследователь океана</p>
+      <p class="profile__occupation loader__skeleton loader__skeleton_type_text"></p>
     </div>
     <button aria-label="Добавить пост" class="button profile__add" type="button"></button>
   </section>
   <section aria-label="Лента фотографий." class="feed">
     <ul class="feed__list"></ul>
   </section>
+  <div class="loader"></div>
   <div class="popup popup_type_edit" tabindex="-1">
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>

@@ -1,0 +1,35 @@
+.loader {
+  align-self: center;
+  display: none;
+  height: 80px;
+  opacity: 0;
+  transition: visibility .5s ease, opacity .5s ease;
+  visibility: hidden;
+  width: 80px;
+}
+
+.loader:after {
+  animation: loader 1.5s linear infinite;
+  border: 6px solid var(--color-white);
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-radius: 50%;
+  content: "";
+  display: block;
+  height: 64px;
+  margin: 8px;
+  width: 64px;
+}
+
+@keyframes loader {
+  0% {
+    transform: rotate(0deg);
+    border-top-color: hsl(200, 20%, 80%);
+    border-bottom-color: hsl(200, 20%, 80%);
+  }
+  100% {
+    transform: rotate(360deg);
+    border-top-color: hsl(200, 20%, 95%);
+    border-bottom-color: hsl(200, 20%, 95%);
+  }
+}

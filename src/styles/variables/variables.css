@@ -6,7 +6,7 @@
   --color-gray-light: #c4c4c4;
   --color-red: #ff0000;
   --color-stroke: rgba(84, 84, 84, .7);
-
+  --color-loading: red;
   /* Font */
   --font-family-base: 'Inter', 'Arial', sans-serif;
 

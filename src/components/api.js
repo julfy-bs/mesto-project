@@ -1,9 +1,13 @@
 import { config } from './enum.js';
+import { endLoader } from './loader.js';
 
 const getJson = (res) => {
-  return res.ok
-    ? res.json()
-    : Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
+  if (res.ok) {
+    endLoader();
+    return res.json();
+  } else {
+    return Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
+  }
 };
 
 const getUser = () => fetch(`${config.baseUrl}/users/me`, {
