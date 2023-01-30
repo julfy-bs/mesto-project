@@ -1,4 +1,4 @@
-import { changeButtonText, closePopup, openPopup } from './popup.js';
+import { openPopup, handleSubmit } from './popup.js';
 import { createCard, prependCard } from './card.js';
 import { PROFILE, POPUP, FORM, EVENT } from './enum.js';
 import { updateUser, addCard, updateUserAvatar } from './api.js';
@@ -21,7 +21,7 @@ const cardPopupForm = document.forms[FORM.NAME_CARD];
 const cardPopupTitleInput = cardPopupForm.querySelector(FORM.INPUT_TITLE);
 const cardPopupLinkInput = cardPopupForm.querySelector(FORM.INPUT_LINK);
 
-const setForm = () => {
+const fillProfileInputs = () => {
   profilePopupNameInput.value = profileName.textContent;
   profilePopupOccupationInput.value = profileOccupation.textContent;
 };
@@ -39,67 +39,50 @@ const setProfileOccupation = (occupation) => {
 };
 
 const handleAvatarFormSubmit = (e) => {
-  e.preventDefault();
-  changeButtonText(avatarPopupForm);
-  const avatar = avatarPopupLinkInput.value;
-  updateUserAvatar(avatar)
-    .then((res) => {
-      setProfileAvatar(res.avatar);
-    })
-    .catch((error) => console.error(`Ошибка ${error.status} изменения аватара пользователя: ${error.statusText}`))
-    .finally(() => {
-      avatarPopupForm.reset();
-      changeButtonText(avatarPopupForm, FORM.BUTTON_TEXT_SAVE);
-      closePopup(avatarPopup);
-    });
+  const submitAvatarRequest = () => {
+    const avatar = avatarPopupLinkInput.value;
+    return updateUserAvatar(avatar)
+      .then((userData) => {
+        setProfileAvatar(userData.avatar);
+      })
+      .catch((error) => console.error(`Ошибка ${error.status} изменения аватара пользователя: ${error.statusText}`));
+  };
+  handleSubmit(submitAvatarRequest, e);
 };
 
 const handleOpenAvatar = () => {
-  openPopup(avatarPopup, (e) => handleAvatarFormSubmit(e));
+  openPopup(avatarPopup);
 };
 
 const handleProfileFormSubmit = (e) => {
-  e.preventDefault();
-  changeButtonText(profilePopupForm);
-  setProfileName(profilePopupNameInput.value);
-  setProfileOccupation(profilePopupOccupationInput.value);
   const user = { name: profilePopupNameInput.value, about: profilePopupOccupationInput.value };
-  updateUser(user)
-    .then(user => {
-      setProfileName(user.name);
-      setProfileOccupation(user.about);
-    })
-    .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`))
-    .finally(() => {
-      profilePopupForm.reset();
-      changeButtonText(profilePopupForm, FORM.BUTTON_TEXT_SAVE);
-      closePopup(profilePopup);
-    });
+  const submitProfileRequest = () => {
+    return updateUser(user)
+      .then((userData) => {
+        setProfileName(userData.name);
+        setProfileOccupation(userData.about);
+      })
+      .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`));
+  };
+  handleSubmit(submitProfileRequest, e);
 };
 
 const handleOpenProfile = () => {
   openPopup(profilePopup);
-  setForm();
+  fillProfileInputs();
 };
 
 const handleCardFormSubmit = (e) => {
-  e.preventDefault();
-  changeButtonText(cardPopupForm, FORM.BUTTON_TEXT_CREATING);
-  const card = {
-    name: cardPopupTitleInput.value,
-    link: cardPopupLinkInput.value
+  const submitProfileRequest = () => {
+    const card = { name: cardPopupTitleInput.value, link: cardPopupLinkInput.value };
+    return addCard(card)
+      .then((card) => {
+        const cardClone = createCard(card, card.owner._id);
+        prependCard(cardClone);
+      })
+      .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`));
   };
-  addCard(card)
-    .then((card) => {
-      const cardClone = createCard(card, card.owner._id);
-      prependCard(cardClone);
-    })
-    .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`))
-    .finally(() => {
-      closePopup(cardPopup);
-      cardPopupForm.reset();
-      changeButtonText(cardPopupForm, FORM.BUTTON_TEXT_CREATE);
-    });
+  handleSubmit(submitProfileRequest, e);
 };
 
 const handleCardPopupOpenButton = () => {
@@ -107,12 +90,12 @@ const handleCardPopupOpenButton = () => {
 };
 
 const addProfileListeners = () => {
-  cardPopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleCardPopupOpenButton());
-  cardPopupForm.addEventListener(EVENT.SUBMIT, (e) => handleCardFormSubmit(e));
-  profilePopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleOpenProfile());
-  profilePopupForm.addEventListener(EVENT.SUBMIT, (e) => handleProfileFormSubmit(e));
-  avatarPopupOpenButton.addEventListener(EVENT.MOUSEDOWN, () => handleOpenAvatar());
-  avatarPopupForm.addEventListener(EVENT.SUBMIT, (e) => handleAvatarFormSubmit(e));
+  cardPopupOpenButton.addEventListener(EVENT.CLICK, handleCardPopupOpenButton);
+  cardPopupForm.addEventListener(EVENT.SUBMIT, handleCardFormSubmit);
+  profilePopupOpenButton.addEventListener(EVENT.CLICK, handleOpenProfile);
+  profilePopupForm.addEventListener(EVENT.SUBMIT, handleProfileFormSubmit);
+  avatarPopupOpenButton.addEventListener(EVENT.CLICK, handleOpenAvatar);
+  avatarPopupForm.addEventListener(EVENT.SUBMIT, handleAvatarFormSubmit);
 };
 
 export {

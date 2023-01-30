@@ -1,94 +1,57 @@
 import { config } from './enum.js';
-import { endLoader } from './loader.js';
 
-const getJson = (res) => {
+const checkResponse = (res) => {
   if (res.ok) {
-    endLoader();
     return res.json();
   } else {
     return Promise.reject(`Ошибка!${res.statusText} Код ошибки: ${res.status}.`);
   }
 };
 
-const getUser = () => fetch(`${config.baseUrl}/users/me`, {
+function request(url, options) {
+  const computedUrl = `${config.baseUrl}/${url}`;
+  return fetch(computedUrl, options).then(checkResponse);
+}
+
+const getUser = () => request(`users/me`, { headers: config.headers });
+
+const getCards = () => request(`cards`, { headers: config.headers });
+
+const updateUser = ({ name, about }) => request(`users/me`, {
+  method: 'PATCH',
   headers: config.headers,
-})
-  .then((res) => getJson(res))
-  .catch((error) => console.error(`Ошибка ${error.status} получения информации о пользователе. ${error.statusText}`));
+  body: JSON.stringify({
+    name,
+    about
+  })
+});
 
-
-const getCards = () => fetch(`${config.baseUrl}/cards`, {
+const updateUserAvatar = (avatar) => request(`users/me/avatar`, {
+  method: 'PATCH',
   headers: config.headers,
-})
-  .then((res) => getJson(res))
-  .catch((error) => console.error(`Ошибка ${error.status} получения информации о карточках. ${error.statusText}`));
+  body: JSON.stringify({ avatar })
+});
 
+const addCard = ({ name, link }) => request(`cards`, {
+  method: 'POST',
+  headers: config.headers,
+  body: JSON.stringify({ name, link })
+});
 
-const updateUser = ({ name, about }) => {
-  return fetch(`${config.baseUrl}/users/me`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      name,
-      about
-    })
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} обновления информации пользователя. ${error.statusText}`));
-};
+const removeCard = (cardId) => request(`cards/${cardId}`, {
+  method: 'DELETE',
+  headers: config.headers
+});
 
-const updateUserAvatar = (avatar) => {
-  return fetch(`${config.baseUrl}/users/me/avatar`, {
-    method: 'PATCH',
-    headers: config.headers,
-    body: JSON.stringify({
-      avatar
-    })
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} обновления аватара пользователя. ${error.statusText}`));
-};
+const deleteCardLike = (cardId) => request(`cards/likes/${cardId}`, {
+  method: 'DELETE',
+  headers: config.headers
+});
 
-const addCard = ({ name, link }) => {
-  return fetch(`${config.baseUrl}/cards`, {
-    method: 'POST',
-    headers: config.headers,
-    body: JSON.stringify({
-      name,
-      link
-    })
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} добавления карточки. ${error.statusText}`));
-
-};
-
-const removeCard = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки. ${error.statusText}`));
-};
-
-const deleteCardLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки. ${error.statusText}`));
-};
-
-const addCardLike = (cardId) => {
-  return fetch(`${config.baseUrl}/cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: config.headers,
-  })
-    .then((res) => getJson(res))
-    .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки. ${error.statusText}`));
-};
+const addCardLike = (cardId) => request(`cards/likes/${cardId}`, {
+  method: 'PUT',
+  headers: config.headers
+});
 
 export {
   getUser,
