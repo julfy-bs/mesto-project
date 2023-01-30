@@ -21,7 +21,8 @@ const EVENT = {
   SUBMIT: 'submit',
   KEYDOWN: 'keydown',
   MOUSEDOWN: 'mousedown',
-  MOUSEUP: 'mouseup'
+  MOUSEUP: 'mouseup',
+  CLICK: 'click'
 }
 
 const VALIDATION = {
@@ -44,6 +45,7 @@ const PROFILE = {
 };
 
 const POPUP = {
+  SELECTOR: '.popup',
   CLASSNAME: 'popup',
   CLOSE_CLASSNAME: 'popup__close',
   ACTIVE_CLASS: 'popup_active',

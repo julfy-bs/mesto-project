@@ -1,12 +1,11 @@
-import { changeButtonText, closePopup, openPopup } from './popup.js';
-import { POPUP, CARD, FORM, EVENT } from './enum.js';
+import { openPopup, handleSubmit } from './popup.js';
+import { POPUP, CARD, EVENT } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 import deleteCardService from './deleteCardService.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
 const popupDelete = document.querySelector(POPUP.TYPE_DELETE);
-const popupDeleteForm = document.forms[FORM.NAME_DELETE];
 const popupPhoto = document.querySelector(POPUP.TYPE_PHOTO);
 const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
 const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
@@ -61,24 +60,6 @@ const setCardLikes = (button, number, value = 0) => {
   }
 };
 
-const getCardLikes = (el) => {
-  return Number(el.textContent);
-};
-
-const increaseCardLikes = (button, number, value) => {
-  const increasedValue = value + 1;
-  typeof value !== 'number'
-    ? console.error('Значение количества лайков карточки должно быть числом')
-    : setCardLikes(button, number, increasedValue);
-};
-
-const decreaseCardLikes = (button, number, value) => {
-  const decreasedValue = value - 1;
-  typeof value !== 'number'
-    ? console.error('Значение количества лайков карточки должно быть числом')
-    : setCardLikes(button, number, decreasedValue);
-};
-
 const updateOwnersLike = (likesArray, userId) => {
   switch (likesArray.length) {
     case 0:
@@ -103,12 +84,13 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
       deleteCardLike(id)
         .then((res) => {
           updateOwnersLike(res.likes, userId);
-          /*
-            Понимаю, что решение мутировать исходный массив - не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
-            +
-            Не получается исправить баг: при множественном нажатии на лайк, состояние лайка не всегда отправляется на сервер.
-          */
+          /* - Понимаю, что решение мутировать исходный массив - не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
+          * - Не понял что имеется ввиду "надо было внутри функции createCard это все прописать, чтобы иметь доступ к объекту карточки при создании ее. Тогда бы просто меняли кол-во лайков там же (переназначая переменную)"
+          * - Если я пропишу поля в функции createCard они будут отрабатывать только один раз при создании карточки, + как их менять, тут ведь нет доступа к скоупу функции createCard. */
           current.likes = res.likes;
+          setCardLikes(button, number, res.likes.length);
+          const hasActiveClass = checkLikeButtonActiveClass(button);
+          toggleLike(button, hasActiveClass);
         })
         .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`))
         .finally(() => button.removeAttribute('disabled', 'disabled'));
@@ -118,15 +100,14 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
         .then((res) => {
           updateOwnersLike(res.likes, userId);
           current.likes = res.likes;
+          setCardLikes(button, number, res.likes.length);
+          const hasActiveClass = checkLikeButtonActiveClass(button);
+          toggleLike(button, hasActiveClass);
         })
         .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`))
         .finally(() => button.removeAttribute('disabled', 'disabled'));
       break;
   }
-  const value = getCardLikes(number);
-  const hasActiveClass = checkLikeButtonActiveClass(button);
-  hasActiveClass ? decreaseCardLikes(button, number, value) : increaseCardLikes(button, number, value);
-  toggleLike(button, hasActiveClass);
 };
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
@@ -137,31 +118,20 @@ const handlePhotoOverlay = (cardImage, cardTitle) => {
 };
 
 const handleDeleteButton = (target, cardId) => {
-  deleteCardService.delete = () => handleDeleteSubmit(target, cardId);
+  deleteCardService.delete = (e) => handleDeleteSubmit(e, target, cardId);
   openPopup(popupDelete);
 };
 
-const removeCardListeners = (photoOverlay, deleteButton, likeButton) => {
-  photoOverlay.removeEventListener(EVENT.MOUSEDOWN, handlePhotoOverlay);
-  deleteButton.removeEventListener(EVENT.MOUSEDOWN, handleDeleteButton);
-  likeButton.removeEventListener(EVENT.MOUSEDOWN, handleLikeButton);
-};
-
-function handleDeleteSubmit(target, cardId) {
-  changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_DELETING);
+function handleDeleteSubmit(e, target, cardId) {
   const cardElement = target.closest(CARD.ITEM);
-  const cardPhotoOverlay = cardElement.querySelector(CARD.IMAGE);
-  const cardLikeButton = cardElement.querySelector(CARD.LIKE_BUTTON);
-  const cardDeleteButton = cardElement.querySelector(CARD.DELETE);
 
-  removeCard(cardId)
-    .then(() => cardElement.remove())
-    .catch((error) => console.error(`Ошибка ${error.status} удаления карточки: ${error.statusText}`))
-    .finally(() => {
-      closePopup(popupDelete);
-      removeCardListeners(cardPhotoOverlay, cardDeleteButton, cardLikeButton);
-      changeButtonText(popupDeleteForm, FORM.BUTTON_TEXT_DELETE);
-    });
+  const submitDeleteCardRequest = () => {
+    return removeCard(cardId)
+      .then(() => cardElement.remove())
+      .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`));
+  };
+
+  handleSubmit(submitDeleteCardRequest, e);
 }
 
 const createCard = (card, userId) => {

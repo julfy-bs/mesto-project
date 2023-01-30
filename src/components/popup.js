@@ -1,5 +1,4 @@
-import { EVENT, FORM, KEY, POPUP, VALIDATION } from './enum.js';
-import deleteCardService from './deleteCardService.js';
+import { EVENT, KEY, POPUP } from './enum.js';
 
 const addPopupActiveClass = (popup) => {
   popup.classList.add(POPUP.ACTIVE_CLASS);
@@ -34,21 +33,30 @@ const openPopup = (popup) => {
   setTimeout(() => popup.focus(), POPUP.ANIMATION_DURATION);
 };
 
-const changeButtonText = (form, text = FORM.BUTTON_TEXT_SAVING) => {
-  const submitButtonText = form.querySelector(VALIDATION.BUTTON_SELECTOR);
-  submitButtonText.textContent = text;
+const renderLoading = (isLoading, button, buttonText = 'Сохранить', loadingText = 'Сохранение...') => {
+  if (isLoading) {
+    button.textContent = loadingText;
+  } else {
+    button.textContent = buttonText;
+  }
 };
 
-const addDeletePopupSubmitListener = (form) => {
-  form.addEventListener(EVENT.SUBMIT, (e) => {
-    e.preventDefault();
-    if (typeof deleteCardService.delete === 'function') deleteCardService.delete();
-  });
+const handleSubmit = (request, e) => {
+  e.preventDefault();
+  const popup = e.target.closest(POPUP.SELECTOR);
+  const popupFormSubmitButton = e.submitter;
+  renderLoading(true, popupFormSubmitButton);
+  request()
+    .then(() => {
+      e.target.reset();
+      closePopup(popup);
+    })
+    .finally(() => renderLoading(false, popupFormSubmitButton));
 };
 
 function addPopupEventListeners(popup) {
-  popup.addEventListener('mousedown', handlePopupMouseEvent);
-  popup.addEventListener('keydown', handlePopupKeyboardEvent);
+  popup.addEventListener(EVENT.MOUSEDOWN, handlePopupMouseEvent);
+  popup.addEventListener(EVENT.KEYDOWN, handlePopupKeyboardEvent);
 }
 
 function removePopupEventListeners(popup) {
@@ -59,6 +67,6 @@ function removePopupEventListeners(popup) {
 export {
   closePopup,
   openPopup,
-  changeButtonText,
-  addDeletePopupSubmitListener
+  renderLoading,
+  handleSubmit,
 };

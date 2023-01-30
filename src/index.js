@@ -1,17 +1,17 @@
 import './styles/pages/index.css';
-import { FORM, VALIDATION } from './components/enum.js';
+import { EVENT, FORM, VALIDATION } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
 import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
 import { getUser, getCards } from './components/api.js';
-import { addDeletePopupSubmitListener } from './components/popup.js';
-import { startLoader } from './components/loader.js';
+import { startLoader, endLoader } from './components/loader.js';
+import deleteCardService from './components/deleteCardService.js';
 
 const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
 
 addProfileListeners();
-addDeletePopupSubmitListener(cardDeletePopupForm);
+cardDeletePopupForm.addEventListener(EVENT.SUBMIT, (e) => deleteCardService.delete(e));
 
 enableValidation({
   formSelector: VALIDATION.FORM_SELECTOR,
@@ -26,21 +26,20 @@ enableValidation({
 
 document.addEventListener('DOMContentLoaded', () => {
   startLoader();
-  getUser()
-    .then((user) => {
-      setProfileAvatar(user.avatar);
-      setProfileName(user.name);
-      setProfileOccupation(user.about);
-      userId = user._id;
+  Promise.all([getUser(), getCards()])
+    .then(([userData, cards]) => {
+      setProfileAvatar(userData.avatar);
+      setProfileName(userData.name);
+      setProfileOccupation(userData.about);
+      userId = userData._id;
       localStorage.setItem('userId', userId);
-    });
-  getCards()
-    .then((cards) => {
       cards
         .reverse()
         .forEach(card => {
           const cardClone = createCard(card, userId);
           prependCard(cardClone);
         });
-    });
+      endLoader();
+    })
+    .catch((error) => console.error(`Ошибка ${error.status} получения информации о пользователе. ${error.statusText}`));
 });
