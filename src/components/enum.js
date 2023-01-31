@@ -73,7 +73,7 @@ const FORM = {
   BUTTON_TEXT_CREATE: 'Создать',
   BUTTON_TEXT_CREATING: 'Создание...',
   BUTTON_TEXT_SAVING: 'Сохранение...',
-  BUTTON_TEXT_DELETE: 'Удалить',
+  BUTTON_TEXT_DELETE: 'Да',
   BUTTON_TEXT_DELETING: 'Удаление...',
 };
 

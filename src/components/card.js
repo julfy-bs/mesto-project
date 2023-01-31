@@ -1,5 +1,5 @@
 import { openPopup, handleSubmit } from './popup.js';
-import { POPUP, CARD, EVENT } from './enum.js';
+import { POPUP, CARD, EVENT, FORM } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 import deleteCardService from './deleteCardService.js';
 
@@ -79,35 +79,19 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
   const current = findCurrentCard(id);
   updateOwnersLike(current.likes, userId);
   button.setAttribute('disabled', 'disabled');
-  switch (hasOwnerLike) {
-    case true:
-      deleteCardLike(id)
-        .then((res) => {
-          updateOwnersLike(res.likes, userId);
-          /* - Понимаю, что решение мутировать исходный массив - не лучшее, но я не знаю как еще можно хранить информацию каждой карточки без стора или классов.
-          * - Не понял что имеется ввиду "надо было внутри функции createCard это все прописать, чтобы иметь доступ к объекту карточки при создании ее. Тогда бы просто меняли кол-во лайков там же (переназначая переменную)"
-          * - Если я пропишу поля в функции createCard они будут отрабатывать только один раз при создании карточки, + как их менять, тут ведь нет доступа к скоупу функции createCard. */
-          current.likes = res.likes;
-          setCardLikes(button, number, res.likes.length);
-          const hasActiveClass = checkLikeButtonActiveClass(button);
-          toggleLike(button, hasActiveClass);
-        })
-        .catch((error) => console.error(`Ошибка ${error.status} удаления лайка карточки: ${error.statusText}`))
-        .finally(() => button.removeAttribute('disabled', 'disabled'));
-      break;
-    case false:
-      addCardLike(id)
-        .then((res) => {
-          updateOwnersLike(res.likes, userId);
-          current.likes = res.likes;
-          setCardLikes(button, number, res.likes.length);
-          const hasActiveClass = checkLikeButtonActiveClass(button);
-          toggleLike(button, hasActiveClass);
-        })
-        .catch((error) => console.error(`Ошибка ${error.status} добавления лайка карточки: ${error.statusText}`))
-        .finally(() => button.removeAttribute('disabled', 'disabled'));
-      break;
-  }
+
+  const promise = hasOwnerLike? deleteCardLike(id) : addCardLike(id)
+
+  promise
+    .then((res) => {
+      updateOwnersLike(res.likes, userId);
+      current.likes = res.likes;
+      setCardLikes(button, number, res.likes.length);
+      const hasActiveClass = checkLikeButtonActiveClass(button);
+      toggleLike(button, hasActiveClass);
+    })
+    .catch((error) => console.error(`Ошибка ${error.status} лайка карточки: ${error.statusText}`))
+    .finally(() => button.removeAttribute('disabled', 'disabled'));
 };
 
 const handlePhotoOverlay = (cardImage, cardTitle) => {
@@ -128,10 +112,9 @@ function handleDeleteSubmit(e, target, cardId) {
   const submitDeleteCardRequest = () => {
     return removeCard(cardId)
       .then(() => cardElement.remove())
-      .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`));
   };
 
-  handleSubmit(submitDeleteCardRequest, e);
+  handleSubmit(submitDeleteCardRequest, e, 'редактирования информации профиля:', FORM.BUTTON_TEXT_DELETE, FORM.BUTTON_TEXT_DELETING);
 }
 
 const createCard = (card, userId) => {
@@ -154,10 +137,10 @@ const createCard = (card, userId) => {
     ? addLikeActiveClass(cardLikeButton)
     : removeLikeActiveClass(cardLikeButton);
 
-  cardLikeButton.addEventListener(EVENT.MOUSEDOWN, () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
-  cardImage.addEventListener(EVENT.MOUSEDOWN, () => handlePhotoOverlay(cardImage, cardTitle));
+  cardLikeButton.addEventListener(EVENT.CLICK, () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
+  cardImage.addEventListener(EVENT.CLICK, () => handlePhotoOverlay(cardImage, cardTitle));
   card.owner._id === userId
-    ? cardDelete.addEventListener(EVENT.MOUSEDOWN, ({ target }) => handleDeleteButton(target, card._id))
+    ? cardDelete.addEventListener(EVENT.CLICK, ({ target }) => handleDeleteButton(target, card._id))
     : cardDelete.remove();
 
   return cardItem;

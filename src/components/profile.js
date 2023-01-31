@@ -44,10 +44,9 @@ const handleAvatarFormSubmit = (e) => {
     return updateUserAvatar(avatar)
       .then((userData) => {
         setProfileAvatar(userData.avatar);
-      })
-      .catch((error) => console.error(`Ошибка ${error.status} изменения аватара пользователя: ${error.statusText}`));
+      });
   };
-  handleSubmit(submitAvatarRequest, e);
+  handleSubmit(submitAvatarRequest, e, 'изменения аватара пользователя:');
 };
 
 const handleOpenAvatar = () => {
@@ -61,10 +60,9 @@ const handleProfileFormSubmit = (e) => {
       .then((userData) => {
         setProfileName(userData.name);
         setProfileOccupation(userData.about);
-      })
-      .catch((error) => console.error(`Ошибка ${error.status} редактирования информации профиля: ${error.statusText}`));
+      });
   };
-  handleSubmit(submitProfileRequest, e);
+  handleSubmit(submitProfileRequest, e, 'редактирования информации профиля:');
 };
 
 const handleOpenProfile = () => {
@@ -73,16 +71,16 @@ const handleOpenProfile = () => {
 };
 
 const handleCardFormSubmit = (e) => {
-  const submitProfileRequest = () => {
+  const submitCardFormRequest = () => {
     const card = { name: cardPopupTitleInput.value, link: cardPopupLinkInput.value };
     return addCard(card)
       .then((card) => {
         const cardClone = createCard(card, card.owner._id);
         prependCard(cardClone);
-      })
-      .catch((error) => console.error(`Ошибка ${error.status} cоздания карточки: ${error.statusText}`));
+      });
   };
-  handleSubmit(submitProfileRequest, e);
+  handleSubmit(submitCardFormRequest, e, 'cоздания карточки:');
+
 };
 
 const handleCardPopupOpenButton = () => {
