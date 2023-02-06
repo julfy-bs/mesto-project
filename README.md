@@ -8,6 +8,7 @@
 - [первый месяц работы над проектом][mesto-checklist-1]
 - [второй месяц работы над проектом][mesto-checklist-2]
 - [третий месяц работы над проектом][mesto-checklist-3]
+- [четвертый месяц работы над проектом][mesto-checklist-4]
 
 ### Макеты Figma:
 - [первый месяц работы над проектом][mesto-figma-1]
@@ -54,6 +55,7 @@ npm run dev
 [mesto-checklist-1]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-3.pdf
 [mesto-checklist-2]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-4.pdf
 [mesto-checklist-3]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-8.pdf
+[mesto-checklist-4]: https://code.s3.yandex.net/web-developer/checklists-pdf/web-plus/checklist-10.pdf
 [mesto-figma-1]: https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1
 [mesto-figma-2]: https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0%3A1
 [mesto-figma-3]: https://www.figma.com/file/kRVLKwYG3d1HGLvh7JFWRT/JavaScript.-Sprint-6?node-id=0%3A1&t=NTZ6LMqKskKd4S1Z-0
