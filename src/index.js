@@ -10,7 +10,6 @@ import { createError } from './components/error.js';
 
 const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
-createError(400, `Ошибка получения информации о пользователе.`);
 
 addProfileListeners();
 cardDeletePopupForm.addEventListener(EVENT.SUBMIT, (e) => deleteCardService.delete(e));
