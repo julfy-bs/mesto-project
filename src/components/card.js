@@ -2,6 +2,7 @@ import { openPopup, handleSubmit } from './popup.js';
 import { POPUP, CARD, EVENT, FORM } from './enum.js';
 import { addCardLike, deleteCardLike, removeCard } from './api.js';
 import deleteCardService from './deleteCardService.js';
+import { createError } from './error.js';
 
 const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
 const cardsWrapper = document.querySelector(CARD.WRAPPER);
@@ -90,7 +91,7 @@ const handleLikeButton = (button, number, id, initialLikes, userId) => {
       const hasActiveClass = checkLikeButtonActiveClass(button);
       toggleLike(button, hasActiveClass);
     })
-    .catch((error) => console.error(`Ошибка ${error.status} лайка карточки: ${error.statusText}`))
+    .catch((error) => createError(error.status, `Ошибка лайка карточки.`))
     .finally(() => button.removeAttribute('disabled', 'disabled'));
 };
 
@@ -114,7 +115,7 @@ function handleDeleteSubmit(e, target, cardId) {
       .then(() => cardElement.remove())
   };
 
-  handleSubmit(submitDeleteCardRequest, e, 'редактирования информации профиля:', FORM.BUTTON_TEXT_DELETE, FORM.BUTTON_TEXT_DELETING);
+  handleSubmit(submitDeleteCardRequest, e, 'удаления карточки.', FORM.BUTTON_TEXT_DELETE, FORM.BUTTON_TEXT_DELETING);
 }
 
 const createCard = (card, userId) => {

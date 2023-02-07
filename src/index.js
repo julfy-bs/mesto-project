@@ -6,9 +6,11 @@ import { enableValidation } from './components/validation.js';
 import { getUser, getCards } from './components/api.js';
 import { startLoader, endLoader } from './components/loader.js';
 import deleteCardService from './components/deleteCardService.js';
+import { createError } from './components/error.js';
 
 const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
+createError(400, `Ошибка получения информации о пользователе.`);
 
 addProfileListeners();
 cardDeletePopupForm.addEventListener(EVENT.SUBMIT, (e) => deleteCardService.delete(e));
@@ -41,5 +43,5 @@ document.addEventListener('DOMContentLoaded', () => {
         });
       endLoader();
     })
-    .catch((error) => console.error(`Ошибка ${error.status} получения информации о пользователе. ${error.statusText}`));
+    .catch((error) => createError(error.status, `Ошибка получения информации о пользователе.`));
 });
