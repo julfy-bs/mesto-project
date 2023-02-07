@@ -1,4 +1,5 @@
 import { EVENT, FORM, KEY, POPUP } from './enum.js';
+import { createError } from './error.js';
 
 const addPopupActiveClass = (popup) => {
   popup.classList.add(POPUP.ACTIVE_CLASS);
@@ -53,7 +54,7 @@ const handleSubmit = (request, e, mainErrorText = 'запроса', buttonText =
       e.target.reset();
       closePopup(popup);
     })
-    .catch((error) => console.error(`Ошибка ${error.status} ${mainErrorText} ${error.statusText}`))
+    .catch((error) => createError(error.status, `Ошибка ${mainErrorText}.`))
     .finally(() => renderLoading(false, popupFormSubmitButton, buttonText, loadingText));
 };
 
