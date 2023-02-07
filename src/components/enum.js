@@ -59,6 +59,17 @@ const POPUP = {
   TITLE: '.popup__figcaption',
 };
 
+const ERROR = {
+  TEMPLATE: '#error',
+  LIST: '.error__list',
+  SELECTOR: '.error__item',
+  TITLE: '.error__title',
+  DESCRIPTION: '.error__description',
+  BUTTON: '.error__close',
+  ACTIVE_CLASS: 'error__item_active',
+
+};
+
 const FORM = {
   SELECTOR: '.form',
   NAME_PROFILE: 'profile',
@@ -94,6 +105,7 @@ const CARD = {
 
 export {
   CARD,
+  ERROR,
   EVENT,
   KEY,
   FORM,

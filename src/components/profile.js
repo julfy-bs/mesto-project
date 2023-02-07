@@ -46,7 +46,7 @@ const handleAvatarFormSubmit = (e) => {
         setProfileAvatar(userData.avatar);
       });
   };
-  handleSubmit(submitAvatarRequest, e, 'изменения аватара пользователя:');
+  handleSubmit(submitAvatarRequest, e, 'изменения аватара пользователя');
 };
 
 const handleOpenAvatar = () => {
@@ -62,7 +62,7 @@ const handleProfileFormSubmit = (e) => {
         setProfileOccupation(userData.about);
       });
   };
-  handleSubmit(submitProfileRequest, e, 'редактирования информации профиля:');
+  handleSubmit(submitProfileRequest, e, 'редактирования информации профиля');
 };
 
 const handleOpenProfile = () => {
@@ -79,7 +79,7 @@ const handleCardFormSubmit = (e) => {
         prependCard(cardClone);
       });
   };
-  handleSubmit(submitCardFormRequest, e, 'cоздания карточки:');
+  handleSubmit(submitCardFormRequest, e, 'cоздания карточки');
 
 };
 
