@@ -1,7 +1,7 @@
 import { openPopup, handleSubmit } from './popup.js';
 import { createCard, prependCard } from './card.js';
 import { PROFILE, POPUP, FORM, EVENT } from './enum.js';
-import { updateUser, addCard, updateUserAvatar } from './api.js';
+// import { updateUser, addCard, updateUserAvatar } from './Api.js';
 
 const avatarPopup = document.querySelector(POPUP.TYPE_AVATAR);
 const avatarPopupOpenButton = document.querySelector(PROFILE.AVATAR);

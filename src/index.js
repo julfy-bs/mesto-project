@@ -1,12 +1,12 @@
 import './styles/pages/index.css';
-import { EVENT, FORM, VALIDATION } from './components/enum.js';
+import { config, EVENT, FORM, VALIDATION } from './components/enum.js';
 import { createCard, prependCard } from './components/card.js';
 import { addProfileListeners, setProfileAvatar, setProfileName, setProfileOccupation } from './components/profile.js';
 import { enableValidation } from './components/validation.js';
-import { getUser, getCards } from './components/api.js';
 import { startLoader, endLoader } from './components/loader.js';
 import deleteCardService from './components/deleteCardService.js';
 import { createError } from './components/error.js';
+import Api from './components/Api.js';
 
 const cardDeletePopupForm = document.forms[FORM.NAME_DELETE];
 let userId = localStorage.getItem('userId') || null;
@@ -27,8 +27,11 @@ enableValidation({
 
 document.addEventListener('DOMContentLoaded', () => {
   startLoader();
-  Promise.all([getUser(), getCards()])
+  const api = new Api(config);
+
+  api.getData()
     .then(([userData, cards]) => {
+      console.log(userData, cards);
       setProfileAvatar(userData.avatar);
       setProfileName(userData.name);
       setProfileOccupation(userData.about);
@@ -43,4 +46,20 @@ document.addEventListener('DOMContentLoaded', () => {
       endLoader();
     })
     .catch((error) => createError(error.status, `Ошибка получения информации о пользователе.`));
+  // Promise.all([getUser(), getCards()])
+  //   .then(([userData, cards]) => {
+  //     setProfileAvatar(userData.avatar);
+  //     setProfileName(userData.name);
+  //     setProfileOccupation(userData.about);
+  //     userId = userData._id;
+  //     localStorage.setItem('userId', userId);
+  //     cards
+  //       .reverse()
+  //       .forEach(card => {
+  //         const cardClone = createCard(card, userId);
+  //         prependCard(cardClone);
+  //       });
+  //     endLoader();
+  //   })
+  //   .catch((error) => createError(error.status, `Ошибка получения информации о пользователе.`));
 });

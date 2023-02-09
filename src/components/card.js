@@ -1,6 +1,5 @@
 import { openPopup, handleSubmit } from './popup.js';
 import { POPUP, CARD, EVENT, FORM } from './enum.js';
-import { addCardLike, deleteCardLike, removeCard } from './api.js';
 import deleteCardService from './deleteCardService.js';
 import { createError } from './error.js';
 

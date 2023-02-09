@@ -5,7 +5,6 @@ const errorsWrapper = document.querySelector(ERROR.LIST);
 const errorsMain = document.querySelector('.error');
 const addErrorActiveClass = (el) => {
   el.classList.add(ERROR.ACTIVE_CLASS);
-  console.log(el, errorsMain);
   errorsMain.classList.add('error_active');
 };
 
