@@ -37,7 +37,7 @@ export default class Profile {
 
 
 // import { openPopup, handleSubmit } from './popup.js';
-// import { createCard, prependCard } from './card.js';
+// import { createCard, prependCard } from './Card.js';
 // import { PROFILE, POPUP, FORM, EVENT } from './enum.js';
 //
 // const avatarPopup = document.querySelector(POPUP.TYPE_AVATAR);

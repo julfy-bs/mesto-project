@@ -1,34 +1,32 @@
 export default class Api {
-  constructor(config) {
-    this.config = config;
+  constructor({headers, baseUrl}) {
+    this._headers = headers;
+    this._baseUrl = baseUrl;
   }
 
-  #checkResponse(res) {
+  _checkResponse(res) {
     return (res.ok) ? res.json() : Promise.reject(`${res.statusText}${res.status}`);
   };
 
-  #request(url, options = {}) {
-    const computedUrl = `${this.config.baseUrl}/${url}`;
-    return fetch(computedUrl, { headers: this.config.headers, ...options }).then(res => {
-      // return res.json()
-      return this.#checkResponse(res);
-    });
+  _request(url, options = {}) {
+    const computedUrl = `${this._baseUrl}/${url}`;
+    return fetch(computedUrl, { headers: this._headers, ...options }).then(res => this._checkResponse(res));
   }
 
   getUser() {
-    return this.#request(`users/me`);
+    return this._request(`users/me`);
   }
 
   getCards() {
-    return this.#request(`cards`);
+    return this._request(`cards`);
   }
 
-  getData() {
+  getAppData() {
     return Promise.all([this.getUser(), this.getCards()]);
   }
 
   updateUser({ name, about }) {
-    return this.#request(`users/me`, {
+    return this._request(`users/me`, {
       method: 'PATCH',
       body: JSON.stringify({
         name,
@@ -38,33 +36,33 @@ export default class Api {
   }
 
   updateUserAvatar(avatar) {
-    return this.#request(`users/me/avatar`, {
+    return this._request(`users/me/avatar`, {
       method: 'PATCH',
       body: JSON.stringify({ avatar })
     });
   }
 
   addCard({ name, link }) {
-    return this.#request(`cards`, {
+    return this._request(`cards`, {
       method: 'POST',
       body: JSON.stringify({ name, link })
     });
   }
 
   removeCard(cardId) {
-    return this.#request(`cards/${cardId}`, {
+    return this._request(`cards/${cardId}`, {
       method: 'DELETE',
     });
   }
 
   deleteCardLike(cardId) {
-    return this.#request(`cards/likes/${cardId}`, {
+    return this._request(`cards/likes/${cardId}`, {
       method: 'DELETE',
     });
   }
 
   addCardLike(cardId) {
-    return this.#request(`cards/likes/${cardId}`, {
+    return this._request(`cards/likes/${cardId}`, {
       method: 'PUT',
     });
   }

@@ -1,5 +1,5 @@
 import { EVENT, FORM, KEY, POPUP } from './enum.js';
-import { createError } from './error.js';
+// import { createError } from './Error.js';
 
 const addPopupActiveClass = (popup) => {
   popup.classList.add(POPUP.ACTIVE_CLASS);
