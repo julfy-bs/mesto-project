@@ -62,6 +62,7 @@ const POPUP = {
 const ERROR = {
   TEMPLATE: '#error',
   LIST: '.error__list',
+  WRAPPER: '.error',
   SELECTOR: '.error__item',
   TITLE: '.error__title',
   DESCRIPTION: '.error__description',
