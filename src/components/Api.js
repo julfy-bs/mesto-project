@@ -55,15 +55,9 @@ export default class Api {
     });
   }
 
-  deleteCardLike(cardId) {
+  toggleLike(cardId, hasOwnerLike) {
     return this._request(`cards/likes/${cardId}`, {
-      method: 'DELETE',
-    });
-  }
-
-  addCardLike(cardId) {
-    return this._request(`cards/likes/${cardId}`, {
-      method: 'PUT',
+      method: hasOwnerLike ? 'DELETE' : 'PUT',
     });
   }
 }

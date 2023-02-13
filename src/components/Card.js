@@ -1,15 +1,23 @@
 import { CARD, EVENT } from './enum.js';
 
 export default class Card {
-  constructor({ name, link, owner, likes = [], id }, userId) {
-    // console.log(name, link, owner, likes, id, userId);
+  constructor(
+    selector,
+    { name, link, owner, likes = [], id },
+    userId,
+    handleLikeBtnClick,
+    handleDeleteBtnClick,
+    handleImageClick
+  ) {
     this._owner = owner;
     this._likes = likes;
     this._name = name;
     this._link = link;
     this._id = id;
     this._userId = userId;
-    this._cardsWrapper = document.querySelector(CARD.WRAPPER);
+    this._handleLikeBtnClick = handleLikeBtnClick;
+    this._handleDeleteBtnClick = handleDeleteBtnClick;
+    this._handleImageClick = handleImageClick;
     this._cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
     this._cardItem = this._cardTemplate.cloneNode(true);
     this._cardArticle = this._cardItem.querySelector(CARD.ARTICLE);
@@ -18,14 +26,9 @@ export default class Card {
     this._cardLikeNumber = this._cardArticle.querySelector(CARD.LIKE_NUMBER);
     this._cardLikeButton = this._cardArticle.querySelector(CARD.LIKE_BUTTON);
     this._cardDelete = this._cardArticle.querySelector(CARD.DELETE);
-    this._hasOwnerLike = this._updateOwnersLike(this._likes, this._userId);
-    this._createCard();
-    this._prependCard(this._cardItem);
+    this._hasOwnerLike = this.updateOwnersLike(this._likes, this._userId);
   }
 
-  _prependCard(card) {
-    this._cardsWrapper.prepend(card);
-  };
 
   _setCardName() {
     this._cardTitle.textContent = this._name;
@@ -41,18 +44,31 @@ export default class Card {
     this._cardLikeButton.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
   };
 
-  _removeLikeActiveClass(el) {
+  _removeLikeActiveClass() {
     this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_ACTIVE);
     this._cardLikeButton.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
   };
 
-  _toggleLike(el, hasActiveClass) {
-    switch (hasActiveClass) {
+  toggleLike(card) {
+    this._likes = card.likes;
+    this.updateOwnersLike();
+
+    switch (this.isLiked()) {
       case true:
-        this._removeLikeActiveClass(el);
+        this._cardLikeNumber.textContent = this._likes.length;
+        this._cardLikeButton.classList.add(CARD.LIKE_BUTTON_IS_LIKED);
         break;
       case false:
-        this._addLikeActiveClass(el);
+        this._cardLikeNumber.textContent = '';
+        this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
+    }
+
+    switch (this._hasOwnerLike) {
+      case true:
+        this._removeLikeActiveClass();
+        break;
+      case false:
+        this._addLikeActiveClass();
         break;
     }
   };
@@ -70,11 +86,26 @@ export default class Card {
     }
   };
 
-  _updateOwnersLike(likesArray, userId) {
-    return (likesArray.length === 0) ? false : likesArray.some(like => like._id === userId);
+  isLiked() {
+    return this._likes.length > 0;
+  }
+
+  updateOwnersLike() {
+    return this._likes.some((like) => like._id === this._userId);
   };
 
-  _createCard() {
+  getData() {
+    return {
+      name: this._name,
+      link: this._link,
+      owner: this._owner,
+      likes: this._likes,
+      id: this._id,
+      hasOwnerLike: this._hasOwnerLike
+    };
+  }
+
+  generate() {
     this._setCardName();
     this._setCardImage();
     this._setCardLikes();
@@ -82,11 +113,13 @@ export default class Card {
       ? this._addLikeActiveClass()
       : this._removeLikeActiveClass();
 
-    this._cardLikeButton.addEventListener(EVENT.CLICK, () => handleLikeButton(cardLikeButton, cardLikeNumber, card._id, card.likes, userId));
-    // cardImage.addEventListener(EVENT.CLICK, () => handlePhotoOverlay(cardImage, cardTitle));
+    this._cardLikeButton.addEventListener(EVENT.CLICK, () => this._handleLikeBtnClick(this));
+    this._cardImage.addEventListener(EVENT.CLICK, this._handleImageClick);
     this._owner._id === this._userId
-      ? this._cardDelete.addEventListener(EVENT.CLICK, ({ target }) => console.log(123))
+      ? this._cardDelete.addEventListener(EVENT.CLICK, this._handleDeleteBtnClick)
       : this._cardDelete.remove();
+
+    return this._cardItem;
   };
 }
 
