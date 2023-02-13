@@ -1,15 +1,13 @@
 import { ERROR, EVENT } from './enum.js';
 
 export default class Error {
-  constructor(history, { code, body }) {
+  constructor({ code, body }) {
     this._templateElement = document.querySelector(ERROR.TEMPLATE).content.querySelector(ERROR.SELECTOR);
     this._listElement = document.querySelector(ERROR.LIST);
     this._wrapperElement = document.querySelector(ERROR.WRAPPER);
     this.code = code;
     // this.active = active;
     this.body = body;
-    history.push(this);
-    console.log(history);
     this._createError();
   }
 
