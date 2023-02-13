@@ -29,51 +29,20 @@ export default class Card {
     this._hasOwnerLike = this.updateOwnersLike(this._likes, this._userId);
   }
 
-
-  _setCardName() {
+  _setCardContent() {
     this._cardTitle.textContent = this._name;
-  };
-
-  _setCardImage() {
     this._cardImage.setAttribute('src', this._link);
     this._cardImage.setAttribute('alt', this._name);
-  };
-
-  _addLikeActiveClass() {
-    this._cardLikeButton.classList.add(CARD.LIKE_BUTTON_ACTIVE);
-    this._cardLikeButton.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
-  };
-
-  _removeLikeActiveClass() {
-    this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_ACTIVE);
-    this._cardLikeButton.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
-  };
+  }
 
   toggleLike(card) {
     this._likes = card.likes;
     this.updateOwnersLike();
-
-    switch (this.isLiked()) {
-      case true:
-        this._cardLikeNumber.textContent = this._likes.length;
-        this._cardLikeButton.classList.add(CARD.LIKE_BUTTON_IS_LIKED);
-        break;
-      case false:
-        this._cardLikeNumber.textContent = '';
-        this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
-    }
-
-    switch (this._hasOwnerLike) {
-      case true:
-        this._removeLikeActiveClass();
-        break;
-      case false:
-        this._addLikeActiveClass();
-        break;
-    }
+    this._setLikesQuantity();
+    this._toggleLikesClass();
   };
 
-  _setCardLikes() {
+  _setLikesQuantity() {
     switch (this._likes.length) {
       case 0:
         this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_IS_LIKED);
@@ -86,11 +55,8 @@ export default class Card {
     }
   };
 
-  isLiked() {
-    return this._likes.length > 0;
-  }
-
   updateOwnersLike() {
+    this._hasOwnerLike = this._likes.some((like) => like._id === this._userId);
     return this._likes.some((like) => like._id === this._userId);
   };
 
@@ -106,21 +72,33 @@ export default class Card {
   }
 
   generate() {
-    this._setCardName();
-    this._setCardImage();
-    this._setCardLikes();
-    this._hasOwnerLike
-      ? this._addLikeActiveClass()
-      : this._removeLikeActiveClass();
+    this._setCardContent();
+    this._setLikesQuantity();
+    this._toggleLikesClass();
+    this._setEventListeners();
+    return this._cardItem;
+  };
 
+  _toggleLikesClass() {
+    switch (this._hasOwnerLike) {
+      case true:
+        this._cardLikeButton.classList.add(CARD.LIKE_BUTTON_ACTIVE);
+        this._cardLikeButton.setAttribute('aria-label', 'Убрать отметку \"Понравилось\"');
+        break;
+      case false:
+        this._cardLikeButton.classList.remove(CARD.LIKE_BUTTON_ACTIVE);
+        this._cardLikeButton.setAttribute('aria-label', 'Добавить отметку \"Понравилось\"');
+        break;
+    }
+  }
+
+  _setEventListeners() {
     this._cardLikeButton.addEventListener(EVENT.CLICK, () => this._handleLikeBtnClick(this));
     this._cardImage.addEventListener(EVENT.CLICK, this._handleImageClick);
     this._owner._id === this._userId
       ? this._cardDelete.addEventListener(EVENT.CLICK, this._handleDeleteBtnClick)
       : this._cardDelete.remove();
-
-    return this._cardItem;
-  };
+  }
 }
 
 // import { openPopup, handleSubmit } from './popup.js';

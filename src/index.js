@@ -1,12 +1,11 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, config, EVENT, PROFILE, VALIDATION } from './components/enum.js';
+import { CARD, config, PROFILE, VALIDATION } from './components/enum.js';
 import { endLoader, startLoader } from './components/loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
 import Card from './components/Card.js';
 import { enableValidation } from './components/validation.js';
-import deleteCardService from './components/deleteCardService.js';
 import Error from './components/Error.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -16,10 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const { id, hasOwnerLike } = card.getData();
       const newCard = await api.toggleLike(id, hasOwnerLike);
-      console.log(newCard);
       card.toggleLike(newCard);
     } catch (e) {
-      new Error({ code: e, body: `Ошибка получения информации о пользователе.` });
+      new Error({ code: e, body: `При попытке поставить лайк произошла ошибка.` });
     }
   };
   const handleDeleteBtnClick = () => {

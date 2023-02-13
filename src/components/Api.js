@@ -56,7 +56,7 @@ export default class Api {
   }
 
   toggleLike(cardId, hasOwnerLike) {
-    return this._request(`cards/likes/${cardId}`, {
+    return this._request(`cards/likeas/${cardId}`, {
       method: hasOwnerLike ? 'DELETE' : 'PUT',
     });
   }
