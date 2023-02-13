@@ -1,12 +1,14 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, config, PROFILE, VALIDATION } from './components/enum.js';
+import { CARD, config, POPUP, PROFILE, VALIDATION } from './components/enum.js';
 import { endLoader, startLoader } from './components/loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
 import Card from './components/Card.js';
 import { enableValidation } from './components/validation.js';
 import Error from './components/Error.js';
+import PopupWithImage from './components/PopupWithImage.js';
+import Popup from './components/Popup.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(config);
@@ -22,7 +24,11 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const handleDeleteBtnClick = () => {
   };
-  const handleImageClick = () => {
+  const handleImageClick = (card) => {
+    const { name, link } = card.getData();
+    const popup = new Popup(POPUP.TYPE_PHOTO);
+    // popup.fill({ link, name });
+    popup.open();
   };
 
   const startApp = () => {
