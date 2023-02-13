@@ -8,7 +8,6 @@ import Card from './components/Card.js';
 import { enableValidation } from './components/validation.js';
 import Error from './components/Error.js';
 import PopupWithImage from './components/PopupWithImage.js';
-import Popup from './components/Popup.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(config);
@@ -26,8 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const handleImageClick = (card) => {
     const { name, link } = card.getData();
-    const popup = new Popup(POPUP.TYPE_PHOTO);
-    // popup.fill({ link, name });
+    const popup = new PopupWithImage(POPUP.TYPE_PHOTO, POPUP.IMAGE, POPUP.TITLE);
+    popup.fill({ link, name });
     popup.open();
   };
 

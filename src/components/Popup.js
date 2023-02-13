@@ -1,8 +1,6 @@
 import { EVENT, POPUP } from './enum.js';
 
 export default class Popup {
-  _popup;
-
   constructor(selector) {
     this._popup = document.querySelector(selector);
   }
