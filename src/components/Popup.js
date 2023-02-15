@@ -5,6 +5,10 @@ export default class Popup {
     this._popup = document.querySelector(selector);
   }
 
+  getPopup() {
+    return this._popup;
+  }
+
   _handleMouseEvent(e) {
     const closeCondition = e.target.classList.contains(POPUP.CLASSNAME)
       || e.target.classList.contains(POPUP.CLOSE_CLASSNAME);
