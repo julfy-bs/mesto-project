@@ -94,14 +94,14 @@ export default class Card {
 
   _setEventListeners() {
     this._cardLikeButton.addEventListener(EVENT.CLICK, () => this._handleLikeBtnClick(this));
-    this._cardImage.addEventListener(EVENT.CLICK, this._handleImageClick);
+    this._cardImage.addEventListener(EVENT.CLICK, () => this._handleImageClick(this));
     this._owner._id === this._userId
       ? this._cardDelete.addEventListener(EVENT.CLICK, this._handleDeleteBtnClick)
       : this._cardDelete.remove();
   }
 }
 
-// import { openPopup, handleSubmit } from './popup.js';
+// import { openPopup, handleSubmit } from './popup-old.js';
 // import { POPUP, CARD, EVENT, FORM } from './enum.js';
 // import deleteCardService from './deleteCardService.js';
 // // import { createError } from './Error.js';

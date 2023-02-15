@@ -36,7 +36,7 @@ export default class Profile {
 }
 
 
-// import { openPopup, handleSubmit } from './popup.js';
+// import { openPopup, handleSubmit } from './popup-old.js';
 // import { createCard, prependCard } from './Card.js';
 // import { PROFILE, POPUP, FORM, EVENT } from './enum.js';
 //
