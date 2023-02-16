@@ -1,7 +1,14 @@
 import { EVENT } from './enum.js';
 
 export default class Profile {
-  constructor({ nameSelector, occupationSelector, avatarSelector, avatarButtonSelector, editButtonSelector, addCardButtonSelector }) {
+  constructor({
+                nameSelector,
+                occupationSelector,
+                avatarSelector,
+                avatarButtonSelector,
+                editButtonSelector,
+                addCardButtonSelector
+              }) {
     this._profileNameElement = document.querySelector(nameSelector);
     this._profileAboutElement = document.querySelector(occupationSelector);
     this._profileAvatarElement = document.querySelector(avatarSelector);

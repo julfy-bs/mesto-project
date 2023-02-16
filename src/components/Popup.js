@@ -1,4 +1,4 @@
-import { EVENT, POPUP } from './enum.js';
+import { EVENT, KEY, POPUP } from './enum.js';
 
 export default class Popup {
   constructor(selector) {
@@ -12,7 +12,7 @@ export default class Popup {
   };
 
   _handleKeyboardEvent(e) {
-    if (e.key === 'Escape') this.close();
+    if (e.key === KEY.ESCAPE) this.close();
   };
 
   _addEventListeners() {

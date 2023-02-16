@@ -1,17 +1,17 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, config, POPUP, PROFILE, VALIDATION } from './components/enum.js';
+import { CARD, apiConfig, validationConfig, POPUP, PROFILE } from './components/enum.js';
 import { endLoader, startLoader } from './components/loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
 import Card from './components/Card.js';
-import { enableValidation } from './components/validation.js';
+import Validation from './components/Validation.js';
 import Error from './components/Error.js';
 import PopupWithImage from './components/PopupWithImage.js';
 import PopupWithForm from './components/PopupWithForm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  const api = new Api(config);
+  const api = new Api(apiConfig);
   const deleteSubmitHandler = async (card, popup) => {
     try {
       const { id } = card.getData();
@@ -98,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
       await api.updateUserAvatar(avatar);
       user.setUserInfo({ avatar });
       popup.close();
+      popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
       new Error({
@@ -105,20 +106,20 @@ document.addEventListener('DOMContentLoaded', () => {
         body: `Произошла ошибка при попытке изменить изображение профиля пользователя \u00ab${name}\u00bb.`
       });
     }
-  }
+  };
   const handleProfileAvatarButtonClick = (user) => {
     const popup = new PopupWithForm(POPUP.TYPE_AVATAR);
     popup.open();
     popup.updateSubmitHandler(() => handleProfileAvatarSubmit(popup, user));
-  }
+  };
   const handleProfileEditSubmit = async (popup, user) => {
     try {
       const name = popup.getInputValue('name');
       const occupation = popup.getInputValue('occupation');
-
       const response = await api.updateUser({ name: name, about: occupation });
       user.setUserInfo({ name: response.name, about: response.about });
       popup.close();
+      popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
       new Error({
@@ -126,14 +127,14 @@ document.addEventListener('DOMContentLoaded', () => {
         body: `Произошла ошибка при попытке изменить имя или описание профиля пользователя \u00ab${name}\u00bb.`
       });
     }
-  }
+  };
   const handleProfileEditButtonClick = (user) => {
     const { name, about } = user.getUserInfo();
     const popup = new PopupWithForm(POPUP.TYPE_PROFILE);
     popup.fillInputs({ name: name, occupation: about });
     popup.open();
     popup.updateSubmitHandler(() => handleProfileEditSubmit(popup, user));
-  }
+  };
   const handleAddCardSubmit = async (popup, user, cardsFeed) => {
     try {
       const title = popup.getInputValue('title');
@@ -153,10 +154,11 @@ document.addEventListener('DOMContentLoaded', () => {
         handleLikeBtnClick: () => handleLike(card),
         handleDeleteBtnClick: () => handleDelete(card),
         handleImageClick: () => handleImage(card)
-      })
+      });
       const cardItem = card.generate();
       cardsFeed.prepend(cardItem);
       popup.close();
+      popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
       new Error({
@@ -164,12 +166,12 @@ document.addEventListener('DOMContentLoaded', () => {
         body: `Произошла ошибка при создании новой карточки для профиля \u00ab${name}\u00bb.`
       });
     }
-  }
+  };
   const handleAddCardButtonClick = (user, cardsFeed) => {
     const popup = new PopupWithForm(POPUP.TYPE_CARD);
     popup.open();
     popup.updateSubmitHandler(async () => handleAddCardSubmit(popup, user, cardsFeed));
-  }
+  };
   const startApp = async () => {
     try {
       startLoader();
@@ -182,15 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
       user.addEditButtonListener(() => handleProfileEditButtonClick(user));
       user.addNewCardButtonListener(() => handleAddCardButtonClick(user, cardsFeed));
       endLoader();
-      enableValidation({
-        formSelector: VALIDATION.FORM_SELECTOR,
-        inputSelector: VALIDATION.INPUT_SELECTOR,
-        buttonSelector: VALIDATION.BUTTON_SELECTOR,
-        errorSelector: VALIDATION.ERROR_SELECTOR,
-        inputErrorClass: VALIDATION.INPUT_ERROR_CLASS,
-        buttonDisabledClass: VALIDATION.BUTTON_DISABLED_CLASS,
-        errorActiveClass: VALIDATION.ERROR_ACTIVE_CLASS
-      });
+      new Validation(validationConfig);
     } catch (e) {
       new Error({ code: e, body: `Ошибка получения информации с сервера.` });
     }
