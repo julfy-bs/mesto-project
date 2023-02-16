@@ -2,12 +2,14 @@ import { CARD, EVENT } from './enum.js';
 
 export default class Card {
   constructor(
-    selector,
-    { name, link, owner, likes = [], id },
-    userId,
-    handleLikeBtnClick,
-    handleDeleteBtnClick,
-    handleImageClick
+    {
+      selector,
+      card: { name, link, owner, likes, id },
+      userId,
+      handleLikeBtnClick,
+      handleDeleteBtnClick,
+      handleImageClick
+    }
   ) {
     this._owner = owner;
     this._likes = likes;
@@ -18,7 +20,7 @@ export default class Card {
     this._handleLikeBtnClick = handleLikeBtnClick;
     this._handleDeleteBtnClick = handleDeleteBtnClick;
     this._handleImageClick = handleImageClick;
-    this._cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
+    this._cardTemplate = document.querySelector(selector).content.querySelector(CARD.ITEM);
     this._cardItem = this._cardTemplate.cloneNode(true);
     this._cardArticle = this._cardItem.querySelector(CARD.ARTICLE);
     this._cardImage = this._cardArticle.querySelector(CARD.IMAGE);
@@ -71,6 +73,10 @@ export default class Card {
     };
   }
 
+  remove() {
+    this._cardItem.remove();
+  }
+
   generate() {
     this._setCardContent();
     this._setLikesQuantity();
@@ -100,64 +106,3 @@ export default class Card {
       : this._cardDelete.remove();
   }
 }
-
-// import { openPopup, handleSubmit } from './popup-old.js';
-// import { POPUP, CARD, EVENT, FORM } from './enum.js';
-// import deleteCardService from './deleteCardService.js';
-// // import { createError } from './Error.js';
-//
-// const cardTemplate = document.querySelector(CARD.TEMPLATE).content.querySelector(CARD.ITEM);
-// const popupDelete = document.querySelector(POPUP.TYPE_DELETE);
-// const popupPhoto = document.querySelector(POPUP.TYPE_PHOTO);
-// const popupImage = popupPhoto.querySelector(POPUP.IMAGE);
-// const popupTitle = popupPhoto.querySelector(POPUP.TITLE);
-//
-// const checkLikeButtonActiveClass = (el) => {
-//   return el.classList.contains(CARD.LIKE_BUTTON_ACTIVE);
-// };
-//
-// const findCurrentCard = (id) => {
-//   return cards.find(card => card._id === id);
-// };
-//
-// const handleLikeButton = (button, number, id, initialLikes, userId) => {
-//   const current = findCurrentCard(id);
-//   updateOwnersLike(current.likes, userId);
-//   button.setAttribute('disabled', 'disabled');
-//
-//   const promise = hasOwnerLike? deleteCardLike(id) : addCardLike(id)
-//
-//   promise
-//     .then((res) => {
-//       updateOwnersLike(res.likes, userId);
-//       current.likes = res.likes;
-//       setCardLikes(button, number, res.likes.length);
-//       const hasActiveClass = checkLikeButtonActiveClass(button);
-//       toggleLike(button, hasActiveClass);
-//     })
-//     .catch((error) => createError(error.status, `Ошибка лайка карточки.`))
-//     .finally(() => button.removeAttribute('disabled', 'disabled'));
-// };
-//
-// const handlePhotoOverlay = (cardImage, cardTitle) => {
-//   openPopup(popupPhoto);
-//   popupTitle.textContent = cardTitle.textContent;
-//   popupImage.setAttribute('src', cardImage.getAttribute('src'));
-//   popupImage.setAttribute('alt', cardImage.getAttribute('alt'));
-// };
-//
-// const handleDeleteButton = (target, cardId) => {
-//   deleteCardService.delete = (e) => handleDeleteSubmit(e, target, cardId);
-//   openPopup(popupDelete);
-// };
-//
-// function handleDeleteSubmit(e, target, cardId) {
-//   const cardElement = target.closest(CARD.ITEM);
-//
-//   const submitDeleteCardRequest = () => {
-//     return removeCard(cardId)
-//       .then(() => cardElement.remove())
-//   };
-//
-//   handleSubmit(submitDeleteCardRequest, e, 'удаления карточки.', FORM.BUTTON_TEXT_DELETE, FORM.BUTTON_TEXT_DELETING);
-// }
