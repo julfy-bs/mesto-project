@@ -8,9 +8,14 @@ import Card from './components/Card.js';
 import { enableValidation } from './components/validation.js';
 import Error from './components/Error.js';
 import PopupWithImage from './components/PopupWithImage.js';
+import PopupWithForm from './components/PopupWithForm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(config);
+
+  const deleteSubmitHandler = () => {
+    console.log(123);
+  }
 
   const handleLikeBtnClick = async (card) => {
     try {
@@ -22,6 +27,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   const handleDeleteBtnClick = () => {
+    const popup = new PopupWithForm(POPUP.TYPE_PHOTO, deleteSubmitHandler);
+
   };
   const handleImageClick = (card) => {
     const { name, link } = card.getData();
