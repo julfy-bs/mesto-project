@@ -30,6 +30,8 @@
 @import url('../blocks/footer/footer.css');
 @import url('../blocks/footer/__copyright/footer__copyright.css');
 @import url('../blocks/loader/loader.css');
+@import url('../blocks/loader/__circle/loader__circle.css');
+@import url('../blocks/loader/__inner/loader__inner.css');
 @import url('../blocks/loader/__skeleton/loader__skeleton.css');
 @import url('../blocks/loader/__skeleton/_type/loader__skeleton_type_text.css');
 @import url('../blocks/loader/_active/loader_active.css');
