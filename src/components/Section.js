@@ -6,9 +6,7 @@ export default class Section {
   }
 
   render() {
-    this._array.reverse().forEach((item) => {
-      this._renderer(item);
-    });
+    this._array.reverse().forEach((item) => this._renderer(item));
   }
 
   prepend(element) {

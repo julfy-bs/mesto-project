@@ -15,7 +15,6 @@ export default class Validation {
     this._inputErrorClass = inputErrorClass;
     this._buttonDisabledClass = buttonDisabledClass;
     this._errorActiveClass = errorActiveClass;
-    this._enableValidation();
   }
 
   _showInputError(formElement, inputElement, errorElement, errorMessage) {
@@ -73,7 +72,7 @@ export default class Validation {
     });
   };
 
-  _enableValidation() {
+  enableValidation() {
     this._formsList.forEach(form => this._setFormEventListeners(
       form,
       this._inputSelector,

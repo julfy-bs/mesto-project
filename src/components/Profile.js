@@ -51,8 +51,4 @@ export default class Profile {
     if (avatar) this._profileAvatarElement.src = avatar;
     if (id) this._userId = id;
   }
-
-  getUserId() {
-    return this._userId;
-  }
 }

@@ -20,7 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.close();
     } catch (e) {
       const { name } = card.getData();
-      new Error({ code: e, body: `Произошла ошибка при попытке удалить карточку \u00ab${name}\u00bb.` });
+      const error = new Error({ code: e, body: `Произошла ошибка при попытке удалить карточку \u00ab${name}\u00bb.` });
+      error.createError();
     }
   };
   const handleLike = async (card) => {
@@ -32,7 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
       const { name, hasOwnerLike } = card.getData();
       let verb;
       (hasOwnerLike) ? verb = 'снять' : verb = 'добавить';
-      new Error({ code: e, body: `Произошла ошибка при попытке ${verb} лайк карточке \u00ab${name}\u00bb.` });
+      const error = new Error({
+        code: e,
+        body: `Произошла ошибка при попытке ${verb} лайк карточке \u00ab${name}\u00bb.`
+      });
+      error.createError();
     }
   };
   const handleDelete = (card) => {
@@ -47,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.open();
   };
   const renderCards = (data, user, section) => {
+    const { id } = user.getUserInfo();
     const cardClone = new Card({
       selector: CARD.TEMPLATE,
       card: {
@@ -56,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: data.name,
         owner: data.owner
       },
-      userId: user.getUserId(),
+      userId: id,
       handleLikeBtnClick: () => handleLike(cardClone),
       handleDeleteBtnClick: () => handleDelete(cardClone),
       handleImageClick: () => handleImage(cardClone)
@@ -101,10 +107,11 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
-      new Error({
+      const error = new Error({
         code: e,
         body: `Произошла ошибка при попытке изменить изображение профиля пользователя \u00ab${name}\u00bb.`
       });
+      error.createError();
     }
   };
   const handleProfileAvatarButtonClick = (user) => {
@@ -122,10 +129,11 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
-      new Error({
+      const error = new Error({
         code: e,
         body: `Произошла ошибка при попытке изменить имя или описание профиля пользователя \u00ab${name}\u00bb.`
       });
+      error.createError();
     }
   };
   const handleProfileEditButtonClick = (user) => {
@@ -139,7 +147,7 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const title = popup.getInputValue('title');
       const link = popup.getInputValue('link');
-
+      const { id } = user.getUserInfo();
       const response = await api.addCard({ name: title, link: link });
       const card = new Card({
         selector: CARD.TEMPLATE,
@@ -150,7 +158,7 @@ document.addEventListener('DOMContentLoaded', () => {
           name: response.name,
           owner: response.owner
         },
-        userId: user.getUserId(),
+        userId: id,
         handleLikeBtnClick: () => handleLike(card),
         handleDeleteBtnClick: () => handleDelete(card),
         handleImageClick: () => handleImage(card)
@@ -161,10 +169,11 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.resetForm();
     } catch (e) {
       const { name } = user.getUserInfo();
-      new Error({
+      const error = new Error({
         code: e,
         body: `Произошла ошибка при создании новой карточки для профиля \u00ab${name}\u00bb.`
       });
+      error.createError();
     }
   };
   const handleAddCardButtonClick = (user, cardsFeed) => {
@@ -174,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const startApp = async () => {
     try {
-      const loader = new Loader(LOADER.SELECTOR, [PROFILE.CONTENT_NAME, PROFILE.CONTENT_OCCUPATION], [PROFILE.AVATAR])
+      const loader = new Loader(LOADER.SELECTOR, [PROFILE.CONTENT_NAME, PROFILE.CONTENT_OCCUPATION], [PROFILE.AVATAR]);
       loader.startLoader();
       const [userData, cards] = await api.getAppData();
       const user = createUser();
@@ -184,10 +193,12 @@ document.addEventListener('DOMContentLoaded', () => {
       user.addAvatarListener(() => handleProfileAvatarButtonClick(user));
       user.addEditButtonListener(() => handleProfileEditButtonClick(user));
       user.addNewCardButtonListener(() => handleAddCardButtonClick(user, cardsFeed));
-      new Validation(validationConfig);
+      const validation = new Validation(validationConfig);
+      validation.enableValidation();
       loader.endLoader();
     } catch (e) {
-      new Error({ code: e, body: `Ошибка получения информации с сервера.` });
+      const error = new Error({ code: e, body: `Ошибка получения информации с сервера.` });
+      error.createError();
     }
   };
   startApp();

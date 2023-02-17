@@ -6,9 +6,7 @@ export default class Error {
     this._listElement = document.querySelector(ERROR.LIST);
     this._wrapperElement = document.querySelector(ERROR.WRAPPER);
     this.code = code;
-    // this.active = active;
     this.body = body;
-    this._createError();
   }
 
   _addErrorActiveClass(errorElement) {
@@ -26,7 +24,7 @@ export default class Error {
     setTimeout(() => element.remove(), 500);
   };
 
-  _createError() {
+  createError() {
     const errorItem = this._templateElement.cloneNode(true);
     const errorItemTitle = errorItem.querySelector(ERROR.TITLE);
     const errorItemBody = errorItem.querySelector(ERROR.DESCRIPTION);
