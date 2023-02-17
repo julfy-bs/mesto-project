@@ -1,7 +1,7 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, apiConfig, validationConfig, POPUP, PROFILE } from './components/enum.js';
-import { endLoader, startLoader } from './components/loader.js';
+import { CARD, apiConfig, validationConfig, POPUP, PROFILE, LOADER } from './components/enum.js';
+import Loader from './components/Loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
 import Card from './components/Card.js';
@@ -174,7 +174,8 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const startApp = async () => {
     try {
-      startLoader();
+      const loader = new Loader(LOADER.SELECTOR, [PROFILE.CONTENT_NAME, PROFILE.CONTENT_OCCUPATION], [PROFILE.AVATAR])
+      loader.startLoader();
       const [userData, cards] = await api.getAppData();
       const user = createUser();
       fillUserFields(user, userData);
@@ -183,8 +184,8 @@ document.addEventListener('DOMContentLoaded', () => {
       user.addAvatarListener(() => handleProfileAvatarButtonClick(user));
       user.addEditButtonListener(() => handleProfileEditButtonClick(user));
       user.addNewCardButtonListener(() => handleAddCardButtonClick(user, cardsFeed));
-      endLoader();
       new Validation(validationConfig);
+      loader.endLoader();
     } catch (e) {
       new Error({ code: e, body: `Ошибка получения информации с сервера.` });
     }
