@@ -28,7 +28,6 @@ export default class Card {
     this._cardLikeNumber = this._cardArticle.querySelector(CARD.LIKE_NUMBER);
     this._cardLikeButton = this._cardArticle.querySelector(CARD.LIKE_BUTTON);
     this._cardDelete = this._cardArticle.querySelector(CARD.DELETE);
-    this._hasOwnerLike = this.updateOwnersLike(this._likes, this._userId);
   }
 
   _setCardContent() {
@@ -78,6 +77,7 @@ export default class Card {
   }
 
   generate() {
+    this._hasOwnerLike = this.updateOwnersLike(this._likes, this._userId);
     this._setCardContent();
     this._setLikesQuantity();
     this._toggleLikesClass();
