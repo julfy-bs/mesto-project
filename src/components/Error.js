@@ -32,14 +32,10 @@ export default class Error {
     const errorItemBody = errorItem.querySelector(ERROR.DESCRIPTION);
     const errorItemButton = errorItem.querySelector(ERROR.BUTTON);
     this._addErrorActiveClass(errorItem);
-
     errorItemButton.addEventListener(EVENT.CLICK, () => this._closeButtonListener(errorItem));
-
     errorItemTitle.textContent = `Код ${this.code}`;
     errorItemBody.textContent = this.body;
-
     this._listElement.prepend(errorItem);
-
     return errorItem;
   }
 }
