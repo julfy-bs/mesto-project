@@ -1,6 +1,6 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, apiConfig, validationConfig, POPUP, PROFILE, LOADER } from './components/enum.js';
+import { CARD, apiConfig, validationConfig, POPUP, PROFILE, LOADER, EVENT } from './components/enum.js';
 import Loader from './components/Loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
@@ -75,9 +75,6 @@ document.addEventListener('DOMContentLoaded', () => {
       nameSelector: PROFILE.CONTENT_NAME,
       occupationSelector: PROFILE.CONTENT_OCCUPATION,
       avatarSelector: PROFILE.CONTENT_AVATAR,
-      avatarButtonSelector: PROFILE.AVATAR,
-      editButtonSelector: PROFILE.BUTTON_EDIT_PROFILE,
-      addCardButtonSelector: PROFILE.BUTTON_ADD_CARD
     });
   };
   const fillUserFields = (user, userData) => {
@@ -181,6 +178,13 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.open();
     popup.updateSubmitHandler(async () => handleAddCardSubmit(popup, user, cardsFeed));
   };
+  const setProfileButtonsListeners = (config) => {
+    config.forEach((element) => {
+      document
+        .querySelector(element.selector)
+        .addEventListener(EVENT.CLICK, element.handleClick);
+    });
+  };
   const startApp = async () => {
     try {
       const loader = new Loader(LOADER.SELECTOR, [PROFILE.CONTENT_NAME, PROFILE.CONTENT_OCCUPATION], [PROFILE.AVATAR]);
@@ -190,9 +194,20 @@ document.addEventListener('DOMContentLoaded', () => {
       fillUserFields(user, userData);
       const cardsFeed = createFeed(cards, user);
       cardsFeed.render();
-      user.addAvatarListener(() => handleProfileAvatarButtonClick(user));
-      user.addEditButtonListener(() => handleProfileEditButtonClick(user));
-      user.addNewCardButtonListener(() => handleAddCardButtonClick(user, cardsFeed));
+      setProfileButtonsListeners([
+        {
+          selector: PROFILE.AVATAR,
+          handleClick: () => handleProfileAvatarButtonClick(user),
+        },
+        {
+          selector: PROFILE.BUTTON_EDIT_PROFILE,
+          handleClick: () => handleProfileEditButtonClick(user),
+        },
+        {
+          selector: PROFILE.BUTTON_ADD_CARD,
+          handleClick: () => handleAddCardButtonClick(user, cardsFeed),
+        },
+      ]);
       const validation = new Validation(validationConfig);
       validation.enableValidation();
       loader.endLoader();
