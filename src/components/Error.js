@@ -3,7 +3,6 @@ import { ERROR, EVENT } from './enum.js';
 export default class Error {
   constructor({ code, body }) {
     this._templateElement = document.querySelector(ERROR.TEMPLATE).content.querySelector(ERROR.SELECTOR);
-    this._listElement = document.querySelector(ERROR.LIST);
     this._wrapperElement = document.querySelector(ERROR.WRAPPER);
     this.code = code;
     this.body = body;
@@ -33,7 +32,7 @@ export default class Error {
     errorItemButton.addEventListener(EVENT.CLICK, () => this._closeButtonListener(errorItem));
     errorItemTitle.textContent = `Код ${this.code}`;
     errorItemBody.textContent = this.body;
-    this._listElement.prepend(errorItem);
+    setTimeout(() => this._closeButtonListener(errorItem), 5000)
     return errorItem;
   }
 }

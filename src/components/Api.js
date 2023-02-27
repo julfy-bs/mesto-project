@@ -14,7 +14,7 @@ export default class Api {
   }
 
   getUser() {
-    return this._request(`users/me`);
+    return this._request(`useras/me`);
   }
 
   getCards() {
