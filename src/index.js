@@ -16,6 +16,12 @@ document.addEventListener('DOMContentLoaded', () => {
     renderer: (error) => renderCards(error, errorList),
     containerSelector: ERROR.LIST
   });
+  const ProfileAvatarForm = new Validation('.form_type_avatar', validationConfig);
+  ProfileAvatarForm.enableValidation();
+  const ProfileEditForm = new Validation('.form_type_edit', validationConfig);
+  ProfileEditForm.enableValidation();
+  const ProfileAddCardForm = new Validation('.form_type_add', validationConfig);
+  ProfileAddCardForm.enableValidation();
   const deleteSubmitHandler = async (card, popup) => {
     try {
       const { id } = card.getData();
@@ -215,8 +221,6 @@ document.addEventListener('DOMContentLoaded', () => {
           handleClick: () => handleAddCardButtonClick(user, cardsFeed),
         },
       ]);
-      const validation = new Validation(validationConfig);
-      validation.enableValidation();
       loader.endLoader();
     } catch (e) {
       throwUserError({ code: e, body: `Ошибка получения информации с сервера.` });

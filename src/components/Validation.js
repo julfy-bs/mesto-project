@@ -1,14 +1,15 @@
 export default class Validation {
-  constructor({
-                formSelector,
-                inputSelector,
-                buttonSelector,
-                errorSelector,
-                inputErrorClass,
-                buttonDisabledClass,
-                errorActiveClass
-              }) {
-    this._formsList = Array.from(document.querySelectorAll(formSelector));
+  constructor(
+    formSelector,
+    {
+      inputSelector,
+      buttonSelector,
+      errorSelector,
+      inputErrorClass,
+      buttonDisabledClass,
+      errorActiveClass
+    }) {
+    this._form = document.querySelector(formSelector);
     this._inputSelector = inputSelector;
     this._buttonSelector = buttonSelector;
     this._errorSelector = errorSelector;
@@ -73,14 +74,14 @@ export default class Validation {
   };
 
   enableValidation() {
-    this._formsList.forEach(form => this._setFormEventListeners(
-      form,
+    this._setFormEventListeners(
+      this._form,
       this._inputSelector,
       this._buttonSelector,
       this._errorSelector,
       this._inputErrorClass,
       this._buttonDisabledClass,
       this._errorActiveClass,
-    ));
+    );
   };
 }

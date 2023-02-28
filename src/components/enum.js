@@ -7,7 +7,6 @@ const apiConfig = {
 };
 
 const validationConfig = {
-  formSelector: '.form',
   inputSelector: '.form__input',
   buttonSelector: '.form__button',
   errorSelector: '.form__error',
