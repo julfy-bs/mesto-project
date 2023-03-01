@@ -1,6 +1,6 @@
 import './styles/pages/index.css';
 import Api from './components/Api.js';
-import { CARD, apiConfig, validationConfig, POPUP, PROFILE, LOADER, EVENT } from './components/enum.js';
+import { CARD, apiConfig, validationConfig, POPUP, PROFILE, LOADER, EVENT, ERROR } from './components/enum.js';
 import Loader from './components/Loader.js';
 import Profile from './components/Profile.js';
 import Section from './components/Section.js';
@@ -12,6 +12,16 @@ import PopupWithForm from './components/PopupWithForm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(apiConfig);
+  const errorList = new Section({
+    renderer: (error) => renderCards(error, errorList),
+    containerSelector: ERROR.LIST
+  });
+  const ProfileAvatarForm = new Validation('.form_type_avatar', validationConfig);
+  ProfileAvatarForm.enableValidation();
+  const ProfileEditForm = new Validation('.form_type_edit', validationConfig);
+  ProfileEditForm.enableValidation();
+  const ProfileAddCardForm = new Validation('.form_type_add', validationConfig);
+  ProfileAddCardForm.enableValidation();
   const deleteSubmitHandler = async (card, popup) => {
     try {
       const { id } = card.getData();
@@ -85,15 +95,18 @@ document.addEventListener('DOMContentLoaded', () => {
       id: userData._id
     });
   };
-  const createFeed = (cards, user) => {
+  const createFeed = (user) => {
     const section = new Section(
       {
-        data: cards,
         renderer: (card) => renderCards(card, user, section),
         containerSelector: CARD.WRAPPER
       }
     );
     return section;
+  };
+  const throwUserError = ({ code, body }) => {
+    const errorItem = new Error({ code, body });
+    errorList.prepend(errorItem.createError());
   };
   const handleProfileAvatarSubmit = async (popup, user) => {
     try {
@@ -192,8 +205,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const [userData, cards] = await api.getAppData();
       const user = createUser();
       fillUserFields(user, userData);
-      const cardsFeed = createFeed(cards, user);
-      cardsFeed.render();
+      const cardsFeed = createFeed(user);
+      cardsFeed.render(cards);
       setProfileButtonsListeners([
         {
           selector: PROFILE.AVATAR,
@@ -208,12 +221,9 @@ document.addEventListener('DOMContentLoaded', () => {
           handleClick: () => handleAddCardButtonClick(user, cardsFeed),
         },
       ]);
-      const validation = new Validation(validationConfig);
-      validation.enableValidation();
       loader.endLoader();
     } catch (e) {
-      const error = new Error({ code: e, body: `Ошибка получения информации с сервера.` });
-      error.createError();
+      throwUserError({ code: e, body: `Ошибка получения информации с сервера.` });
     }
   };
   startApp();
