@@ -1,4 +1,4 @@
-const config = {
+const apiConfig = {
   baseUrl: 'https://nomoreparties.co/v1/plus-cohort-19',
   headers: {
     authorization: '0f9e6763-ca59-4d6a-b788-b6c985602524',
@@ -6,12 +6,21 @@ const config = {
   },
 };
 
+const validationConfig = {
+  inputSelector: '.form__input',
+  buttonSelector: '.form__button',
+  errorSelector: '.form__error',
+  inputErrorClass: 'form__input_type_error',
+  buttonDisabledClass: 'form__button_type_disabled',
+  errorActiveClass: 'form__error_active'
+};
+
 const LOADER = {
   SELECTOR: '.loader',
   ACTIVE_CLASS: 'loader_active',
   SKELETON: 'loader__skeleton',
   SKELETON_TEXT: 'loader__skeleton_type_text'
-}
+};
 
 const KEY = {
   ESCAPE: 'Escape'
@@ -23,7 +32,7 @@ const EVENT = {
   MOUSEDOWN: 'mousedown',
   MOUSEUP: 'mouseup',
   CLICK: 'click'
-}
+};
 
 const VALIDATION = {
   FORM_SELECTOR: '.form',
@@ -62,6 +71,7 @@ const POPUP = {
 const ERROR = {
   TEMPLATE: '#error',
   LIST: '.error__list',
+  WRAPPER: '.error',
   SELECTOR: '.error__item',
   TITLE: '.error__title',
   DESCRIPTION: '.error__description',
@@ -113,5 +123,6 @@ export {
   PROFILE,
   LOADER,
   VALIDATION,
-  config
+  apiConfig,
+  validationConfig
 };

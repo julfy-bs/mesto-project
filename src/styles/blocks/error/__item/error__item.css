@@ -15,5 +15,6 @@
   transition: opacity .5s ease, visibility .5s ease;
   visibility: hidden;
   width: 100%;
+  word-break: break-word;
   z-index: 20000;
 }

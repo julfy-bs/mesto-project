@@ -14,14 +14,14 @@
 </header>
 <main class="page__content">
   <section class="profile">
-    <div class="profile__avatar loader__skeleton">
+    <div class="profile__avatar">
       <img alt="Аватар пользователя." class="profile__image"
            src=""/>
     </div>
     <div class="profile__info">
-      <h1 class="profile__name loader__skeleton loader__skeleton_type_text"></h1>
+      <h1 class="profile__name loader__skeleton"></h1>
       <button aria-label="Редактировать профиль" class="button profile__edit" type="button"></button>
-      <p class="profile__occupation loader__skeleton loader__skeleton_type_text"></p>
+      <p class="profile__occupation loader__skeleton"></p>
     </div>
     <button aria-label="Добавить пост" class="button profile__add" type="button"></button>
   </section>
@@ -29,7 +29,21 @@
     <ul class="feed__list"></ul>
   </section>
   <div class="loader">
-
+    <div class="loader__circle">
+      <div class="loader__inner"></div>
+    </div>
+    <div class="loader__circle">
+      <div class="loader__inner"></div>
+    </div>
+    <div class="loader__circle">
+      <div class="loader__inner"></div>
+    </div>
+    <div class="loader__circle">
+      <div class="loader__inner"></div>
+    </div>
+    <div class="loader__circle">
+      <div class="loader__inner"></div>
+    </div>
   </div>
   <div class="error">
     <ul class="error__list"></ul>
@@ -38,7 +52,7 @@
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Редактировать профиль</h2>
-      <form action="index.html" class="form" method="post" name="profile" novalidate>
+      <form action="index.html" class="form form_type_edit" method="post" name="profile" novalidate>
         <label class="form__label">
           <input class="form__input"
                  data-invalid-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."
@@ -65,7 +79,7 @@
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Обновить аватар</h2>
-      <form action="index.html" class="form" method="post" name="avatar" novalidate>
+      <form action="index.html" class="form form_type_avatar" method="post" name="avatar" novalidate>
         <label class="form__label">
           <input class="form__input"
                  name="link" placeholder="Ссылка на картинку" required
@@ -80,7 +94,7 @@
     <div class="popup__wrapper">
       <button aria-label="Закрыть" class="button popup__close" type="button"></button>
       <h2 class="popup__title">Новое место</h2>
-      <form action="index.html" class="form" method="post" name="card" novalidate>
+      <form action="index.html" class="form form_type_add" method="post" name="card" novalidate>
         <label class="form__label">
           <input class="form__input"
                  data-invalid-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы."

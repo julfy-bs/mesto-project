@@ -4,9 +4,9 @@
   --color-white: #fff;
   --color-gray-dark: #545454;
   --color-gray-light: #c4c4c4;
-  --color-red: #ff0000;
+  --color-red: #f00;
   --color-stroke: rgba(84, 84, 84, .7);
-  --color-loading: red;
+  --color-loading: linear-gradient(100deg, #eceff1 30%, #c4c4c4 50%, #eceff1 70%);
   /* Font */
   --font-family-base: 'Inter', 'Arial', sans-serif;
 

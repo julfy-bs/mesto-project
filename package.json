@@ -1,6 +1,6 @@
 {
   "name": "mesto-project",
-  "version": "0.0.3",
+  "version": "0.3.0",
   "description": "Проект \"Место Россия\" - учебный проект в виде ленты с фотографиями. Работа выполнена на курсе Web+ от Yandex Практикум.",
   "main": "index.js",
   "scripts": {

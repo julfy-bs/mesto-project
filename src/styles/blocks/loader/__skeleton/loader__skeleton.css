@@ -1,13 +1,15 @@
 .loader__skeleton {
-  animation: loader-skeleton 1s linear infinite alternate;
+  background: var(--color-loading);
+  background-size: 400% 400%;
+  animation: loading 2s ease-in-out infinite;
   color: transparent;
 }
 
-@keyframes loader-skeleton {
+@keyframes loading {
   0% {
-    background-color: hsl(200, 20%, 80%);
+    background-position: 100% 50%;
   }
   100% {
-    background-color: hsl(200, 20%, 95%);
+    background-position: 0 50%;
   }
 }
