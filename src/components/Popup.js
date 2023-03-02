@@ -15,24 +15,18 @@ export default class Popup {
     if (e.key === KEY.ESCAPE) this.close();
   };
 
-  _addEventListeners() {
+  setEventListeners() {
     this._popup.addEventListener(EVENT.MOUSEDOWN, (e) => this._handleMouseEvent(e));
-    this._popup.addEventListener(EVENT.KEYDOWN, (e) => this._handleKeyboardEvent(e));
-  };
-
-  _removeEventListeners() {
-    this._popup.removeEventListener(EVENT.MOUSEDOWN, this._handleMouseEvent);
-    this._popup.removeEventListener(EVENT.KEYDOWN, this._handleKeyboardEvent);
   }
 
   open() {
     this._popup.classList.add(POPUP.ACTIVE_CLASS);
-    this._addEventListeners();
+    this._popup.addEventListener(EVENT.KEYDOWN, (e) => this._handleKeyboardEvent(e));
     setTimeout(() => this._popup.focus(), POPUP.ANIMATION_DURATION);
   }
 
   close() {
     this._popup.classList.remove(POPUP.ACTIVE_CLASS);
-    this._removeEventListeners();
+    this._popup.removeEventListener(EVENT.KEYDOWN, this._handleKeyboardEvent);
   }
 }

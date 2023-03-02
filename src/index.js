@@ -22,6 +22,18 @@ document.addEventListener('DOMContentLoaded', () => {
   ProfileEditForm.enableValidation();
   const ProfileAddCardForm = new Validation('.form_type_add', validationConfig);
   ProfileAddCardForm.enableValidation();
+
+  const popupImageDetail = new PopupWithImage(POPUP.TYPE_PHOTO, POPUP.IMAGE, POPUP.TITLE);
+  popupImageDetail.setEventListeners();
+  const popupCardDelete = new PopupWithForm(POPUP.TYPE_DELETE);
+  popupCardDelete.setEventListeners();
+  const popupEditAvatar = new PopupWithForm(POPUP.TYPE_AVATAR);
+  popupEditAvatar.setEventListeners();
+  const popupEditProfile = new PopupWithForm(POPUP.TYPE_PROFILE);
+  popupEditProfile.setEventListeners();
+  const popupAddCard = new PopupWithForm(POPUP.TYPE_CARD);
+  popupAddCard.setEventListeners();
+
   const deleteSubmitHandler = async (card, popup) => {
     try {
       const { id } = card.getData();
@@ -51,15 +63,12 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   const handleDelete = (card) => {
-    const popup = new PopupWithForm(POPUP.TYPE_DELETE);
-    popup.open();
-    popup.updateSubmitHandler(() => deleteSubmitHandler(card, popup));
+    popupCardDelete.open();
+    popupCardDelete.updateSubmitHandler(() => deleteSubmitHandler(card, popupCardDelete));
   };
   const handleImage = (card) => {
     const { name, link } = card.getData();
-    const popup = new PopupWithImage(POPUP.TYPE_PHOTO, POPUP.IMAGE, POPUP.TITLE);
-    popup.fill({ name, link });
-    popup.open();
+    popupImageDetail.open({ name, link });
   };
   const renderCards = (data, user, section) => {
     const { id } = user.getUserInfo();
@@ -125,9 +134,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   const handleProfileAvatarButtonClick = (user) => {
-    const popup = new PopupWithForm(POPUP.TYPE_AVATAR);
-    popup.open();
-    popup.updateSubmitHandler(() => handleProfileAvatarSubmit(popup, user));
+    popupEditAvatar.open();
+    popupEditAvatar.updateSubmitHandler(() => handleProfileAvatarSubmit(popupEditAvatar, user));
   };
   const handleProfileEditSubmit = async (popup, user) => {
     try {
@@ -148,10 +156,9 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const handleProfileEditButtonClick = (user) => {
     const { name, about } = user.getUserInfo();
-    const popup = new PopupWithForm(POPUP.TYPE_PROFILE);
-    popup.fillInputs({ name: name, occupation: about });
-    popup.open();
-    popup.updateSubmitHandler(() => handleProfileEditSubmit(popup, user));
+    popupEditProfile.fillInputs({ name: name, occupation: about });
+    popupEditProfile.open();
+    popupEditProfile.updateSubmitHandler(() => handleProfileEditSubmit(popupEditProfile, user));
   };
   const handleAddCardSubmit = async (popup, user, cardsFeed) => {
     try {
@@ -187,9 +194,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   const handleAddCardButtonClick = (user, cardsFeed) => {
-    const popup = new PopupWithForm(POPUP.TYPE_CARD);
-    popup.open();
-    popup.updateSubmitHandler(async () => handleAddCardSubmit(popup, user, cardsFeed));
+    popupAddCard.open();
+    popupAddCard.updateSubmitHandler(async () => handleAddCardSubmit(popupAddCard, user, cardsFeed));
   };
   const setProfileButtonsListeners = (config) => {
     config.forEach((element) => {
