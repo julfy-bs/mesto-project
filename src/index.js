@@ -12,19 +12,16 @@ import PopupWithForm from './components/PopupWithForm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(apiConfig);
-  // Пользовательские ошибки
   const errorList = new Section({
     renderer: (error) => renderCards(error, errorList),
     containerSelector: ERROR.LIST
   });
-  // Валидация форм
   const ProfileAvatarForm = new Validation('.form_type_avatar', validationConfig);
   ProfileAvatarForm.enableValidation();
   const ProfileEditForm = new Validation('.form_type_edit', validationConfig);
   ProfileEditForm.enableValidation();
   const ProfileAddCardForm = new Validation('.form_type_add', validationConfig);
   ProfileAddCardForm.enableValidation();
-  // Попапы
   const popupImageDetail = new PopupWithImage(POPUP.TYPE_PHOTO, POPUP.IMAGE, POPUP.TITLE);
   popupImageDetail.setEventListeners();
   const popupCardDelete = new PopupWithForm(POPUP.TYPE_DELETE);
@@ -35,9 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   popupEditProfile.setEventListeners();
   const popupAddCard = new PopupWithForm(POPUP.TYPE_CARD);
   popupAddCard.setEventListeners();
-
-
-  function saveSessionData(popup) {
+  const saveSessionData = (popup) => {
     const { name, occupation } = popup.getInputValues();
     sessionStorage.setItem('userData', JSON.stringify({
       name: name,
