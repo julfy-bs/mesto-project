@@ -12,17 +12,19 @@ import PopupWithForm from './components/PopupWithForm.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const api = new Api(apiConfig);
+  // Пользовательские ошибки
   const errorList = new Section({
     renderer: (error) => renderCards(error, errorList),
     containerSelector: ERROR.LIST
   });
+  // Валидация форм
   const ProfileAvatarForm = new Validation('.form_type_avatar', validationConfig);
   ProfileAvatarForm.enableValidation();
   const ProfileEditForm = new Validation('.form_type_edit', validationConfig);
   ProfileEditForm.enableValidation();
   const ProfileAddCardForm = new Validation('.form_type_add', validationConfig);
   ProfileAddCardForm.enableValidation();
-
+  // Попапы
   const popupImageDetail = new PopupWithImage(POPUP.TYPE_PHOTO, POPUP.IMAGE, POPUP.TITLE);
   popupImageDetail.setEventListeners();
   const popupCardDelete = new PopupWithForm(POPUP.TYPE_DELETE);
@@ -34,6 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const popupAddCard = new PopupWithForm(POPUP.TYPE_CARD);
   popupAddCard.setEventListeners();
 
+
+  function saveSessionData(popup) {
+    const { name, occupation } = popup.getInputValues();
+    sessionStorage.setItem('userData', JSON.stringify({
+      name: name,
+      about: occupation
+    }));
+  }
   const deleteSubmitHandler = async (card, popup) => {
     try {
       const { id } = card.getData();
@@ -71,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popupImageDetail.open({ name, link });
   };
   const renderCards = (data, user, section) => {
-    const { id } = user.getUserInfo();
+    const { _id } = JSON.parse(sessionStorage.userData);
     const cardClone = new Card({
       selector: CARD.TEMPLATE,
       card: {
@@ -81,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         name: data.name,
         owner: data.owner
       },
-      userId: id,
+      userId: _id,
       handleLikeBtnClick: () => handleLike(cardClone),
       handleDeleteBtnClick: () => handleDelete(cardClone),
       handleImageClick: () => handleImage(cardClone)
@@ -119,13 +129,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const handleProfileAvatarSubmit = async (popup, user) => {
     try {
-      const avatar = popup.getInputValue('link');
-      await api.updateUserAvatar(avatar);
-      user.setUserInfo({ avatar });
+      const { link } = popup.getInputValues();
+      await api.updateUserAvatar(link);
+      user.setUserInfo({ avatar: link });
       popup.close();
       popup.resetForm();
     } catch (e) {
-      const { name } = user.getUserInfo();
+      const { name } = JSON.parse(sessionStorage.userData);
       const error = new Error({
         code: e,
         body: `Произошла ошибка при попытке изменить изображение профиля пользователя \u00ab${name}\u00bb.`
@@ -139,14 +149,13 @@ document.addEventListener('DOMContentLoaded', () => {
   };
   const handleProfileEditSubmit = async (popup, user) => {
     try {
-      const name = popup.getInputValue('name');
-      const occupation = popup.getInputValue('occupation');
+      const { name, occupation } = popup.getInputValues();
       const response = await api.updateUser({ name: name, about: occupation });
       user.setUserInfo({ name: response.name, about: response.about });
       popup.close();
       popup.resetForm();
     } catch (e) {
-      const { name } = user.getUserInfo();
+      const { name } = JSON.parse(sessionStorage.userData);
       const error = new Error({
         code: e,
         body: `Произошла ошибка при попытке изменить имя или описание профиля пользователя \u00ab${name}\u00bb.`
@@ -155,16 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
   const handleProfileEditButtonClick = (user) => {
-    const { name, about } = user.getUserInfo();
+    const { name, about } = JSON.parse(sessionStorage.userData);
     popupEditProfile.fillInputs({ name: name, occupation: about });
-    popupEditProfile.open();
     popupEditProfile.updateSubmitHandler(() => handleProfileEditSubmit(popupEditProfile, user));
+    popupEditProfile.open(() => saveSessionData(popupEditProfile));
   };
   const handleAddCardSubmit = async (popup, user, cardsFeed) => {
     try {
-      const title = popup.getInputValue('title');
-      const link = popup.getInputValue('link');
-      const { id } = user.getUserInfo();
+      const { title, link } = popup.getInputValues();
+      const { _id } = JSON.parse(sessionStorage.userData);
       const response = await api.addCard({ name: title, link: link });
       const card = new Card({
         selector: CARD.TEMPLATE,
@@ -175,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
           name: response.name,
           owner: response.owner
         },
-        userId: id,
+        userId: _id,
         handleLikeBtnClick: () => handleLike(card),
         handleDeleteBtnClick: () => handleDelete(card),
         handleImageClick: () => handleImage(card)
@@ -185,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       popup.close();
       popup.resetForm();
     } catch (e) {
-      const { name } = user.getUserInfo();
+      const { name } = JSON.parse(sessionStorage.userData);
       const error = new Error({
         code: e,
         body: `Произошла ошибка при создании новой карточки для профиля \u00ab${name}\u00bb.`
@@ -209,6 +217,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const loader = new Loader(LOADER.SELECTOR, [PROFILE.CONTENT_NAME, PROFILE.CONTENT_OCCUPATION], [PROFILE.AVATAR]);
       loader.startLoader();
       const [userData, cards] = await api.getAppData();
+      sessionStorage.setItem('userData', JSON.stringify(userData));
       const user = createUser();
       fillUserFields(user, userData);
       const cardsFeed = createFeed(user);
