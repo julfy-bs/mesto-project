@@ -12,8 +12,9 @@ export default class PopupWithForm extends Popup {
     };
   }
 
-  getInputValue(name) {
-    return this._form.elements[name].value;
+  getInputValues() {
+    const formData = new FormData(this._form);
+    return Object.fromEntries(formData);
   }
 
   fillInputs(userData) {
@@ -39,9 +40,15 @@ export default class PopupWithForm extends Popup {
     this._form.reset();
   }
 
+  open(saveSessionData = () => {}) {
+    super.open();
+    this._saveSessionData = saveSessionData;
+  }
+
   close() {
     super.close();
     this._submitHandler = () => {
     };
+    this._saveSessionData();
   }
 }

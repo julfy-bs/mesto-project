@@ -9,15 +9,6 @@ export default class Profile {
     this._profileAvatarElement = document.querySelector(avatarSelector);
   }
 
-  getUserInfo() {
-    return {
-      name: this._profileNameElement.textContent,
-      about: this._profileAboutElement.textContent,
-      avatar: this._profileAvatarElement.src,
-      id: this._userId
-    };
-  }
-
   setUserInfo(userData) {
     const { name, about, avatar, id } = userData;
     if (name) this._profileNameElement.textContent = name;
