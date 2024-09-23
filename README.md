@@ -1,6 +1,8 @@
 # [Проект: Место](<https://julfy-bs.github.io/mesto-project/>)
 
-***
+<img width="1440" alt="image" src="https://github.com/user-attachments/assets/08c49728-9292-4a13-8fc0-59ddbd682b3a">
+
+
 "Место Россия" - учебный проект в виде ленты с фотографиями.
 
 Работа выполнена на курсе [Web+][yandex-practicum-web-plus] от [Yandex Практикум][yandex-practicum-url] в соответствии
